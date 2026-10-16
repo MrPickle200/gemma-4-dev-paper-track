@@ -1,0 +1,4 @@
+model,variant,thinking,line_numbers,runs,runs_with_edit,malformed_edit_rate,mean_total_tokens,mean_peak_context,mean_turns,finished,repeated_identical_calls
+gemma-4-E2B,B0,off,False,3,0,,38534,3242,15,0,26
+gemma-4-E2B,B0,off,,2,1,1.0,67692,5690,15,0,7
+gemma-4-E2B,B0,on,False,4,1,0.0,47312,4805,12.2,1,14

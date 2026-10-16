@@ -1,0 +1,5 @@
+# Normalise text to LF in the repository so the ASCII art and diffs stay stable
+# across platforms; keep PowerShell scripts CRLF for Windows tooling.
+* text=auto
+*.ps1 text eol=crlf
+*.jsonl text eol=lf

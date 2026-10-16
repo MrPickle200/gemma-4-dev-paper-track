@@ -1,0 +1,13 @@
+.venv/
+models/
+repos/
+worktrees/
+tools/downloads/
+tools/llama.cpp/
+__pycache__/
+*.pyc
+.hf_cache/
+
+# keep logs/runs/*.jsonl (traces) and logs/patches/*.patch as research evidence;
+# drop the noisy server/console logs at the root of logs/
+logs/*.log
