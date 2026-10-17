@@ -528,4 +528,76 @@ clean 2-message Phase-2 context and the file is edited.
   On the real grid the answer is now the honest one: `runs=200`, **0 cells missing, 0 capped**.
   No E2B re-run is outstanding.
 
+### Bước 5, metric #4: error and loop rate vs context depth (E2B)
+
+- `scripts/plot_metric4.py` measures IDEA.md §4's last metric from the traces themselves: each
+  turn logs `usage.prompt_tokens` (the depth the model actually faced) and each `tool` record says
+  whether the call was malformed, failed, or repeated the previous one byte-for-byte, so tool calls
+  can be binned at the depth that produced them. Same selection rule as the table (one trace per
+  cell, newest wins, infrastructure failures out), so a run a broken backend killed cannot bend the
+  curve. Outputs `logs/metric4_e2b.csv` and `figures/metric4_e2b.png` (+ `.pdf`).
+- 2087 tool calls over the 200 grid runs, 583 failed (28%), 83 of those argument-side. Per variant:
+
+  ```
+  var  calls  fail%  loop%  mj  sch  miss  gate  path  sym  oth
+  B0     549  0.177  0.128    0    0   49     0    14    0   34
+  M1     543  0.335  0.162    1   82   63     6    12    0   18
+  M2     461  0.380  0.115    0    0   87     1    55   32    0
+  M3     534  0.242  0.107    0    0   25    11    44   49    0
+  ```
+- **The failure rate rises with depth for every variant**, which is metric #4's claim:
+  B0 0.13 -> 0.36 (12-16K), M1 0.27 -> 0.42, M2 0.11 -> 0.78 (12-16K), M3 0.09 -> 0.42. The figure
+  prints the calls behind every point, and the two rightmost buckets are thin (58 and 14 calls over
+  200 runs), so the curve's *shape* is the finding; its last point is not.
+- **Thinking mode is what removed the argument-encoding failure, and that is now measured rather
+  than asserted.** `mj` (arguments the server could not parse at all) is **1 call in 2087** across
+  the thinking-on grid, against the thinking-off baseline's 26 repeated identical calls and zero
+  edits (AGENTS.md). The comma bug that cost the first batch is a thinking *off* phenomenon.
+- **The rise has a different cause in each variant**, which is the useful part:
+  - B0 and M2/M3 fail by *localisation*, not encoding: `search_block not found` (49 / 87 / 25) plus
+    `not a file` and `no symbol named` path errors (14+1+55+32 / 44+49). The AST tools are stricter
+    than bash search, so M2 converts B0's `other` failures into named path/symbol misses - and pays
+    the highest fail rate (0.380) for it.
+  - M1 fails by *encoding*: 82 of its 543 calls (15%) are valid JSON whose keys do not match the
+    tool, e.g. `{"pattern=\"sessions.py": 313, "req.method = ...\"<|\"|>,path=\"...\",max_results": 1}`.
+- **M1's specific defect, and why its column is not a fair test of the gate.** 9 of M1's 50 cells
+  (83 calls) emit this form; **no B0/M2/M3 cell does**. It is not the backend (affected and clean M1
+  cells ran on the same local server, streamed and buffered alike) and not sampling noise (the grid
+  runs `temperature=0.0`, so a rerun of the same request is deterministic - the difference must come
+  from M1's request). What M1 changes is the edit schema and the `_EDIT_STRUCTURED` prompt, and the
+  model then formats `search_text` arguments as `key="value"` pairs with Gemma 4's *template* tokens
+  inside them (`<|"|>` where it wants a quote, and one call carrying `<channel|><|tool_call|>call`).
+  So M1 spends turns failing on a tool its mechanism does not touch, and 7 of those 9 cells ended on
+  `max_turns`. This is a real cost of the module as specified (a stricter JSON edit contract leaking
+  into unrelated calls), and it is evidence *against* M1 - but it is not evidence about the syntax
+  gate, which the table's `synrej` column (6) measures separately. Diagnosing it (does the prompt or
+  the schema cause it?) needs a 1-cell A/B that this metric does not require; flagged, not guessed.
+- Loop rate does not follow the same curve: overall B0 0.128 > M1 0.162 > M2 0.115 > M3 0.107. M3's
+  is lowest, which is what its mechanism predicts - compaction replaces the history a looping
+  conversation would repeat.
+- Harness defect found by this analysis, fixed without touching the 200 traces: `ToolBox.execute`
+  caught the dispatcher's `TypeError` and returned `ToolBox._search_text() got an unexpected keyword
+  argument` - our own Python signature, which the model cannot act on. Those 83 calls were counted as
+  `tool_errors` rather than `malformed_arguments` (metric #2's population), and the model was told
+  nothing useful. It now counts a malformed call as one and answers with the parameters the tool
+  accepts: `bad arguments for search_text: got [...] but the tool accepts (pattern, path, max_results)`.
+  `tests/test_modules.py` pins it; `pytest tests` is 21/21. The trace text is unaffected, so the
+  metric #4 numbers above are computed from the same evidence as the table.
+- `matplotlib==3.11.2` is the first plotting dependency (added to `requirements.txt`).
+
+#### Final E2B ablation table (frozen: `thinking=on`, `max_turns=15`, 50 tasks, 200/200 cells)
+
+| var | cells | finish | edited | real edits | no-op edits | malf edits (m#2) | synrej | compact | repeat calls | mean tok | mean peak | tool calls | fail% (m#4) | loop% (m#4) | resolve % |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| B0 | 50 | 24 | 40 | 37 | 26 | 0.562 | 0 | 0 | 70 | 72478 | 7713 | 549 | 0.177 | 0.128 | Bước 5 |
+| M1 | 50 | 25 | 38 | 36 | 5 | 0.676 | 6 | 0 | 88 | 63882 | 6835 | 543 | 0.335 | 0.162 | Bước 5 |
+| M2 | 50 | 30 | 43 | 42 | 11 | 0.722 | 1 | 0 | 53 | 65041 | 7086 | 461 | 0.380 | 0.115 | Bước 5 |
+| M3 | 50 | 30 | 40 | 39 | 3 | 0.562 | 11 | 41 | 57 | 70547 | 7586 | 534 | 0.242 | 0.107 | Bước 5 |
+
+- Full precision: `logs/batch_e2b.csv` (Bước 4 columns) and `logs/metric4_e2b.csv` (metric #4 by
+  depth bucket). Both regenerate from the traces with the two scripts; neither is hand-edited.
+- `resolve %` is the only column still empty, and it is the one Bước 5's Docker evaluator fills.
+  Every other number here is measured, and the two "quality" columns that favour M3 are the same
+  two the plot shows (`loop%`) and the table's own `no-op edits`.
+
 

@@ -1,7 +1,8 @@
-# Starts llama-server for one Gemma 4 model. Usage: scripts\serve.ps1 [-Model E2B|E4B] [-Port 8080] [-Ctx 32768] [-Slots 4]
-# Note: -Ctx is the PER-SLOT context in this build (llama.cpp clamps it to the model's max), so total
-# KV is -Ctx x -Slots. Keep -Ctx 32768 for parity with the Colab server. -Slots defaults to 4, the
-# build's own n_parallel default; lower it for bigger models (E4B on 6 GB VRAM wants -Slots 1).
+# Starts llama-server for one Gemma 4 model. Usage: scripts\serve.ps1 [-Model E2B|E4B] [-Port 8080] [-Ctx 131072] [-Slots 4]
+# Note: -Ctx is the WHOLE SERVER's context (`-c`), and llama-server gives each slot -Ctx / -Slots. To give
+# every one of N concurrent runs a full 32768-token window, launch -Ctx (32768*N) -Slots N. If the KV does
+# not fit, that division is what the server silently keeps: check the banner's kv_unified field (it is not
+# exposed over HTTP, and /props reports 32768 either way) or let llm.verify_run_context prove it.
 # Note: llama-server writes its banner to stderr; we use Start-Process redirection instead of
 # piping so PowerShell's error handling cannot kill the process (that bug cost us one run).
 param(
@@ -22,7 +23,7 @@ if (-not (Test-Path $exe)) { throw "missing $exe - run scripts\setup_inference.p
 
 $logOut = "logs\server-$Model.log"
 $logErr = "logs\server-$Model.err.log"
-Write-Host "serving $gguf on http://127.0.0.1:$Port (ctx=$Ctx/slot x $Slots slots, ngl=$GpuLayers)"
+Write-Host "serving $gguf on http://127.0.0.1:$Port (ctx=$Ctx total, $Slots slot(s) -> $([math]::Floor($Ctx/$Slots)) per run, ngl=$GpuLayers)"
 Write-Host "  stdout -> $logOut`n  stderr -> $logErr"
 
 $serverArgs = @(

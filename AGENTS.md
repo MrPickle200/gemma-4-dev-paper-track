@@ -101,7 +101,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
   Do not turn this on for baseline runs.
 - Counters in every `run_end` record, feeding IDEA.md §4: `edits_attempted`, `edits_malformed`
   (metric #2), `malformed_arguments`, `repeated_identical_calls` (metric #4), `peak_prompt_tokens`
-  and `total_tokens` (metric #3).
+  and `total_tokens` (metric #3). A tool call whose arguments do not match the tool's schema counts
+  as `malformed_arguments` (it never reached the tool) and the model is told the parameters it may
+  use, not our Python signature.
+- **Read M1's column with care.** M1's request shape (structured edit schema + the
+  `_EDIT_STRUCTURED` prompt) makes E2B garble *unrelated* calls - 9 of its 50 cells wrote
+  `search_text` arguments as `pattern="x"\npath` with Gemma 4's template tokens (`<|"|>`,
+  `<channel|><|tool_call|>`) inside them, which no B0/M2/M3 cell did at temperature 0. See
+  PROGRESS.md before attributing M1's numbers to the syntax gate alone.
 - `reasoning_content` is logged but never echoed back into the next request: the Gemma 4 template
   strips prior thinking anyway, and re-injecting it is the context bloat Module 3 targets.
 - **Parallel and remote grid.** `run_batch.py --workers N` runs N cells at once and should be set to

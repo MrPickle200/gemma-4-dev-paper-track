@@ -257,6 +257,26 @@ def test_worktrees_are_isolated_per_variant(tmp_path: Path, monkeypatch) -> None
         runner.teardown_worktree(task, v)
 
 
+def test_bad_arguments_are_a_malformed_call_not_a_tool_error(tmp_path: Path) -> None:
+    """Arguments that do not match the tool's schema must be named as such, and answered usefully.
+
+    The grid's M1 cells produced 83 such calls: under constrained decoding E2B writes Gemma 4's
+    template tokens into the argument string, so valid JSON arrives with keys like
+    ``pattern="x"\\npath``. The old dispatch let Python's TypeError escape
+    (``ToolBox._search_text() got an unexpected keyword argument``), which both mis-filed the
+    failure under metric #2 and told the model nothing it could act on.
+    """
+    tb = ToolBox(tmp_path, variant="M1", repo_name="x/y")
+
+    res = tb.execute("search_text", {"pattern=\"x\"\npath": "y"})
+
+    assert not res.ok
+    assert "search_text" in res.error and "pattern" in res.error and "max_results" in res.error
+    assert "_search_text" not in res.error, "our Python signature must not leak to the model"
+    assert "unexpected keyword" not in res.error
+    assert tb.stats["malformed_arguments"] == 1
+
+
 def test_tree_sitter_parser_is_per_thread() -> None:
     """A shared tree-sitter Parser is not thread-safe, so each worker thread needs its own."""
     import threading

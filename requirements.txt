@@ -1,6 +1,7 @@
 # Harness dependencies. Backend inference (llama.cpp) is NOT a Python dep — see scripts/setup_inference.ps1.
 datasets==5.1.0
 huggingface-hub==2.2.0
+matplotlib==3.11.2
 openai==3.31.0
 pydantic==2.14.1
 pytest==9.1.1

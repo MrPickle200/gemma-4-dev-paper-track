@@ -16,6 +16,7 @@ Keeping B0 honest is what makes the ablation meaningful, so the B0 code paths ar
 from __future__ import annotations
 
 import ast
+import inspect
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -241,7 +242,17 @@ class ToolBox:
             res = handler(**args)
         except TypeError as e:
             self.stats["tool_errors"] += 1
-            return ToolResult(ok=False, error=f"bad arguments for {name}: {e}")
+            # Arguments that do not match the tool's schema are a *malformed call* (metric #2),
+            # not a rejected edit - the call never reached the tool. And the model can only act on
+            # the parameters it may use, so do not hand it our Python signature: E2B produced 83
+            # such calls under M1's constrained decoding (template tokens inside the argument
+            # string), and `ToolBox._search_text() got an unexpected keyword argument` told it
+            # nothing. This counter is the shared target of metric #2 and #4; see PROGRESS.md.
+            self.stats["malformed_arguments"] += 1
+            expected = ", ".join(inspect.signature(handler).parameters)
+            return ToolResult(ok=False, error=f"bad arguments for {name}: got "
+                                              f"{sorted(args)} but the tool accepts "
+                                              f"({expected})")
         if not res.ok:
             self.stats["tool_errors"] += 1
         return self._truncate(res)
