@@ -396,4 +396,136 @@ clean 2-message Phase-2 context and the file is edited.
   with `run_batch.py` (it had been claiming 137/200 against the true 125/200) and it prints which
   base_url it probed for health.
 
+### Bước 4 E2B: the tunnel, not the model, was killing runs
+
+- The 75-cell Colab pass completed in 5503 s with `stop reasons: finish 34, llm_error 25, max_turns
+  14, no_tool_call 2`. Classifying every `llm_error` by pulling the `error` field out of the trace's
+  turn records settles the cause: **29 were HTTP 524** (Cloudflare's ~100 s origin timeout), **6 were
+  502**, and only **2** were llama-server rejecting a malformed tool call with HTTP 500.
+- So the failure is the tunnel, not the model: with `thinking on` and `max_tokens 16384`, E2B's long
+  turns outlive Cloudflare's ~100 s cap and the request is killed. Measured per backend:
+  **Colab/tunnel 35 llm_error in 104 attempts (34%)** vs **laptop/local 2 in 126 (1.6%)**. The 524 is
+  invisible to the harness - it arrives as an HTML error page, not a model output.
+- Consequence for the data: the ~69 **surviving** Colab runs are a biased sample, because any run
+  containing a long turn was killed and excluded. That selects against exactly the rambling that
+  Module 3 exists to measure, so Colab-run traces cannot be pooled with local ones for the token
+  metrics (metric #3).
+- Consequence for the plan: re-running the 25 still-open cells through the tunnel would mostly fail
+  again. The grid has to be finished on the laptop (4 slots, no proxy in the path).
+- Also confirmed for the record: `base_url` / `api_key_set` live under `config` in `run_start`, not at
+  the top level - reading them at the top level silently returned "local" for every Colab run.
+- Incidentally, one M2 cell showed 13 edits attempted and 13 malformed
+  (`sympy__sympy-24213`): the syntax gate rejected every attempt, which is the M1/M2 failure mode the
+  ablation is meant to expose.
+
+### Bước 4 E2B: SSE streaming defeats the tunnel timeout
+
+- Cause, precisely: Cloudflare's **Proxy Read Timeout is a time-to-first-byte limit (125 s)**, not a
+  cap on total duration, and it is only raisable on Enterprise. A buffered `/chat/completions` sends
+  no byte until the turn has finished generating, so any turn longer than 125 s is killed in flight;
+  a streamed one sends headers and the first token in ~1 s and then keeps dribbling, so the read
+  timer is never allowed to expire.
+- Reproduced against the Colab backend under the grid's own load (3 concurrent requests, the only
+  variable being the transport, same prompt and `max_tokens=16384`):
+  buffered -> **HTTP 524 at 126.8 / 127.1 / 127.1 s**; streamed -> **all three COMPLETE in 171.6 s**
+  (first byte 1.40 s, largest inter-chunk gap 0.12 s, `[DONE]` received, 8893 tokens each). A
+  171-second turn now survives a tunnel that killed it at 127.
+- So the tunnel is usable and the heavy work stays on the cloud. This withdraws the previous entry's
+  conclusion that the grid had to be finished on the laptop.
+- `harness/llm.py` now streams by default and folds the OpenAI-style SSE deltas: `content` and
+  `reasoning_content` fragments, and `tool_calls[i].function.arguments` fragments concatenated per
+  `index`. `usage` and `timings` ride the final chunk (`stream_options.include_usage`), so every
+  metric counter is unchanged.
+- A stream that ends without a `finish_reason` or `[DONE]` is returned as `truncated stream`, i.e. as
+  an error and never as a short answer: half a received turn must not be able to pass as a model
+  outcome. The same applies to an `error` event inside the stream and to a mid-stream transport
+  failure.
+- Parity checked twice: on the local server the streamed call returned the identical tool call and
+  arguments as the buffered one, and through the whole agent loop one streamed B0 run went
+  `search_text -> read_file -> apply_edit -> finish` with 1 edit / 0 malformed, `stop=finish` and
+  "1 file changed, 1 insertion(+), 1 deletion(-)".
+- `stream` is a logged config field (`--no-stream` restores buffering) but deliberately **not** part
+  of run_batch's cell-matching key, so the 175 runs already on disk still count as done.
+- `tests/test_llm_stream.py` adds 8 tests (fragment folding, multi-call index ordering, truncation,
+  mid-stream transport failure, in-stream `error` event, and both request shapes); `pytest tests` is
+  now 17/17.
+
+### The server gave each concurrent run ~8k tokens, not 32768 — and the grid had been scoring that
+
+- `serve.ps1 -Ctx 32768` was read as "32768 per slot, x4 = 131072 total". It is the opposite:
+  **`-c` is the whole server's context and a slot gets `-c / -np`**. With `-np 4` (the build's
+  default) every `--workers 4` batch gave each run **~8192** tokens, and the Colab `-np 3` pass
+  ~11k. `serve.ps1`'s own comment and AGENTS.md both asserted the wrong reading; `GET /slots` and
+  `/props` report `n_ctx = 32768` in *both* configurations, so neither could catch it.
+- How it surfaced: 12 local `llm_error`s all read
+  `sse error: {'code': 500, 'message': 'Context size has been exceeded.'}` — but the failing run's
+  last recorded prompt was **9744** tokens, nowhere near 32768. The server log settled it:
+  `load_model: n_slots = 4, n_ctx_slot = 32768, kv_unified = 'true'` (one 32768-token cache shared
+  by all four slots), `update_slots: decode() failed: Context size has been exceeded`, and four
+  task ids erroring **within 60 ms of each other** — impossible with independent caches. The sum of
+  the slots' live prompt tokens never passed 32768. `nvidia-smi` showed 1845 MiB of 6141 MiB used,
+  so this was never a hardware limit.
+- The damage was two-fold: the grid scored context-overflow as a model outcome (metric #3) when it
+  was a configuration artefact, and re-running those cells could never fix them because the same
+  pool starved them again. The 4-worker pass produced 24 such runs (12 of them `context_exceeded`
+  in the grid rows) before it was stopped at 56/85.
+- Fix, measured: `gemma4.context_length = 131072` in the GGUF, so `-c 131072 -np 4` is legal and
+  the banner becomes `kv_unified = 'false'` with **four independent 32768-token caches**, costing
+  +558 MiB of VRAM (2403 MiB total) and leaving ~3.7 GB free. Verified by serving **4 concurrent
+  27676-token requests — 110704 tokens together**, which the previous server could not do; the
+  server itself states the limit as `exceeds the available context size (32768 tokens)`.
+- Guarding it: `-c >= 32768 x workers -np workers` is now the documented launch, `run_batch` /
+  `run_task` probe the server before every batch (`llm.verify_run_context`: N concurrent
+  full-window prompts, because `/props` cannot distinguish the two configurations) and log the
+  answer as `ctx_per_run`. `config.refined_stop_reason` scores `Context size has been exceeded`
+  **only when `ctx_per_run >= 32768`**; otherwise the run is a starved backend artefact and goes
+  back in the re-run bucket, like any transport failure. Traces written before this field existed
+  have `ctx_per_run = None` and are therefore re-run, which is what the starved ones need.
+- The batch relaunched against the fixed server: probe `PASS` ("4 concurrent request(s), 124552
+  tokens served together"), 143 cells already valid, 57 to run.
+
+### Bước 4, E2B: the grid is complete — 200/200 cells, every one with a scoreable trace
+
+- The remaining 57 cells finished **57/57 in 7431 s (~124 min)** on the fixed server, with **no
+  abort and 0 context failures** since the retune (`grep exceeded logs/server-E2B.err.log` is
+  empty for the whole run). `logs/batch_e2b_local3.log`.
+- Stop reasons over the **200 grid cells** (task x variant, `thinking=on`, `max_turns=15`):
+  `finish 109 | max_turns 60 | length_retry 24 | no_tool_call 6 | toolcall_rejected 1`.
+  The single `toolcall_rejected` (`sympy__sympy-23413 M1`) is Module 1's actual target: the model
+  emitted tool JSON llama.cpp could not parse, which is a result to score, not a broken backend.
+- `scripts/summarize_batch.py --glob "logs/runs/*gemma-4-E2B*.jsonl" --thinking on --max-turns 15
+  --csv logs/batch_e2b.csv` (`--thinking` / `--max-turns` are new, so the grid is not diluted by
+  the early probe runs):
+
+  ```
+  model        var  think  ln     runs edited realed noop  malf_rate mean_tok   mean_peak turns  finish ctxover synrej  compct repeats
+  gemma-4-E2B  B0   on     False  50   40     37     26    0.562     72478      7713      11.4   24     0       0       0      70
+  gemma-4-E2B  M1   on     False  50   38     36     5     0.676     63882      6835      11.1   25     0       6       0      88
+  gemma-4-E2B  M2   on     False  50   43     42     11    0.722     65041      7086      9.5    30     0       1       0      53
+  gemma-4-E2B  M3   on     False  50   40     39     3     0.562     70547      7586      11.2   30     0       11      41     57
+  ```
+- What the table says, before Docker (Bước 5) has its say on resolve rate:
+  - **M2 and M3 finish twice as often as B0's early runs** (30/50 vs 24) and M3 is cleanest where
+    B0 is worst: **3 vs 26 no-op edits** — B0's edits largely re-write identical text, which is the
+    "churn, not coverage" failure the re-runs now expose rather than hide.
+  - M3's mechanism is visibly working: **41 compactions**, and its `mean_peak` (7586) is the
+    highest of the four *because* it is the only variant that keeps going instead of ending early.
+  - **`ctxover = 0` everywhere.** The window is no longer the binding constraint once the pool is
+    sized right, so metric #3 must be read as peak context and compaction behaviour, not as an
+    overflow count — a correction that only exists because the starved runs stopped being scored.
+  - **M1 does not yet earn its keep**: it rejects 6 edits at the gate, yet its malformed-argument
+    rate is the *highest* (0.676 vs B0's 0.562) and it repeats the most identical calls (88). With
+    n=50, one seed, one run per cell, that is a real reading of the data and not yet evidence about
+    the mechanism; the resolve rate is the measurement that decides it.
+- Accounting fix found while writing the table: `summarize_batch`'s `starved`/`excluded` lines
+  counted *traces*, not *cells*, so a finished grid still printed "32 runs must be re-run" — true
+  of traces, false of work, because each of those cells already had a newer valid trace. It now
+  reports both: traces that ended badly, and cells that have **no** valid trace and therefore must
+  re-run (with the count of those that were starved), and it names them even when *every* trace in
+  the glob was excluded. `tests/test_summarize_batch.py` pins the three cases (starved-and-missing,
+  starved-but-superseded, `toolcall_rejected`-with-a-full-window = a scored result); `pytest tests`
+  is **20/20**.
+  On the real grid the answer is now the honest one: `runs=200`, **0 cells missing, 0 capped**.
+  No E2B re-run is outstanding.
+
 

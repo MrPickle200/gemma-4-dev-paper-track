@@ -100,6 +100,7 @@ def run_instance(cfg: RunConfig, task: dict | None = None, verbose: bool = True,
     client = LLMClient(
         base_url=cfg.base_url, model=cfg.model, temperature=cfg.temperature,
         max_tokens=cfg.max_tokens, thinking=cfg.thinking, api_key=cfg.api_key,
+        stream=cfg.stream,
     )
     toolbox = ToolBox(workdir=workdir, max_output_chars=cfg.max_tool_output_chars,
                       repo_name=task["repo"], line_numbers=cfg.line_numbers,

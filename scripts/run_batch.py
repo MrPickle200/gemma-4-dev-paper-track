@@ -35,7 +35,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import requests                                          # noqa: E402
 
-from harness.config import RUNS, RunConfig, is_infra_failure   # noqa: E402
+from harness.config import (MIN_RUN_CTX, RUNS, RunConfig, is_infra_failure,   # noqa: E402
+                            is_proxy_capped, turn_error)
+from harness.llm import LLMClient, verify_run_context           # noqa: E402
 from harness.runner import load_tasks, run_instance        # noqa: E402
 
 for _stream in (sys.stdout, sys.stderr):
@@ -46,7 +48,8 @@ PRINT_LOCK = threading.Lock()
 
 
 def completed_run(instance_id: str, model: str, variant: str, thinking: str,
-                  max_turns: int, line_numbers: bool) -> str | None:
+                  max_turns: int, line_numbers: bool,
+                  rerun_proxy_capped: bool = False) -> str | None:
     """Return the run_id of a matching completed trace, or None."""
     pattern = str(RUNS / f"{instance_id}__{model}__{variant}__*.jsonl")
     for path in glob.glob(pattern):
@@ -58,9 +61,12 @@ def completed_run(instance_id: str, model: str, variant: str, thinking: str,
         end = next((r for r in recs if r["type"] == "run_end"), None)
         if not start or not end:
             continue
-        if is_infra_failure(end.get("stop_reason")):
-            continue  # the backend died mid-run: the cell still needs a real run
+        if is_infra_failure(end.get("stop_reason"), turn_error(recs),
+                            start.get("config", {}).get("ctx_per_run")):
+            continue  # the backend died - or starved this run of context: it needs a real run
         cfg = start.get("config", {})
+        if rerun_proxy_capped and is_proxy_capped(cfg):
+            continue  # complete, but the tunnel's read timeout may have dropped long turns
         if (cfg.get("thinking") == thinking and cfg.get("max_turns") == max_turns
                 and cfg.get("line_numbers") == line_numbers
                 and cfg.get("model") == model and cfg.get("variant") == variant):
@@ -75,10 +81,32 @@ def server_ok(base_url: str) -> bool:
         return False
 
 
+def ctx_per_run(args, workers: int) -> int | None:
+    """The context each of `workers` concurrent runs really gets - measured, not assumed.
+
+    llama-server hands out `-c / -np` per slot only when `-c` is big enough for per-slot caches;
+    started with a small `-c` it instead keeps ONE shared KV pool (`kv_unified = true`), and
+    `/props` advertises `n_ctx = 32768` in *both* cases. So the only trustworthy answer comes from
+    asking the server to serve `workers` full-window prompts at once. None means it failed, which
+    keeps `context_exceeded` in the re-run bucket instead of scoring a backend artefact.
+    """
+    advertised = LLMClient(args.base_url, args.model, api_key=args.api_key).ctx_pool()
+    print(f"server advertises n_ctx = {advertised}")
+    share = verify_run_context(args.base_url, workers, api_key=args.api_key)
+    if share is None:
+        print(f"WARNING: {args.base_url} cannot serve {workers} concurrent {MIN_RUN_CTX}-token runs. "
+              f"On this server the pool, not the model, ends the long runs, so any 'Context size "
+              f"has been exceeded' is a backend artefact and those cells are excluded, not scored. "
+              f"Relaunch with `-c {MIN_RUN_CTX * max(1, workers)} -np {max(1, workers)}` (costs KV "
+              f"memory only - this box had ~3.7 GB of VRAM free) and re-run them.")
+    return share
+
+
 def make_config(args, task: dict, variant: str) -> RunConfig:
     return RunConfig(instance_id=task["instance_id"], model=args.model, variant=variant,
                      base_url=args.base_url, thinking=args.thinking, max_turns=args.max_turns,
-                     api_key=args.api_key)
+                     api_key=args.api_key, stream=not args.no_stream,
+                     ctx_per_run=getattr(args, "ctx_per_run", None))
 
 
 def run_cell(args, task: dict, variant: str) -> tuple[dict, bool]:
@@ -188,8 +216,16 @@ def main() -> int:
                     help="run this many cells concurrently (needs a multi-slot backend)")
     ap.add_argument("--sleep", type=float, default=0.0, help="seconds to pause between runs")
     ap.add_argument("--no-skip", action="store_true", help="re-run cells that already have a trace")
+    ap.add_argument("--rerun-proxy-capped", action="store_true",
+                    help="also re-run cells whose only complete trace ran buffered through a tunnel. "
+                         "Such a run is complete, but the proxy's read timeout can have killed long "
+                         "turns, which biases which runs survive; streaming removes that timeout")
+    ap.add_argument("--no-stream", action="store_true",
+                    help="buffer whole responses instead of SSE (pre-2026-10-17 behaviour; "
+                         "dies on any turn longer than the proxy's read timeout)")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and exit")
     args = ap.parse_args()
+    args.ctx_per_run = ctx_per_run(args, args.workers)
 
     tasks = load_tasks()
     if args.repo:
@@ -202,7 +238,8 @@ def main() -> int:
     skipped = 0
     for task, variant in cells:
         if not args.no_skip and completed_run(task["instance_id"], args.model, variant,
-                                              args.thinking, args.max_turns, False):
+                                              args.thinking, args.max_turns, False,
+                                              args.rerun_proxy_capped):
             skipped += 1
             continue
         todo.append((task, variant))
@@ -210,6 +247,10 @@ def main() -> int:
     print(f"grid: model={args.model} variants={args.variants} thinking={args.thinking} "
           f"max_turns={args.max_turns} workers={args.workers} base_url={args.base_url}")
     print(f"tasks={len(tasks)} cells={len(cells)}  already done={skipped}  to run={len(todo)}")
+    ctx_label = (f"{args.ctx_per_run} tokens per run, verified for {args.workers} concurrent run(s)"
+                 if args.ctx_per_run else
+                 "UNVERIFIED - any 'context_exceeded' here is a backend artefact, not the model's")
+    print(f"context: {ctx_label}")
     if args.dry_run:
         for task, variant in todo[:20]:
             print(f"  would run {task['instance_id']:<32} {variant}")

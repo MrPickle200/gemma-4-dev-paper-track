@@ -19,9 +19,83 @@ VARIANTS = ("B0", "M1", "M2", "M3")
 # experimental outcome: such cells must be re-run rather than skipped as "done" or averaged in.
 INFRA_STOP_PREFIXES = ("llm_error", "harness_error")
 
+# ...but `llm_error` conflates two unlike things. A transport error means the backend broke; a
+# model-side error means the *model* produced output the server could not use. The second kind is an
+# experimental result - context bloat is metric #3, and unparsable tool-call JSON is exactly what
+# Module 1 exists to change - so it must be named and scored. Excluding it would both delete that
+# evidence and re-run the cell forever, because the overflow recurs on every attempt.
+MODEL_SIDE_ERRORS = (
+    ("Context size has been exceeded", "context_exceeded"),        # metric #3 / Module 3
+    ("Failed to parse tool call arguments", "toolcall_rejected"),   # Module 1's target
+)
 
-def is_infra_failure(stop_reason: str | None) -> bool:
-    return str(stop_reason or "").startswith(INFRA_STOP_PREFIXES)
+# The context each run is *designed* to have (any model's window here, `-Ctx 32768`).
+MIN_RUN_CTX = 32768
+
+
+def model_side_stop_reason(error: str | None) -> str | None:
+    """The precise stop reason for a *model-side* failure, or None if this is not one."""
+    txt = str(error or "")
+    return next((label for marker, label in MODEL_SIDE_ERRORS if marker in txt), None)
+
+
+def turn_error(recs: list[dict]) -> str:
+    """The first failed turn's error message in a trace ('' when there is none).
+
+    An `llm_error` cannot be classified from `run_end` alone: the message lives on the turn.
+    """
+    return next((r.get("error") or "" for r in recs
+                 if r.get("type") == "turn" and r.get("error")), "")
+
+
+def ctx_is_adequate(ctx_per_run: int | None) -> bool:
+    """True when every concurrent run was guaranteed the whole designed context window.
+
+    llama-server keeps ONE KV pool (`kv_unified = true` in its banner) that all slots draw from,
+    so `-c 32768` with 4 slots gives each run ~8192 tokens, not 32768. The pool then decides when
+    a long run dies - which is precisely the behaviour metric #3 is meant to measure - so such a
+    trace must be re-run against a server sized `-c >= MIN_RUN_CTX * workers`, never scored.
+    `None` (a trace from before this field existed) counts as inadequate: those servers were all
+    launched `-c 32768`.
+    """
+    return ctx_per_run is not None and ctx_per_run >= MIN_RUN_CTX
+
+
+def refined_stop_reason(stop_reason: str | None, error: str | None = None,
+                        ctx_per_run: int | None = None) -> str:
+    """The stop reason to *score*: `llm_error` refined by the failing message and by how much
+    context the run actually had."""
+    sr = str(stop_reason or "")
+    if not sr.startswith(INFRA_STOP_PREFIXES):
+        return sr
+    label = model_side_stop_reason(error)
+    if label is None:
+        return sr                                    # the backend/proxy really did break
+    if label == "context_exceeded" and not ctx_is_adequate(ctx_per_run):
+        return sr                                    # a shared-pool artefact, not an outcome
+    return label
+
+
+def is_infra_failure(stop_reason: str | None, error: str | None = None,
+                     ctx_per_run: int | None = None) -> bool:
+    """True when a run ended because the backend or the harness broke - or because the backend
+    starved it of context. Re-run those, never score them.
+
+    Pass the failing turn's message (`turn_error(recs)`) and the context the run actually had
+    (`ctx_per_run`, logged in `run_start`), or an `llm_error` is assumed to be infrastructure.
+    """
+    return refined_stop_reason(stop_reason, error, ctx_per_run).startswith(INFRA_STOP_PREFIXES)
+
+
+def is_proxy_capped(cfg: dict) -> bool:
+    """True for a trace that ran **buffered through a proxy** (a tunnel).
+
+    Such a run is complete, but not safe to pool with uncapped ones: the proxy's read timeout
+    (Cloudflare 524 at 125 s) kills any turn that stays silent that long, so the runs that
+    survive are biased towards short turns - exactly the rambling Module 3 measures. Traces
+    written before `stream` existed count as capped. See AGENTS.md and PROGRESS.md.
+    """
+    return bool(cfg.get("api_key_set")) and cfg.get("stream") is not True
 
 
 @dataclass
@@ -38,7 +112,12 @@ class RunConfig:
     thinking: str = "off"                             # "auto" | "on" | "off"
     max_tool_output_chars: int = 8000                 # truncate tool results
     line_numbers: bool = False                        # B0 = plain `cat`; see tools.ToolBox
+    stream: bool = True                               # SSE; required behind a proxied tunnel, see llm.py
     seed: int = 0
+    # Tokens each concurrent run was guaranteed by the backend (server pool / workers), or None
+    # for a trace made before this was recorded. Logged so `context_exceeded` can be told apart
+    # from a shared-pool artefact; see ctx_is_adequate.
+    ctx_per_run: int | None = None
     api_key: str | None = None                        # sent as Authorization: Bearer; see LLMClient
     run_id: str = ""
     workdir: Path | None = None
@@ -80,6 +159,8 @@ class RunConfig:
             "thinking": self.thinking,
             "max_tool_output_chars": self.max_tool_output_chars,
             "line_numbers": self.line_numbers,
+            "stream": self.stream,
             "seed": self.seed,
+            "ctx_per_run": self.ctx_per_run,
             "api_key_set": self.api_key is not None,
         }

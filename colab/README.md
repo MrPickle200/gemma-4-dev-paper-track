@@ -72,6 +72,11 @@ they can be mixed in the ablation table.
   health check. Those runs are recorded with `stop_reason=llama_error` (`llm_error`) and are now
   treated as *incomplete*: `run_batch.py` re-runs them and `summarize_batch.py` excludes them, so a
   backend crash never pollutes the ablation table.
+- **524 from Cloudflare ("A timeout occurred", an HTML body, ~127 s in)** → the request stayed
+  **silent for 125 s**. That is a time-to-first-byte limit, not a cap on how long a request may run,
+  so it is what a *buffered* response looks like when one turn generates for more than two minutes.
+  The origin is healthy and the slot is still working - nothing to restart. The harness now streams
+  (`harness/llm.py`), which is the actual fix; `--no-stream` reintroduces it.
 - **`llama_server: exiting due to HTTP server error` / `couldn't bind HTTP server socket`** → the
   port was already taken by a stale server. The notebook now kills stale processes and picks a free
   port, so this should not recur.

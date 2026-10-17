@@ -14,7 +14,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from harness.config import RunConfig  # noqa: E402
+from harness.config import MIN_RUN_CTX, RunConfig  # noqa: E402
+from harness.llm import verify_run_context  # noqa: E402
 from harness.runner import load_tasks, run_instance  # noqa: E402
 
 for _stream in (sys.stdout, sys.stderr):
@@ -35,6 +36,8 @@ def main() -> int:
                     help="print line numbers in read_file (OFF by default: B0 is `cat` fidelity)")
     ap.add_argument("--max-turns", type=int, default=15)
     ap.add_argument("--base-url", default="http://127.0.0.1:8080")
+    ap.add_argument("--api-key", default=None, help="bearer token, for a proxied/remote server")
+    ap.add_argument("--no-stream", action="store_true", help="buffer whole responses instead of SSE")
     ap.add_argument("--keep-worktree", action="store_true")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
@@ -59,11 +62,16 @@ def main() -> int:
         return 1
 
     summaries = []
+    ctx = verify_run_context(args.base_url, 1, api_key=args.api_key)   # one run at a time
+    if ctx is None:
+        print(f"WARNING: {args.base_url} cannot serve a {MIN_RUN_CTX}-token prompt; a "
+              f"context-exceeded run here is the backend's doing, not the model's.")
     for task in tasks:
         cfg = RunConfig(
             instance_id=task["instance_id"], model=args.model, variant=args.variant,
             base_url=args.base_url, thinking=args.thinking, max_turns=args.max_turns,
-            line_numbers=args.line_numbers, workdir=None,
+            line_numbers=args.line_numbers, workdir=None, stream=not args.no_stream,
+            api_key=args.api_key, ctx_per_run=ctx,        # sole occupant: it gets the whole pool
         )
         try:
             summaries.append(run_instance(cfg, task, verbose=not args.quiet,

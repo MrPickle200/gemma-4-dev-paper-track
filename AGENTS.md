@@ -105,10 +105,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 - `reasoning_content` is logged but never echoed back into the next request: the Gemma 4 template
   strips prior thinking anyway, and re-injecting it is the context bloat Module 3 targets.
 - **Parallel and remote grid.** `run_batch.py --workers N` runs N cells at once and should be set to
-  the backend's slot count. Measured on this build (`b11696`): **`-c` is the per-slot context** and
-  **`-np` defaults to 4**, so `serve.ps1 -Ctx 32768` already serves **4 slots x 32768** (`GET /slots`
-  confirms it) - running the first local pass at `--workers 1` left three slots idle. On Colab pass
-  `-np` explicitly and budget by **host RAM** (~1.27 GB of RSS per slot), not VRAM.
+  the backend's slot count. `-np` defaults to 4 on this build (`b11696`). On Colab pass `-np`
+  explicitly and budget by **host RAM** (~1.27 GB of RSS per slot), not VRAM.
+  **`-c` is the context of the whole server, not of a slot** (see the trap below): each slot
+  really gets `-c / -np`, and only when that division leaves enough for per-slot caches does the
+  server report `kv_unified = 'false'`. To give every one of N concurrent runs a full window,
+  launch `-c $((32768 * N)) -np N`, e.g. `serve.ps1 -Model E2B -Ctx 131072 -Slots 4`, which
+  measured 4 independent 32768-token caches for +558 MiB of VRAM.
+  `run_batch.py` and `run_task.py` therefore **probe the server for real** before every batch
+  (`llm.verify_run_context`: N concurrent full-window prompts) and log the answer as
+  `ctx_per_run`, because `/props` reports 32768 in both configurations. A run that ended on
+  `context_exceeded` is only scored as a Module 3 result when `ctx_per_run >= 32768`; otherwise it
+  is a pool artefact, excluded and re-run (see `config.ctx_is_adequate`).
   `harness/runner.py` serialises `git worktree add/remove` per repo, and keys each worktree by
   `(instance_id, variant)` because the variants of one task run concurrently.
   `--base-url` + `--api-key` point the same harness at a remote llama-server (e.g. a Colab GPU
@@ -122,7 +130,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 ## Backend facts (measured, E2B Q4_0 on this GPU)
 
 - Load time ~10 s; generation **~85 tok/s**; prompt processing ~13 tok/s (first pass, uncached).
-- **E4B Q4_0 also fits 6 GB**: `-ngl 99 -c 32768` uses ~3.5 GB VRAM and loads in ~13 s.
+- **E4B Q4_0 also fits 6 GB**: `-ngl 99 -c 32768 -np 1` uses ~3.5 GB VRAM and loads in ~13 s (with
+  `-np 4` that same flag means 8192 per slot — see the shared-pool trap).
   Generation is slower than E2B (a 5-turn M3 run took ~80 s).
 - `temperature` defaults to **1.0** on the server — always send `temperature=0.0` explicitly (IDEA.md §3).
 - **Thinking mode:** the template's `enable_thinking` defaults to false, but thinking switches on when
@@ -133,6 +142,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
   This is a first-order variable for Module 3's token metrics — record both fields.
 - Constrained decoding works via `response_format={"type":"json_schema", ...}` (Module 2) and native
   function calling works via `tools=[...]` → `message.tool_calls` (agent loop).
+- **Always stream (`stream: true`).** A buffered response carries no byte until the turn has finished
+  generating, so behind any proxy with a read timeout a long turn is killed in flight; a streamed one
+  answers in ~1 s and then keeps dribbling. `harness/llm.py` sends `stream_options.include_usage`, so
+  `usage` and `timings` still ride the final chunk and the counters are unchanged; tool-call
+  `arguments` arrive as fragments to be concatenated per `index`. `--no-stream` restores the old
+  buffered request. Streaming is a transport detail, not an experimental variable: the folded result
+  is identical to the buffered one.
 
 
 ## Traps already hit (do not rediscover)
@@ -146,3 +162,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
   kills the server immediately. `scripts/serve.ps1` uses `Start-Process` redirection instead.
 - Windows consoles are cp1252: scripts that print non-ASCII (e.g. "BƯỚC") must call
   `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` first.
+- **A Cloudflare quick tunnel kills any request that stays silent for 125 s (HTTP 524).** That is a
+  time-to-first-byte limit, not a duration limit, so it cannot be fixed by shortening a turn - only by
+  streaming. Buffered, it cost ~34% of a Colab grid (35 llm_error in 104 attempts) against 2 in 126
+  locally. The 524 arrives as an HTML page, so the trace's `error` field is the only place it shows.
+- **`-c` is the whole server's context, and llama-server hands out `-c / -np` per slot.** Read as
+  "per-slot", `serve.ps1 -Ctx 32768` (and therefore every `--workers 4` batch) left each run
+  ~8192 tokens instead of 32768: runs hit `decode: Context size has been exceeded` (HTTP 500, four
+  slots failing *together* because they shared `kv_unified = true` one 32768-token cache) and long
+  runs died for a reason we chose, not one the model chose. `GET /slots` and `/props` both report
+  32768 in *both* configurations — the banner's `kv_unified` field is the only tell, and it is not
+  exposed over HTTP. Fix: `-c $((32768 * workers)) -np workers` (`serve.ps1 -Ctx 131072 -Slots 4`
+  measured 4 independent 32768 caches for +558 MiB of VRAM, leaving ~3.7 GB free), and let
+  `llm.verify_run_context` prove it by serving N full-window prompts at once. A `context_exceeded`
+  run on a server that fails that probe is a backend artefact: excluded and re-run, never scored.

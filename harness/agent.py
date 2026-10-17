@@ -21,7 +21,7 @@ import time
 from pathlib import Path
 
 from . import astnav
-from .config import RunConfig
+from .config import RunConfig, refined_stop_reason
 from .llm import Completion, LLMClient
 from .tools import ToolBox
 
@@ -207,7 +207,13 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
 
         if comp.error:
             logger.write({"type": "turn", "turn": turn, "phase": phase, "error": comp.error})
-            stop_reason = "llm_error"
+            # Name the failure while the message is in hand: the model overflowing its slot, or
+            # emitting tool-call JSON the server cannot parse, is a RESULT of the experiment (it
+            # is what M1 and M3 exist to change), not a backend accident to re-run. Anything else
+            # stays `llm_error`, which callers treat as infrastructure. A context overflow only
+            # counts as a result if this run actually had the whole window - with llama-server's
+            # shared KV pool a 4-way batch on `-c 32768` gives each run ~8k, so see ctx_is_adequate.
+            stop_reason = refined_stop_reason("llm_error", comp.error, cfg.ctx_per_run)
             break
 
         total_prompt_tokens += comp.prompt_tokens
