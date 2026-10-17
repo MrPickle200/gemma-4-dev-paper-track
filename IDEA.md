@@ -60,9 +60,9 @@ Từ file log `.jsonl` của các lượt chạy, trích xuất 4 nhóm số li�
 
 - [x] **Bước 1 (Data & Infra):** Tạo môi trường ảo (`.venv`, Python 3.11.9) và hoạt động trong đó. Viết script lọc 50 mẫu từ `SWE-bench Verified` ra file `subset_50.json` (117/500 mẫu đạt tiêu chí, lấy 50 với `seed=0`). Khởi chạy **`llama-server`** (llama.cpp, CUDA) cho Gemma 4 E2B và E4B — đã PASS acceptance test `scripts/smoke_test.py`.
 - [x] **Bước 2 (Core Loop):** Viết vòng lặp Agent cơ bản hỗ trợ xuất log `.jsonl` (lưu đầy đủ prompt, response, token count, tool status ở mỗi turn). Hoàn tất: `harness/` + `scripts/run_task.py`; mỗi run ghi `logs/runs/<run_id>.jsonl` và `logs/patches/<run_id>.patch`. Đã chạy 9 runs trên E2B (xem `PROGRESS.md`).
-- [ ] **Bước 3 (Implement Modules):**
-  - [ ] Code module `AST-Edit` (schema JSON cho llama.cpp `response_format` + cổng `ast.parse` trong bộ nhớ).
-  - [ ] Code module `AST-Nav` bằng `tree_sitter` (3 hàm: `get_repo_map`, `read_symbol`, `find_references`).
-  - [ ] Code hàm `compact_context()` khi chuyển pha.
+- [x] **Bước 3 (Implement Modules):**
+  - [x] Code module `AST-Edit` (schema JSON cho llama.cpp `response_format` + cổng `ast.parse` trong bộ nhớ).
+  - [x] Code module `AST-Nav` bằng `tree_sitter` (3 hàm: `get_repo_map`, `read_symbol`, `find_references`).
+  - [x] Code hàm `compact_context()` khi chuyển pha.
 - [ ] **Bước 4 (Execution):** Chạy batch 4 cấu hình (`B0`, `M1`, `M2`, `M3`) $\times$ 2 models trên 50 tasks.
 - [ ] **Bước 5 (Evaluation & Plotting):** Chạy Docker evaluation của SWE-bench cho các bản vá sinh ra; chạy script tổng hợp bảng Ablation và vẽ biểu đồ suy giảm hiệu năng theo độ dài context.

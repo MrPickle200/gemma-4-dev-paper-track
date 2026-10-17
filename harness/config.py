@@ -15,6 +15,14 @@ REPOS = ROOT / "repos"
 
 VARIANTS = ("B0", "M1", "M2", "M3")
 
+# A run that ended because the *backend* failed (transport/HTTP/JSON) or the harness raised is not an
+# experimental outcome: such cells must be re-run rather than skipped as "done" or averaged in.
+INFRA_STOP_PREFIXES = ("llm_error", "harness_error")
+
+
+def is_infra_failure(stop_reason: str | None) -> bool:
+    return str(stop_reason or "").startswith(INFRA_STOP_PREFIXES)
+
 
 @dataclass
 class RunConfig:
@@ -31,6 +39,7 @@ class RunConfig:
     max_tool_output_chars: int = 8000                 # truncate tool results
     line_numbers: bool = False                        # B0 = plain `cat`; see tools.ToolBox
     seed: int = 0
+    api_key: str | None = None                        # sent as Authorization: Bearer; see LLMClient
     run_id: str = ""
     workdir: Path | None = None
     patch_path: Path | None = None
@@ -72,4 +81,5 @@ class RunConfig:
             "max_tool_output_chars": self.max_tool_output_chars,
             "line_numbers": self.line_numbers,
             "seed": self.seed,
+            "api_key_set": self.api_key is not None,
         }

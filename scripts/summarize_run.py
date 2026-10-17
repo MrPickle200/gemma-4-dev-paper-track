@@ -44,9 +44,15 @@ def main() -> int:
           f"(prompt {end.get('total_prompt_tokens')} / completion {end.get('total_completion_tokens')}) "
           f"peak_context={end.get('peak_prompt_tokens')}")
     print(f"edits    attempted={end.get('edits_attempted')} malformed={end.get('edits_malformed')} "
-          f"ambiguous={end.get('edits_ambiguous')}")
+          f"ambiguous={end.get('edits_ambiguous')} syntax_rejected={end.get('edits_syntax_rejected')}")
     print(f"errors   tool_errors={end.get('tool_errors')} malformed_args={end.get('malformed_arguments')} "
           f"repeated_identical_calls={end.get('repeated_identical_calls')}")
+    cap = start.get("capabilities", {})
+    print(f"modules  ast_nav={cap.get('ast_nav')} structured_edit={cap.get('structured_edit')} "
+          f"syntax_gate={cap.get('syntax_gate')} lock_targets={cap.get('lock_targets')}")
+    print(f"nav/lock nav_calls={end.get('nav_calls')} locks={end.get('lock_calls')} "
+          f"symbols_locked={end.get('symbols_locked')} compactions={end.get('compactions')} "
+          f"compacted={end.get('compacted')}")
 
     tools = Counter(r.get("name") for r in recs if r["type"] == "tool")
     if tools:

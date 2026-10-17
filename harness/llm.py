@@ -31,21 +31,28 @@ class Completion:
 
 class LLMClient:
     def __init__(self, base_url: str, model: str, temperature: float = 0.0,
-                 max_tokens: int = 16384, thinking: str = "off", timeout_s: int = 1800):
+                 max_tokens: int = 16384, thinking: str = "off", timeout_s: int = 1800,
+                 api_key: str | None = None):
         self.base_url = base_url.rstrip("/")
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.thinking = thinking
         self.timeout_s = timeout_s
+        self.api_key = api_key
+
+    @property
+    def _headers(self) -> dict:
+        """llama-server `--api-key` checks a bearer token; empty when talking to plain localhost."""
+        return {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
 
     def health(self) -> dict:
-        r = requests.get(f"{self.base_url}/health", timeout=15)
+        r = requests.get(f"{self.base_url}/health", timeout=15, headers=self._headers)
         r.raise_for_status()
         return r.json()
 
     def served_model(self) -> str:
-        r = requests.get(f"{self.base_url}/models", timeout=30)
+        r = requests.get(f"{self.base_url}/models", timeout=30, headers=self._headers)
         r.raise_for_status()
         return r.json()["data"][0]["id"]
 
@@ -66,7 +73,8 @@ class LLMClient:
 
         t0 = time.time()
         try:
-            r = requests.post(f"{self.base_url}/chat/completions", json=payload, timeout=self.timeout_s)
+            r = requests.post(f"{self.base_url}/chat/completions", json=payload,
+                              timeout=self.timeout_s, headers=self._headers)
         except requests.RequestException as e:
             return Completion(wall_s=time.time() - t0, error=f"transport: {e}")
         wall = time.time() - t0

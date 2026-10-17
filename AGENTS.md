@@ -69,7 +69,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\setup_inference.ps1
 
 # 3. serve Gemma 4 (background; OpenAI-compatible on :8080)
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B -Ctx 32768
-#   E4B is 4.8 GB: use -GpuLayers 99 with a small -Ctx, or a lower layer count to fit 6 GB.
+#   E4B also fits 6 GB at -GpuLayers 99 -Ctx 32768 (measured: ~3.5 GB VRAM in use).
 
 # 4. verify the backend (endpoint, thinking control, constrained JSON, tool calls)
 .\.venv\Scripts\python.exe scripts\smoke_test.py
@@ -78,6 +78,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 .\.venv\Scripts\python.exe scripts\fetch_repos.py
 .\.venv\Scripts\python.exe scripts\run_task.py --list
 .\.venv\Scripts\python.exe scripts\run_task.py --instance-id psf__requests-1724 --thinking on
+.\.venv\Scripts\python.exe scripts\run_batch.py --model gemma-4-E2B --thinking on --workers 8 `
+    --base-url https://<name>.trycloudflare.com --api-key <key>   # Colab GPU backend (see colab/)
+.\.venv\Scripts\python.exe scripts\check_endpoint.py --base-url <url> --api-key <key>   # verify a backend
 
 # 6. inspect the results
 .\.venv\Scripts\python.exe scripts\summarize_run.py logs\runs\<run>.jsonl --show-tool apply_edit
@@ -101,11 +104,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
   and `total_tokens` (metric #3).
 - `reasoning_content` is logged but never echoed back into the next request: the Gemma 4 template
   strips prior thinking anyway, and re-injecting it is the context bloat Module 3 targets.
+- **Parallel and remote grid.** `run_batch.py --workers N` runs N cells at once and should be set to
+  the backend's slot count. Measured on this build (`b11696`): **`-c` is the per-slot context** and
+  **`-np` defaults to 4**, so `serve.ps1 -Ctx 32768` already serves **4 slots x 32768** (`GET /slots`
+  confirms it) - running the first local pass at `--workers 1` left three slots idle. On Colab pass
+  `-np` explicitly and budget by **host RAM** (~1.27 GB of RSS per slot), not VRAM.
+  `harness/runner.py` serialises `git worktree add/remove` per repo, and keys each worktree by
+  `(instance_id, variant)` because the variants of one task run concurrently.
+  `--base-url` + `--api-key` point the same harness at a remote llama-server (e.g. a Colab GPU
+  behind a tunnel) — see `colab/README.md`. `run_start` logs `base_url`, and `api_key_set` (never
+  the secret), so local and remote traces stay distinguishable under one `model` label.
+- A turn cut off by the **context limit** returns `finish_reason=length` with no tool call; the loop
+  nudges the model and retries (up to 2 times, `length_retry`) instead of ending the run empty-handed.
+  Seen on E4B before its context was raised to 32768.
 - A run's diff is written to `logs/patches/<run_id>.patch` — that is the Bước 5 evaluator input.
 
 ## Backend facts (measured, E2B Q4_0 on this GPU)
 
 - Load time ~10 s; generation **~85 tok/s**; prompt processing ~13 tok/s (first pass, uncached).
+- **E4B Q4_0 also fits 6 GB**: `-ngl 99 -c 32768` uses ~3.5 GB VRAM and loads in ~13 s.
+  Generation is slower than E2B (a 5-turn M3 run took ~80 s).
 - `temperature` defaults to **1.0** on the server — always send `temperature=0.0` explicitly (IDEA.md §3).
 - **Thinking mode:** the template's `enable_thinking` defaults to false, but thinking switches on when
   `tools` are passed or the first message has role `system`/`developer`. Control it per request with
