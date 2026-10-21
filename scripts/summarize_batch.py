@@ -27,6 +27,7 @@ for _stream in (sys.stdout, sys.stderr):
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from harness import config  # noqa: E402
 from harness.config import (is_infra_failure, is_proxy_capped,   # noqa: E402
                             model_side_stop_reason, refined_stop_reason, turn_error)
 
@@ -41,11 +42,14 @@ def load(path: str) -> tuple[dict, dict, list[dict]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--glob", default="logs/runs/*.jsonl")
+    ap.add_argument("--experiment", help="read logs/experiments/<TAG>/runs/*.jsonl instead")
     ap.add_argument("--csv", help="also write the table to this CSV path")
     ap.add_argument("--thinking", choices=["on", "off", "auto"],
                     help="only runs with this thinking setting (the grid's other settings are probes)")
     ap.add_argument("--max-turns", type=int, help="only runs with this turn budget")
     args = ap.parse_args()
+    if args.experiment:
+        args.glob = str(config.EXPERIMENTS / args.experiment / "runs" / "*.jsonl")
 
     groups: dict[tuple, list[tuple]] = defaultdict(list)
     # Excluded/starved are counted in *traces* (every trace that should not have ended that way,

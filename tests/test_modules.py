@@ -265,15 +265,26 @@ def test_bad_arguments_are_a_malformed_call_not_a_tool_error(tmp_path: Path) -> 
     ``pattern="x"\\npath``. The old dispatch let Python's TypeError escape
     (``ToolBox._search_text() got an unexpected keyword argument``), which both mis-filed the
     failure under metric #2 and told the model nothing it could act on.
+
+    Since TASK.md Task 2 the harness first tries to *recover* the call with a regex fallback (the
+    schema now forbids the shape at generation time, this is the belt to that suspenders), and
+    only reports an invalid-key error when the glued names are not parameters of the tool.
     """
+    (tmp_path / "y").write_text("x = 1\n", encoding="utf-8")
     tb = ToolBox(tmp_path, variant="M1", repo_name="x/y")
 
     res = tb.execute("search_text", {"pattern=\"x\"\npath": "y"})
+    assert res.ok, "the glued key must be repaired, not rejected"
+    assert "x = 1" in res.output
+    assert tb.stats["arguments_repaired"] == 1
+    assert tb.stats["malformed_arguments"] == 0
 
-    assert not res.ok
-    assert "search_text" in res.error and "pattern" in res.error and "max_results" in res.error
-    assert "_search_text" not in res.error, "our Python signature must not leak to the model"
-    assert "unexpected keyword" not in res.error
+    # not a parameter of this tool -> no safe recovery, and the message must name the keys
+    bad = tb.execute("search_text", {"pattern=\"x\"\nbogus": "y"})
+    assert not bad.ok
+    assert "Invalid JSON keys" in bad.error and "pattern" in bad.error
+    assert "_search_text" not in bad.error, "our Python signature must not leak to the model"
+    assert "unexpected keyword" not in bad.error
     assert tb.stats["malformed_arguments"] == 1
 
 

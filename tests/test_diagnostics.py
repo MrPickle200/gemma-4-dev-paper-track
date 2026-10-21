@@ -40,6 +40,12 @@ from diagnostics_e2b import sym_match, sym_parts, taxonomy  # noqa: E402
     # AST-Nav tools handed a symbol or path that does not exist
     ("read_symbol", "error", "no symbol named 'Thing' in psf/requests/sessions.py", "SYMBOL_NOT_FOUND"),
     ("read_symbol", "error", "not a file: psf/requests", "SYMBOL_NOT_FOUND"),
+    # the Task 4 message shapes: a miss that lists the file's symbols, and an ambiguous bare name
+    ("read_symbol", "error", "Symbol 'Session.sned' not found in 'requests/sessions.py'. "
+                             "Available symbols in this file: ['Session', 'Session.request']",
+     "SYMBOL_NOT_FOUND"),
+    ("read_symbol", "error", "Symbol 'go' is ambiguous in 'two.py': 2 definitions match "
+                             "['A.go', 'B.go'].", "SYMBOL_NOT_FOUND"),
     # the localisation failure, and the gate that runs after a successful match
     ("apply_edit", "error", "search_block not found in the file - copy it verbatim", "SEARCH_BLOCK_MISMATCH"),
     ("apply_edit", "error", "syntax gate: invalid syntax (line 3)", "AST_SYNTAX_REJECTED"),

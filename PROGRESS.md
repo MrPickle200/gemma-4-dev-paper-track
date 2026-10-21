@@ -1,11 +1,11 @@
-# PROGRESS.md — log of completed work
+# PROGRESS.md â€” log of completed work
 
 Append-only. One entry per completed step: what was done, the evidence, and the artifact produced.
 Plans and ideas belong in `IDEA.md`, not here.
 
 ---
 
-## 2026-10-16 — Bước 1 (Data & Infra), in progress
+## 2026-10-16 â€” BÆ°á»›c 1 (Data & Infra), in progress
 
 ### Reconnaissance
 - Repo contained only `IDEA.md`; `AGENTS.md` and `PROGRESS.md` were empty.
@@ -15,8 +15,8 @@ Plans and ideas belong in `IDEA.md`, not here.
 - Model facts confirmed on HF: `google/gemma-4-E2B-it` (10.25 GB bf16, 5.1B total / 2.3B effective
   with Per-Layer Embeddings, 128K ctx) and `google/gemma-4-E4B-it` (16.0 GB bf16, 8B total).
   Both ungated, Apache-2.0. vLLM supports `Gemma4ForCausalLM`/`Gemma4ForConditionalGeneration`.
-- **Decision (with user):** 6 GB VRAM cannot hold bf16 weights → run **llama.cpp CUDA + Q4_0 QAT GGUF**,
-  harness speaks only an OpenAI-compatible API so the backend remains swappable. Scope this session = Bước 1.
+- **Decision (with user):** 6 GB VRAM cannot hold bf16 weights â†’ run **llama.cpp CUDA + Q4_0 QAT GGUF**,
+  harness speaks only an OpenAI-compatible API so the backend remains swappable. Scope this session = BÆ°á»›c 1.
 
 ### Environment setup
 - Created `.venv` with `uv` on **Python 3.11.9**: `.venv/Scripts/python.exe`.
@@ -26,9 +26,9 @@ Plans and ideas belong in `IDEA.md`, not here.
   `tree_sitter_language_pack.get_parser('python')` (needed by Module 1 AST-Nav).
 - Created directories `scripts/`, `data/`, `models/`, `tools/`, `logs/`.
 
-### Subset of 50 tasks — `scripts/filter_subset.py`
+### Subset of 50 tasks â€” `scripts/filter_subset.py`
 - Loaded `princeton-nlp/SWE-bench_Verified` (500 instances, split `test`).
-- Filters applied: repo ∈ {`sympy/sympy`, `scikit-learn/scikit-learn`, `pytest-dev/pytest`, `psf/requests`},
+- Filters applied: repo âˆˆ {`sympy/sympy`, `scikit-learn/scikit-learn`, `pytest-dev/pytest`, `psf/requests`},
   gold patch touches exactly **1 file**, patch **< 50 changed lines**.
 - Result: **117 of 500** instances pass; sampled **50** with `seed=0`.
 - Composition: sympy 29, scikit-learn 13, pytest 5, requests 3. Changed lines: min 1 / max 38 / mean 10.0.
@@ -44,12 +44,12 @@ Plans and ideas belong in `IDEA.md`, not here.
   (Replaced IDEA.md's vLLM server: vLLM is Linux-only and 6 GB VRAM cannot hold bf16 weights.
   Approved with the user. The harness will speak only the OpenAI `/v1` API, so vLLM stays a
   drop-in swap on a larger GPU.)
-- Verified the binary sees the GPU: `llama-cli --list-devices` → `CUDA0: RTX 4050 Laptop GPU (6140 MiB)`.
+- Verified the binary sees the GPU: `llama-cli --list-devices` â†’ `CUDA0: RTX 4050 Laptop GPU (6140 MiB)`.
 - Wrote `scripts/serve.ps1` to launch llama-server with `Start-Process` stream redirection.
-- Wrote `scripts/smoke_test.py`, the Bước 1 acceptance test.
-- **Bước 1 ACCEPTANCE: PASS** (`logs/smoke_test.log`), covering:
+- Wrote `scripts/smoke_test.py`, the BÆ°á»›c 1 acceptance test.
+- **BÆ°á»›c 1 ACCEPTANCE: PASS** (`logs/smoke_test.log`), covering:
   - endpoint alive, model loads in **9.6 s**, serves `gemma-4-E2B_q4_0-it.gguf` on `:8080`;
-  - plain generation at `temperature=0.0` → `HARNESS OK`, **~85 tok/s** (96 tokens in 1.5 s);
+  - plain generation at `temperature=0.0` â†’ `HARNESS OK`, **~85 tok/s** (96 tokens in 1.5 s);
   - thinking control works: same prompt costs **311** completion tokens with
     `enable_thinking=true` vs **4** with `false`;
   - JSON-schema constrained decoding returns all 4 required Module 2 keys;
@@ -58,19 +58,19 @@ Plans and ideas belong in `IDEA.md`, not here.
 ### Findings that change the design
 - **Thinking mode is a first-order cost variable.** The Gemma 4 template defaults
   `enable_thinking=false`, but thinking activates whenever `tools` are passed or the first message
-  has role `system`/`developer` — i.e. exactly the harness's situation. Chain-of-thought arrives in
+  has role `system`/`developer` â€” i.e. exactly the harness's situation. Chain-of-thought arrives in
   `reasoning_content` and the answer in `content`; the harness must log **both** token streams, and
   must set `enable_thinking` explicitly per phase.
 - The server's default `temperature` is **1.0**, so `temperature=0.0` must be sent on every request.
 - Measured throughput ~85 tok/s with ~13 tok/s uncached prefill makes the IDEA.md budget
-  (50 tasks × 15 turns) tractable on this laptop.
+  (50 tasks Ã— 15 turns) tractable on this laptop.
 
 ### Bugs found and fixed
 - Subset filter matched 0 tasks: SWE-bench `repo` values use `/` (`sympy/sympy`), not `__`.
 - First server launch died instantly: piping llama-server's stderr banner through `Tee-Object` while
   `$ErrorActionPreference='Stop'` raised a terminating `NativeCommandError`. Fixed with
   `Start-Process -RedirectStandardOutput/-RedirectStandardError`.
-- `smoke_test.py` crashed printing "BƯỚC" under the cp1252 Windows console; fixed by reconfiguring
+- `smoke_test.py` crashed printing "BÆ¯á»šC" under the cp1252 Windows console; fixed by reconfiguring
   stdout to UTF-8.
 
 ### Documentation
@@ -79,51 +79,51 @@ Plans and ideas belong in `IDEA.md`, not here.
 - `PROGRESS.md` created as an append-only log (this file).
 - `requirements.txt` (pinned venv deps) and `.gitignore` (weights, logs, venv, downloads).
 
-### Left for Bước 2
+### Left for BÆ°á»›c 2
 - Clone each of the 50 repos at its `base_commit` (nothing reads code yet).
 - Agent loop with per-turn `.jsonl` logging of prompt, response, both token counts and tool status.
-- `swebench` + Docker evaluation harness is Bước 5.
+- `swebench` + Docker evaluation harness is BÆ°á»›c 5.
 
 ---
 
-## 2026-10-17 — IDEA.md updated, Bước 2 (Core Loop) complete
+## 2026-10-17 â€” IDEA.md updated, BÆ°á»›c 2 (Core Loop) complete
 
 ### IDEA.md edits (as requested)
-- Bước 1 checkbox ticked `[x]`, with the real numbers recorded inline.
+- BÆ°á»›c 1 checkbox ticked `[x]`, with the real numbers recorded inline.
 - All three vLLM references rewritten for the llama.cpp reality: Module 2's `guided_json` now names
-  llama.cpp's `response_format={"type":"json_schema"}` as the equivalent, and §3's Models line now
+  llama.cpp's `response_format={"type":"json_schema"}` as the equivalent, and Â§3's Models line now
   states the backend, the reason vLLM was dropped (6 GB VRAM, Linux-only), the measured throughput,
   and the thinking-mode trap.
 
-### Repos — `scripts/fetch_repos.py`
+### Repos â€” `scripts/fetch_repos.py`
 - Full clone per repo into `repos/<owner>__<name>` (full history is required so pinned `base_commit`s
   exist locally): requests 19 MB, pytest 55 MB, scikit-learn 228 MB, sympy 250 MB.
 - **All 4 repos cloned, all 50 `base_commit`s verified present** via `git cat-file -e`.
 - Per-task checkouts are created lazily as detached **git worktrees** (`worktrees/<instance_id>`) and
   removed after each run, so the clones are never mutated and disk stays bounded.
 
-### Core loop — `harness/`
+### Core loop â€” `harness/`
 - `config.py` `RunConfig` (model, variant, base_url, temperature, max_tokens, max_turns, thinking,
   line_numbers) with a `run_id` of `<instance>__<model>__<variant>__<timestamp>`.
 - `llm.py` an OpenAI-compatible client written on `requests` so llama.cpp-only fields
   (`timings`, `reasoning_content`) survive into the logs; swapping `base_url` reaches vLLM/SGLang.
-- `tools.py` B0 tool set per IDEA.md §3 row 1 — `search_text` (grep), `read_file` (cat),
-  `list_dir` (find), `apply_edit` (raw search/replace, no syntax gate), `finish` — plus the metric
-  counters for IDEA.md §4.
+- `tools.py` B0 tool set per IDEA.md Â§3 row 1 â€” `search_text` (grep), `read_file` (cat),
+  `list_dir` (find), `apply_edit` (raw search/replace, no syntax gate), `finish` â€” plus the metric
+  counters for IDEA.md Â§4.
 - `agent.py` the loop plus the per-turn JSONL trace; `runner.py` worktree + patch collection;
   `scripts/run_task.py` the CLI.
 
-### JSONL trace (Bước 2's actual deliverable)
+### JSONL trace (BÆ°á»›c 2's actual deliverable)
 One `logs/runs/<run_id>.jsonl` per run, appended live, with `run_start` (full config, tool list),
 one `turn` record each (request shape, full `content`, `reasoning_content`, tool calls,
 prompt/completion/cached tokens, server timings, wall time), one `tool` record each (args, status,
 error, meta, output size and preview, `repeat_of_turn`), an `artifacts` record (patch path, diff
-stat) and a `run_end` record carrying the §4 aggregates: `turns_used`, token totals,
+stat) and a `run_end` record carrying the Â§4 aggregates: `turns_used`, token totals,
 `peak_prompt_tokens`, `edits_attempted`, `edits_malformed`, `malformed_arguments`,
 `repeated_identical_calls`, `tool_errors`, `stop_reason`.
 Patches are written to `logs/patches/<run_id>.patch`.
 
-### 9 runs executed (2 models not yet; E2B only) — evidence in `logs/`
+### 9 runs executed (2 models not yet; E2B only) â€” evidence in `logs/`
 | config | runs | runs reaching an edit | malformed edit rate | repeats |
 |---|---|---|---|---|
 | B0, thinking off | 3 | 0 | n/a | 26 |
@@ -132,7 +132,7 @@ Patches are written to `logs/patches/<run_id>.patch`.
 - Successful run: `psf__requests-1724`, 5 turns, 19 119 tokens, `finish`, diff
   `1 file changed, 1 insertion(+), 1 deletion(-)`. The model changed
   `method = method.upper()` to `method = str(method).upper()`, semantically equivalent to the gold
-  patch's `builtin_str(method)` — a plausible, real fix.
+  patch's `builtin_str(method)` â€” a plausible, real fix.
 - Table reproducible via `scripts/summarize_batch.py` (`logs/batch_baseline.csv`).
 
 ### Findings
@@ -141,8 +141,8 @@ Patches are written to `logs/patches/<run_id>.patch`.
    (`{"pattern=...\"\npath": ...}`), which the dispatcher rejects; 3/3 runs produced no edit at all
    and looped (26 identical repeated calls). With thinking on, 1/4 runs solved the task cleanly.
 2. **Localization, not editing, is the bottleneck.** Several 15-turn runs searched successfully with
-   zero errors and simply never committed to an edit — the failure mode Module 1/Module 3 target.
-3. A control (`scripts/diag_toolcalls.py`) proved llama.cpp's Gemma 4 tool-call→JSON conversion is
+   zero errors and simply never committed to an edit â€” the failure mode Module 1/Module 3 target.
+3. A control (`scripts/diag_toolcalls.py`) proved llama.cpp's Gemma 4 tool-callâ†’JSON conversion is
    correct (3/3 probes clean), so the malformed arguments are the **model's** syntactic fragility,
    not a backend defect. This is IDEA.md hypothesis #2 observed directly.
 
@@ -161,32 +161,32 @@ Patches are written to `logs/patches/<run_id>.patch`.
 `scripts/fetch_repos.py`, `scripts/run_task.py`, `scripts/summarize_run.py`,
 `scripts/summarize_batch.py`, `scripts/diag_toolcalls.py`.
 
-### Left for Bước 3
+### Left for BÆ°á»›c 3
 - `M1`: constrained JSON edit schema + in-memory `ast.parse()` syntax gate before writing.
 - `M2`: `tree_sitter` navigation tools `get_repo_map` / `read_symbol` / `find_references`.
 - `M3`: `lock_targets()` + episodic context compaction between the localization and patching phases.
 
 ---
 
-## 2026-10-17 — Bước 3 (Implement Modules M1/M2/M3) complete
+## 2026-10-17 â€” BÆ°á»›c 3 (Implement Modules M1/M2/M3) complete
 
 ### What was built
 The three ablation modules now exist and are selected by `--variant` alone; `B0` code paths are
 untouched so the baseline stays honest.
 
-- **New `harness/astnav.py`** — tree-sitter Python navigation (Module 1). Owns the repo file
+- **New `harness/astnav.py`** â€” tree-sitter Python navigation (Module 1). Owns the repo file
   walker (`SKIP_DIRS`/`SKIP_EXTS`/`iter_files`, which `tools.py` now imports) and returns
   `Symbol` records (name, qualified name, byte span, line span, nesting depth, signature,
   docstring). `find_references` matches only tree-sitter `identifier` nodes, so a name inside a
-  comment or string literal can never produce a false hit — the grep failure mode Module 1 targets.
-- **`harness/tools.py`** — now variant-aware. `ToolBox(variant=...)` exposes:
+  comment or string literal can never produce a false hit â€” the grep failure mode Module 1 targets.
+- **`harness/tools.py`** â€” now variant-aware. `ToolBox(variant=...)` exposes:
   - `M2/M3`: `get_repo_map`, `read_symbol`, `find_references` (hiding the bash tools);
-  - `M1+`: `apply_edit` gains `target_symbol` and runs an **in-memory `ast.parse()` syntax gate** —
+  - `M1+`: `apply_edit` gains `target_symbol` and runs an **in-memory `ast.parse()` syntax gate** â€”
     a syntactically broken edit is rejected and *nothing is written* (`_syntax_error`);
   - `M3`: `lock_targets(files, symbols, root_cause_note)`.
-  New counters for IDEA.md §4: `edits_syntax_rejected`, `nav_calls`, `lock_calls`,
+  New counters for IDEA.md Â§4: `edits_syntax_rejected`, `nav_calls`, `lock_calls`,
   `symbols_locked`, `compactions`.
-- **`harness/agent.py`** — per-variant system prompts, phase tracking (`localize`→`patch` for M3),
+- **`harness/agent.py`** â€” per-variant system prompts, phase tracking (`localize`â†’`patch` for M3),
   and `compact_messages()`: the moment `lock_targets` fires, the whole scratch history is replaced
   by a clean Phase-2 context of *issue + root-cause note + verbatim source of the locked symbols*
   (Module 3). Each compaction is written as a `compaction` record (before/after char counts,
@@ -194,13 +194,13 @@ untouched so the baseline stays honest.
 - **`harness/runner.py`** passes `variant` through; `scripts/summarize_run.py` and
   `summarize_batch.py` print the new counters/columns.
 
-### Tests — `tests/test_modules.py` (6 passing, no server needed)
+### Tests â€” `tests/test_modules.py` (6 passing, no server needed)
 Syntax gate rejects + writes nothing / B0 has no gate; `find_references` ignores comment and string
 literals; `read_symbol` (incl. dotted `Thing.method`) and `get_repo_map`; exact per-variant tool sets;
 and an M3 end-to-end with a scripted fake client asserting the post-`lock_targets` request is the
 clean 2-message Phase-2 context and the file is edited.
 
-### Real runs — same-session slice, E2B Q4_0, `thinking on`, max_turns 12, 3 `psf/requests` tasks
+### Real runs â€” same-session slice, E2B Q4_0, `thinking on`, max_turns 12, 3 `psf/requests` tasks
 | variant | finish | runs w/ edit | malformed edits | mean tokens | mean peak ctx | compactions | syntax-rejected |
 |---|---|---|---|---|---|---|---|
 | B0 | 1/3 | 1/3 | 0 | 38 249 | 5 894 | 0 | 0 |
@@ -208,85 +208,85 @@ clean 2-message Phase-2 context and the file is edited.
 | M2 | 2/3 | 2/3 | 0 | **30 822** | 5 528 | 0 | 0 |
 | M3 | **3/3** | **3/3** | 0 | 32 766 | **4 308** | 3 | 0 |
 
-- M3 gives the best localization→patch outcome and the smallest peak context; the trace shows
-  compaction working directly (`requests-1724`: prompt tokens 5 186 on the pre-lock turn → 4 874
+- M3 gives the best localizationâ†’patch outcome and the smallest peak context; the trace shows
+  compaction working directly (`requests-1724`: prompt tokens 5 186 on the pre-lock turn â†’ 4 874
   after compaction). M2 is the cheapest per task (AST navigation returns structure instead of
   raw file text).
 - **"finish/edit" is not "resolve".** Manual gold comparison of M3's three patches: `requests-1724`
-  matches (`str(method).upper()` ≈ gold's `builtin_str(method)`), but `requests-2931` and
+  matches (`str(method).upper()` â‰ˆ gold's `builtin_str(method)`), but `requests-2931` and
   `requests-6028` are plausible-looking edits in unrelated code. Resolve rate must come from the
-  Bước 5 Docker evaluator; this table only shows how far the harness got the model.
+  BÆ°á»›c 5 Docker evaluator; this table only shows how far the harness got the model.
 
 ### Findings
 1. **Compaction must be a one-way phase transition.** Compacting on *every* `lock_targets` call
    (the literal reading of IDEA.md) let E2B lock 6 times in a row, each time re-reading the same
-   clean context and re-locking — 64 k tokens to finish. Compacting once, and answering later locks
+   clean context and re-locking â€” 64 k tokens to finish. Compacting once, and answering later locks
    with "you are already in the patching phase", removed the loop (same task: 7 turns, 34 k tokens).
 2. **Small models name nested symbols with dots** (`read_symbol("Session.request")`). The first M2
    run burned 9 turns on that one rejection. `find_symbol` now accepts bare, `Class.method` and
    deeper qualified suffixes, and the not-found error lists all available qualified names.
 3. **The syntax gate never fired** in these 9 runs (`edits_syntax_rejected=0`): every edit the
-   model committed was parseable. The gate is exercised by unit tests, not yet by the model —
+   model committed was parseable. The gate is exercised by unit tests, not yet by the model â€”
    the malformed-edit failure mode shows up earlier, as bad tool *arguments*.
-4. **`thinking on` degrades llama.cpp's tool-call → JSON conversion.** With thinking off the probe
+4. **`thinking on` degrades llama.cpp's tool-call â†’ JSON conversion.** With thinking off the probe
    in `scripts/diag_toolcalls.py` was 3/3 clean; with thinking on, several `search_text` calls
    arrived as a single JSON *key* equal to the whole argument string
    (`bad arguments ... unexpected keyword argument 'pattern="sessions.py'`), which the dispatcher
    rejects. This is IDEA.md hypothesis #2 (syntactic fragility) observed in the wild; the AST tools
    (M2/M3) submit different, simpler arguments and avoid most of it.
 
-### Left for Bước 4 / 5
-- Bước 4: the full 4×2 grid on 50 tasks (and E4B, which still needs a reduced `-ngl`/`-c` on 6 GB).
-- Bước 5: `swebench` Docker evaluation for the resolve rate, then the ablation table and the
+### Left for BÆ°á»›c 4 / 5
+- BÆ°á»›c 4: the full 4Ã—2 grid on 50 tasks (and E4B, which still needs a reduced `-ngl`/`-c` on 6 GB).
+- BÆ°á»›c 5: `swebench` Docker evaluation for the resolve rate, then the ablation table and the
   error-vs-context-depth plot.
 
 ---
 
-## 2026-10-17 — Bước 4 (Execution) started: grid runner + E4B brought up
+## 2026-10-17 â€” BÆ°á»›c 4 (Execution) started: grid runner + E4B brought up
 
-### Batch runner — `scripts/run_batch.py`
-- Runs one variant × task grid per invocation against whatever `llama-server` is up (the 6 GB GPU
+### Batch runner â€” `scripts/run_batch.py`
+- Runs one variant Ã— task grid per invocation against whatever `llama-server` is up (the 6 GB GPU
   holds one model at a time, so a `--model` label names the served weights).
 - **Resumable**: before each cell it looks in `logs/runs/` for a *completed* trace whose config
   matches `(model, variant, thinking, max_turns, line_numbers)` and skips it, so an interrupted
   batch continues where it stopped (`--no-skip` forces a re-run).
 - Guards against a dead server: it pings `/health` before every cell and aborts the batch after 3
   consecutive failures instead of burning through the grid writing error stubs.
-- `--dry-run` prints the plan. Verified: the E2B 4×50 grid is 200 cells, of which the 4 B0
-  thinking-on traces from Bước 2 are already counted as done → 196 to run.
+- `--dry-run` prints the plan. Verified: the E2B 4Ã—50 grid is 200 cells, of which the 4 B0
+  thinking-on traces from BÆ°á»›c 2 are already counted as done â†’ 196 to run.
 
 ### E4B is now known to fit 6 GB (was an open question)
 - `scripts/serve.ps1 -Model E4B -Ctx 32768 -GpuLayers 99` loads in ~13 s and uses **~3.5 GB VRAM**
   (measured at 8192/16384/32768 ctx: 3157/3293/3565 MiB). The earlier "E4B needs a reduced
-  `-ngl`/`-c`" note is superseded — 32768 ctx fits comfortably.
+  `-ngl`/`-c`" note is superseded â€” 32768 ctx fits comfortably.
 - One E4B M3 run on `psf__requests-1724` finished in 5 turns / 30 546 tokens with a *correct* patch
-  (`str(method).upper()`), compaction firing (21 508 → 13 110 chars).
+  (`str(method).upper()`), compaction firing (21 508 â†’ 13 110 chars).
 
 ### Bug found and fixed: context-limit truncation was treated as a decision to stop
 - At `-Ctx 8192`, E4B filled the window (prompt 7 503 + completion 689 = 8192) and its turn came
   back with `finish_reason=length` and **no tool call**. The old loop read "no tool call" as
   "answered" and ended the run with `no_tool_call` and zero edits.
 - `harness/agent.py` now treats a truncated turn as retryable: it appends the partial assistant
-  message plus a nudge ("call `apply_edit` … or `finish`") and continues, up to 2 times
+  message plus a nudge ("call `apply_edit` â€¦ or `finish`") and continues, up to 2 times
   (`stop_reason=length_retry`). Covered by `tests/test_modules.py` (now 7 passing).
 
 ### Launched
-- The E2B grid (`B0 M1 M2 M3` × 50 tasks, `thinking on`, `max_turns 15`) is running in the
+- The E2B grid (`B0 M1 M2 M3` Ã— 50 tasks, `thinking on`, `max_turns 15`) is running in the
   background via `scripts/run_batch.py`. Results will be recorded here and aggregated by
   `scripts/summarize_batch.py` when the batch completes.
 
 ### Measurement gap found while the batch ran: no-op edits
 - Several cells reported `apply_edit ok` yet `diff: (empty)`. Inspecting the traces showed the model
   emitted **identical `search_block` and `replace_block`** (a do-nothing "edit") and then called
-  `finish` — e.g. `psf__requests-6028` M1 turn 13, `requests-6028` M2 turn 9, `pytest-10081` M1
+  `finish` â€” e.g. `psf__requests-6028` M1 turn 13, `requests-6028` M2 turn 9, `pytest-10081` M1
   turn 11. The harness was right to report success; the metric was wrong to count it as an edit.
 - Added an `edits_noop` counter to `harness/tools.py` (flagged in the tool `meta`) for future runs.
   Because the running batch imported its modules at launch, the authoritative count for the whole
   grid is derived **post-hoc** in `scripts/summarize_batch.py` from each trace's `apply_edit`
   arguments, so old and new runs are measured the same way. The table now shows `edited` (reached
   an edit) vs `realed` (actually changed text) and a `noop` count.
-- Effect on the first 5 M1 grid cells: `edited=4` but `realed=2` — half of M1's "edits" changed
-  nothing. This is the kind of inflation Bước 5's resolve rate will settle, but the harness can
+- Effect on the first 5 M1 grid cells: `edited=4` but `realed=2` â€” half of M1's "edits" changed
+  nothing. This is the kind of inflation BÆ°á»›c 5's resolve rate will settle, but the harness can
   already separate it from the trace.
 
 ### Interruption and resume
@@ -297,7 +297,7 @@ clean 2-message Phase-2 context and the file is edited.
   cells and resumed the remaining 157. The batch's console output now also goes to
   `logs/batch_e2b.log` so it survives a lost shell buffer.
 
-### Progress trigger — `scripts/batch_progress.py`
+### Progress trigger â€” `scripts/batch_progress.py`
 - Prints a snapshot (grid cells done per variant with finish/edit/real/noop, mean tokens and peak
   context, plus backend health); `--append` also writes it to `logs/batch_progress.log`.
 - Registered a Windows Scheduled Task **`Gemma4BatchProgress`** (`schtasks`, `/SC MINUTE /MO 15`)
@@ -396,7 +396,7 @@ clean 2-message Phase-2 context and the file is edited.
   with `run_batch.py` (it had been claiming 137/200 against the true 125/200) and it prints which
   base_url it probed for health.
 
-### Bước 4 E2B: the tunnel, not the model, was killing runs
+### BÆ°á»›c 4 E2B: the tunnel, not the model, was killing runs
 
 - The 75-cell Colab pass completed in 5503 s with `stop reasons: finish 34, llm_error 25, max_turns
   14, no_tool_call 2`. Classifying every `llm_error` by pulling the `error` field out of the trace's
@@ -418,7 +418,7 @@ clean 2-message Phase-2 context and the file is edited.
   (`sympy__sympy-24213`): the syntax gate rejected every attempt, which is the M1/M2 failure mode the
   ablation is meant to expose.
 
-### Bước 4 E2B: SSE streaming defeats the tunnel timeout
+### BÆ°á»›c 4 E2B: SSE streaming defeats the tunnel timeout
 
 - Cause, precisely: Cloudflare's **Proxy Read Timeout is a time-to-first-byte limit (125 s)**, not a
   cap on total duration, and it is only raisable on Enterprise. A buffered `/chat/completions` sends
@@ -450,7 +450,7 @@ clean 2-message Phase-2 context and the file is edited.
   mid-stream transport failure, in-stream `error` event, and both request shapes); `pytest tests` is
   now 17/17.
 
-### The server gave each concurrent run ~8k tokens, not 32768 — and the grid had been scoring that
+### The server gave each concurrent run ~8k tokens, not 32768 â€” and the grid had been scoring that
 
 - `serve.ps1 -Ctx 32768` was read as "32768 per slot, x4 = 131072 total". It is the opposite:
   **`-c` is the whole server's context and a slot gets `-c / -np`**. With `-np 4` (the build's
@@ -458,11 +458,11 @@ clean 2-message Phase-2 context and the file is edited.
   ~11k. `serve.ps1`'s own comment and AGENTS.md both asserted the wrong reading; `GET /slots` and
   `/props` report `n_ctx = 32768` in *both* configurations, so neither could catch it.
 - How it surfaced: 12 local `llm_error`s all read
-  `sse error: {'code': 500, 'message': 'Context size has been exceeded.'}` — but the failing run's
+  `sse error: {'code': 500, 'message': 'Context size has been exceeded.'}` â€” but the failing run's
   last recorded prompt was **9744** tokens, nowhere near 32768. The server log settled it:
   `load_model: n_slots = 4, n_ctx_slot = 32768, kv_unified = 'true'` (one 32768-token cache shared
   by all four slots), `update_slots: decode() failed: Context size has been exceeded`, and four
-  task ids erroring **within 60 ms of each other** — impossible with independent caches. The sum of
+  task ids erroring **within 60 ms of each other** â€” impossible with independent caches. The sum of
   the slots' live prompt tokens never passed 32768. `nvidia-smi` showed 1845 MiB of 6141 MiB used,
   so this was never a hardware limit.
 - The damage was two-fold: the grid scored context-overflow as a model outcome (metric #3) when it
@@ -472,7 +472,7 @@ clean 2-message Phase-2 context and the file is edited.
 - Fix, measured: `gemma4.context_length = 131072` in the GGUF, so `-c 131072 -np 4` is legal and
   the banner becomes `kv_unified = 'false'` with **four independent 32768-token caches**, costing
   +558 MiB of VRAM (2403 MiB total) and leaving ~3.7 GB free. Verified by serving **4 concurrent
-  27676-token requests — 110704 tokens together**, which the previous server could not do; the
+  27676-token requests â€” 110704 tokens together**, which the previous server could not do; the
   server itself states the limit as `exceeds the available context size (32768 tokens)`.
 - Guarding it: `-c >= 32768 x workers -np workers` is now the documented launch, `run_batch` /
   `run_task` probe the server before every batch (`llm.verify_run_context`: N concurrent
@@ -484,7 +484,7 @@ clean 2-message Phase-2 context and the file is edited.
 - The batch relaunched against the fixed server: probe `PASS` ("4 concurrent request(s), 124552
   tokens served together"), 143 cells already valid, 57 to run.
 
-### Bước 4, E2B: the grid is complete — 200/200 cells, every one with a scoreable trace
+### BÆ°á»›c 4, E2B: the grid is complete â€” 200/200 cells, every one with a scoreable trace
 
 - The remaining 57 cells finished **57/57 in 7431 s (~124 min)** on the fixed server, with **no
   abort and 0 context failures** since the retune (`grep exceeded logs/server-E2B.err.log` is
@@ -504,21 +504,21 @@ clean 2-message Phase-2 context and the file is edited.
   gemma-4-E2B  M2   on     False  50   43     42     11    0.722     65041      7086      9.5    30     0       1       0      53
   gemma-4-E2B  M3   on     False  50   40     39     3     0.562     70547      7586      11.2   30     0       11      41     57
   ```
-- What the table says, before Docker (Bước 5) has its say on resolve rate:
+- What the table says, before Docker (BÆ°á»›c 5) has its say on resolve rate:
   - **M2 and M3 finish twice as often as B0's early runs** (30/50 vs 24) and M3 is cleanest where
-    B0 is worst: **3 vs 26 no-op edits** — B0's edits largely re-write identical text, which is the
+    B0 is worst: **3 vs 26 no-op edits** â€” B0's edits largely re-write identical text, which is the
     "churn, not coverage" failure the re-runs now expose rather than hide.
   - M3's mechanism is visibly working: **41 compactions**, and its `mean_peak` (7586) is the
     highest of the four *because* it is the only variant that keeps going instead of ending early.
   - **`ctxover = 0` everywhere.** The window is no longer the binding constraint once the pool is
     sized right, so metric #3 must be read as peak context and compaction behaviour, not as an
-    overflow count — a correction that only exists because the starved runs stopped being scored.
+    overflow count â€” a correction that only exists because the starved runs stopped being scored.
   - **M1 does not yet earn its keep**: it rejects 6 edits at the gate, yet its malformed-argument
     rate is the *highest* (0.676 vs B0's 0.562) and it repeats the most identical calls (88). With
     n=50, one seed, one run per cell, that is a real reading of the data and not yet evidence about
     the mechanism; the resolve rate is the measurement that decides it.
 - Accounting fix found while writing the table: `summarize_batch`'s `starved`/`excluded` lines
-  counted *traces*, not *cells*, so a finished grid still printed "32 runs must be re-run" — true
+  counted *traces*, not *cells*, so a finished grid still printed "32 runs must be re-run" â€” true
   of traces, false of work, because each of those cells already had a newer valid trace. It now
   reports both: traces that ended badly, and cells that have **no** valid trace and therefore must
   re-run (with the count of those that were starved), and it names them even when *every* trace in
@@ -528,9 +528,9 @@ clean 2-message Phase-2 context and the file is edited.
   On the real grid the answer is now the honest one: `runs=200`, **0 cells missing, 0 capped**.
   No E2B re-run is outstanding.
 
-### Bước 5, metric #4: error and loop rate vs context depth (E2B)
+### BÆ°á»›c 5, metric #4: error and loop rate vs context depth (E2B)
 
-- `scripts/plot_metric4.py` measures IDEA.md §4's last metric from the traces themselves: each
+- `scripts/plot_metric4.py` measures IDEA.md Â§4's last metric from the traces themselves: each
   turn logs `usage.prompt_tokens` (the depth the model actually faced) and each `tool` record says
   whether the call was malformed, failed, or repeated the previous one byte-for-byte, so tool calls
   can be binned at the depth that produced them. Same selection rule as the table (one trace per
@@ -589,18 +589,18 @@ clean 2-message Phase-2 context and the file is edited.
 
 | var | cells | finish | edited | real edits | no-op edits | malf edits (m#2) | synrej | compact | repeat calls | mean tok | mean peak | tool calls | fail% (m#4) | loop% (m#4) | resolve % |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| B0 | 50 | 24 | 40 | 37 | 26 | 0.562 | 0 | 0 | 70 | 72478 | 7713 | 549 | 0.177 | 0.128 | Bước 5 |
-| M1 | 50 | 25 | 38 | 36 | 5 | 0.676 | 6 | 0 | 88 | 63882 | 6835 | 543 | 0.335 | 0.162 | Bước 5 |
-| M2 | 50 | 30 | 43 | 42 | 11 | 0.722 | 1 | 0 | 53 | 65041 | 7086 | 461 | 0.380 | 0.115 | Bước 5 |
-| M3 | 50 | 30 | 40 | 39 | 3 | 0.562 | 11 | 41 | 57 | 70547 | 7586 | 534 | 0.242 | 0.107 | Bước 5 |
+| B0 | 50 | 24 | 40 | 37 | 26 | 0.562 | 0 | 0 | 70 | 72478 | 7713 | 549 | 0.177 | 0.128 | BÆ°á»›c 5 |
+| M1 | 50 | 25 | 38 | 36 | 5 | 0.676 | 6 | 0 | 88 | 63882 | 6835 | 543 | 0.335 | 0.162 | BÆ°á»›c 5 |
+| M2 | 50 | 30 | 43 | 42 | 11 | 0.722 | 1 | 0 | 53 | 65041 | 7086 | 461 | 0.380 | 0.115 | BÆ°á»›c 5 |
+| M3 | 50 | 30 | 40 | 39 | 3 | 0.562 | 11 | 41 | 57 | 70547 | 7586 | 534 | 0.242 | 0.107 | BÆ°á»›c 5 |
 
-- Full precision: `logs/batch_e2b.csv` (Bước 4 columns) and `logs/metric4_e2b.csv` (metric #4 by
+- Full precision: `logs/batch_e2b.csv` (BÆ°á»›c 4 columns) and `logs/metric4_e2b.csv` (metric #4 by
   depth bucket). Both regenerate from the traces with the two scripts; neither is hand-edited.
-- `resolve %` is the only column still empty, and it is the one Bước 5's Docker evaluator fills.
+- `resolve %` is the only column still empty, and it is the one BÆ°á»›c 5's Docker evaluator fills.
   Every other number here is measured, and the two "quality" columns that favour M3 are the same
   two the plot shows (`loop%`) and the table's own `no-op edits`.
 
-### Bước 5, diagnostics: the five-section E2B report (`DIAGNOSTICS_SPEC.md`)
+### BÆ°á»›c 5, diagnostics: the five-section E2B report (`DIAGNOSTICS_SPEC.md`)
 
 - `scripts/diagnostics_e2b.py` generates `E2B_DIAGNOSTICS_REPORT.md` from `logs/runs/*.jsonl`, with
   the same selection rule as the ablation table (one trace per cell, newest wins, infra failures
@@ -608,19 +608,19 @@ clean 2-message Phase-2 context and the file is edited.
   traces, **200 cells** were used; 71 were superseded by a re-run, 70 were excluded as backend
   artefacts (`context 500` on the shared KV pool 32, tunnel 524 29, 502 7, truncated stream 2), and
   6 had no `run_end`. The exclusions are printed in the report's header so a reader can audit them.
-- **§1 sample size per bin.** This was the point of the section, and it holds: of 2087 calls, the
+- **Â§1 sample size per bin.** This was the point of the section, and it holds: of 2087 calls, the
   `12-16K` bucket holds **58** and `>16K` holds **14**. B0 never issues a call above 16K at all, M1
   contributes 10 of the 14, and M2's headline 78% is **14 failures in 18 calls** - a real jump, but
   one that a run has to survive 13 turns to enter. Every rate in the report now carries its
   denominator beside it.
-- **§2 taxonomy.** The six causes were mapped onto this harness's tool set rather than assumed:
+- **Â§2 taxonomy.** The six causes were mapped onto this harness's tool set rather than assumed:
   `BASH_EXECUTION_ERROR` is `search_text`/`read_file`/`list_dir` returning `ok=False` (there is no
   shell), and `apply_edit` failures are split by cause, so `search_block not found` and "that path
   does not exist" do not share a bucket. Totals: B0 97, M1 182, M2 175, M3 129. **M2's spike is
   `SEARCH_BLOCK_MISMATCH`, not symbol resolution**: 8-16K combined is 36/77 mismatch against 7/77
   symbol misses, and 12-16K is 14/18 calls of pure mismatch. At depth M2 still finds the file; it
   stops reproducing the code it just read.
-- **§3 M3 compaction.** 41/50 tasks lock (82%); turn at trigger mean 5.8, median 5, range 3-13;
+- **Â§3 M3 compaction.** 41/50 tasks lock (82%); turn at trigger mean 5.8, median 5, range 3-13;
   prompt tokens 6,423 -> 3,306, mean reduction 41.8%. Two findings the section exists to surface:
   (a) **5 of 41 tasks got a *larger* prompt after the lock** (worst -69.9%), because the rebuilt
   Phase-2 context is bigger than the short history it replaces - at a mean trigger depth of 6.4K in
@@ -636,14 +636,14 @@ clean 2-message Phase-2 context and the file is edited.
   inside) gives **2/41**, and the 2 remaining cases are real (`RepeatedKFold` -> edited
   `RepeatedStratifiedKFold`; `latex.latex` -> `LatexPrinter.__init__`). This is why the number is
   generated by a tested function and not by an expression in the report template.
-- **§4 task level.** Valid Patch Rate 26/50 (52%) B0, 28 (56%) M1, 32 (64%) M2, 33 (66%) M3;
-  Resolved Rate stays empty pending Bước 5. Stopped on `max_turns`: 17/20/13/10 (34/40/26/20%), and
+- **Â§4 task level.** Valid Patch Rate 26/50 (52%) B0, 28 (56%) M1, 32 (64%) M2, 33 (66%) M3;
+  Resolved Rate stays empty pending BÆ°á»›c 5. Stopped on `max_turns`: 17/20/13/10 (34/40/26/20%), and
   **no run hit the context limit** - the 16K wall this project worried about is not what stops E2B,
   the 15-turn ceiling is. Mean turns 11.4/11.1/9.5/11.2 (median 14/13/8/11), peak context
   7,713/6,835/7,086/7,586, generated tokens 14,744/10,370/12,428/15,448. Thinking is reported in
   **characters per turn** (4,540/3,269/4,622/4,903): the trace logs `reasoning_chars`, not reasoning
   tokens, and no char->token factor is invented to fill the spec's "tokens" column.
-- **§5 samples**, verbatim with source line numbers: M2 at 12,952 prompt tokens repeating a failed
+- **Â§5 samples**, verbatim with source line numbers: M2 at 12,952 prompt tokens repeating a failed
   `apply_edit` byte-for-byte (the model's context held the refusal and it re-sent the call); M1 at
   1,514 tokens on turn 1, whose single argument key is `pattern="def get_feature_names"\npath` -
   the request-shape defect at the smallest context in the grid, which is why M1's `<=2K` failure
@@ -654,7 +654,7 @@ clean 2-message Phase-2 context and the file is edited.
   `pytest tests` is 34/34. The grid traces were uncommitted when this was written (AGENTS.md rule 4
   as it then stood); that rule changed the same day - see "Repo policy" below.
 
-## Bước 5, diagnostics: the E2B grid is committed as evidence (2026-10-21)
+## BÆ°á»›c 5, diagnostics: the E2B grid is committed as evidence (2026-10-21)
 
 - Reversal of the line above: the grid's traces and patches are now tracked - `logs/runs/*.jsonl`
   (373 files, 19.5 MB), `logs/patches/*.patch` (367 files, 0.11 MB) and the four aggregate
@@ -674,5 +674,125 @@ clean 2-message Phase-2 context and the file is edited.
   `logs/patches/*.patch` read from a clone on Linux is LF while the local copy is CRLF - the step 5
   evaluator should take the patch from the trace's `artifacts` field, not assume either ending.
 
+## 2026-10-21 - Execution-layer repairs from TASK.md (Tasks 1-6), smoke test queued
 
+TASK.md was derived from `E2B_DIAGNOSTICS_REPORT.md`: 2,087 tool calls over 200 cells, 583 failed.
+The six repairs below change what the model sees but not what a variant means; they are execution
+fixes, not new modules, and are active in B0/M1/M2/M3 alike.
 
+- **Task 1, paths.** `tools.resolve_repo_path` tries the path as given, then with the first
+  directory component dropped (`psf/requests/sessions.py` -> `requests/sessions.py`), then a unique
+  suffix match over the worktree; ambiguity or a miss raises `PathError`, which `ToolBox.execute`
+  returns as a tool result with up to 5 `difflib` close matches. Every `path`/`file` argument and
+  every `lock_targets` entry goes through it. `_read_symbol` keeps a fallback to its `file` argument
+  when an embedded `file.py::symbol` part does not resolve, so the fix cannot regress Task 4.
+- **Task 2, M1 JSON.** `_EDIT_STRUCTURED` lost its inline `key="value"` examples and now says the
+  JSON keys are exactly the parameter names. `_fn_schema` adds `"additionalProperties": false` to
+  every tool's outer object, so constrained decoding cannot invent keys. `_repair_arguments` splits
+  the glued shape `{"pattern=\"x\"\npath": ...}` back into its parameters; if it cannot, the call
+  fails with `Invalid JSON keys. Expected separate keys ...` and counts as `malformed_arguments`.
+- **Task 3, matching.** `_lf_and_unescape` normalises real CRLF and the literal two-character
+  `\r\n` escape to `\n` while keeping a reverse index into the original text, so edits are applied to
+  the untouched file and its newline style is preserved. `_find_region` tries exact, then
+  trailing-whitespace-insensitive, then indentation-flexible matching; tier 3 only accepts a unique
+  site, applies the indentation offset to `replace_block` and then runs the `ast.parse` gate. Failures
+  keep the `search_block not found` prefix (the diagnostics taxonomy depends on it) and append the
+  closest region with line numbers. Tiers 1/2 preserve the old first-match behaviour and count
+  `edits_ambiguous`; tier 3 refuses rather than guess.
+- **Task 4, symbols.** `split_symbol_ref` accepts `file.py::Class.method`, `Class.method` and a bare
+  name that is unique in `file`; misses list the file's valid symbols (or repo-wide close matches).
+  This removes the empty-error `SYMBOL_NOT_FOUND` class the report counted 79/84 times in M2/M3.
+- **Task 5, compaction and loops.** `lock_targets` is now a validation gate: unresolved files or
+  symbols, or symbols with empty source, reject compaction (`lock_rejected`), keep Phase 1 and return
+  suggestions. On success the Phase-2 message carries `=== <path> :: <symbol> (lines a-b) ===`
+  blocks, the verbatim `PHASE2_DIRECTIVE`, and is logged as `compacted_prompt_preview`. An identical
+  `(tool, canonical_json(args))` one turn after itself is not executed: the previous result is
+  replayed with `{"LOOP DETECTED": ...}` as its first key, counted as `loop_blocked`.
+- **Task 6, infra.** Streaming was already the default (AGENTS.md "Always stream"), so 6.1 needed no
+  change; 6.2 is `run_batch.py` halving `--workers` until `llm.verify_run_context` passes, which
+  makes a starved shared KV pool impossible to mistake for model behaviour.
+- **Evidence layout.** `config.set_experiment(tag)` rebinds `RUNS`/`PATCHES` to
+  `logs/experiments/<tag>/runs|patches`; `run_batch.py --experiment` also writes `manifest.json`
+  (model, variants, task ids, probe, workers, commit) and `results.csv`, and the diagnostics and
+  summary scripts take the same tag. Default paths are untouched, so the committed 50-task grid is
+  still reproducible. Layout and rules: `logs/experiments/README.md`.
+- **Verification of the code, before any new model run.** `pytest tests` is 54/54 (18 new cases in
+  `tests/test_fixes.py` pin the six repairs; `tests/test_diagnostics.py` covers the two new taxonomy
+  phrasings). `scripts/diagnostics_e2b.py` over the *old* traces still reports 200 cells, 2,087 calls,
+  583 failures, 41/50 compactions and M1 `JSON_SCHEMA_ERROR`=83, i.e. the taxonomy and selection
+  changes did not move a single baseline number; the regenerated `E2B_DIAGNOSTICS_REPORT.md` differs
+  only in the note that post-2026-10-21 traces log `compacted_prompt_preview`.
+- The 5-task E2B smoke run (`logs/experiments/20261021-fixes-smoke-e2b/`) is running on the local
+  backend at `-c 131072 -np 4`, which `check_endpoint.py` measured as 4 x 32768 (124,552 tokens
+  served in one probe). Its results are the next entry.
+
+## 2026-10-21 - E2B smoke test of the repairs: 5 tasks x 4 variants
+
+- Ran `logs/experiments/20261021-fixes-smoke-e2b/`: the five tasks that failed hardest in the
+  baseline grid (`scikit-learn-10908` 35 failed calls, `scikit-learn-14087` 33, `sympy-21930` 32)
+  plus the two tasks TASK.md names (`scikit-learn-13142`, `psf__requests-1724`), E2B, thinking on,
+  15 turns, 4 workers on the verified 4 x 32768 server. 20/20 scoreable cells in 2,273 s.
+- **One harness crash, found and fixed.** `scikit-learn-10908 M1` died with
+  `ValueError: Exceeds the limit (4300 digits) for integer string conversion: value has 15572
+  digits`: the model put a 15,572-digit number in its tool arguments, `json.loads` raised
+  `ValueError` (not `JSONDecodeError`), and the exception escaped `_parse_args`. It is now caught as
+  a malformed call, with a regression test; the cell was re-run and finished with one edit in 6
+  turns. The crash trace is kept next to the re-run (it has no `run_end`, so diagnostics drop it).
+- **The manifest no longer shrinks on a resume.** The one-cell re-run had overwritten
+  `manifest.json` with a one-task plan. `write_manifest` now appends to `invocations` and unions
+  `task_ids` (test added); this experiment's manifest was rebuilt from its traces and command line,
+  so it records both invocations and all five tasks.
+
+### Failed calls on the same 20 cells, baseline -> smoke
+
+| variant | failed calls | SEARCH_BLOCK_MISMATCH | JSON_SCHEMA_ERROR | repeats (all blocked) | non-empty patch |
+|---|---|---|---|---|---|
+| B0 | 24 -> 10 | 16 -> 6 | 0 -> 0 | 16 -> 10 | 1/5 -> 2/5 |
+| M1 | 48 -> 8 | 12 -> 8 | 32 -> 0 | 20 -> 8 | 1/5 -> 3/5 |
+| M2 | 44 -> 32 | 32 -> 19 | 0 -> 0 | 7 -> 21 | 1/5 -> 3/5 |
+| M3 | 12 -> 13 | 1 -> 3 | 0 -> 0 | 4 -> 3 | 5/5 -> 4/5 |
+| total | 128 -> 63 | 61 -> 36 | 32 -> 0 | 47 -> 42 | 8/20 -> 12/20 |
+
+### Acceptance criteria
+
+- **M1 `JSON_SCHEMA_ERROR` -> 0: met on this set** (32 -> 0 on the same cells; the full grid's 83
+  were not re-run). No call in the 20 cells was scored `JSON_SCHEMA_ERROR`, and `malformed_arguments`
+  is 0 in every finished cell (`edits_malformed`, the edit-shape counter, is a different number and
+  is still non-zero: 13142 M2 5, 21930 B0 5). The M1 cells that used to fail on the request shape
+  now finish or fail on the edit text instead.
+- **`psf__requests-1724` M3: met.** `get_repo_map psf/requests` resolved; `read_symbol Request`
+  missed but listed the file's symbols, so the next call loaded `Session.request`; `lock_targets`
+  accepted `requests/sessions.py::Session.request` (3,737 chars of source); the context fell
+  22,325 -> 13,511 chars; `apply_edit` changed `method = method.upper()` on turn 6 and `finish`
+  followed on turn 7. Phase 2 made no `get_repo_map`/`read_symbol` call, and a second `lock_targets`
+  did not compact again.
+- **`SEARCH_BLOCK_MISMATCH`: down 41%** (61 -> 36; B0 16 -> 6, M2 32 -> 19). It is still the largest
+  cause (19 of 32 M2 failures), so the three-tier matcher reduced the class without removing it.
+- **Identical repeats: the executions fell to zero, the detections did not.** 42 duplicates were
+  detected and all 42 were blocked; the baseline had 47 that executed. So the harness no longer pays
+  a tool call or a context write for a duplicate, but E2B at temperature 0 still emits them
+  (`scikit-learn-13142` B0 asked for `def fit_predict` eight times, each answer warned
+  `LOOP DETECTED`). Read metric #4 as "duplicate detections, all suppressed", not as a drop.
+- **No 524 and no context-500.** The run is local (no tunnel), and the probe served 4 x 32768 before
+  the batch; `stop_reason` has no `llm_error`, `context_exceeded` or `truncated stream` in 20 cells.
+
+### What the smoke test did not fix
+
+- **Post-lock re-navigation persists.** 3 of the 4 compacted M3 cells still called
+  `get_repo_map`/`read_symbol` in Phase 2 (`13142`, `14087`, `21930`); `14087` and `21930` still
+  produced a patch, but the directive alone does not stop it. `13142`'s lock was the whole
+  `GaussianMixture` class, whose 12,048-char source hits the 12,000-char cap, and its Phase-2
+  reasoning says the snippet "is truncated" - the model re-reads what the cap withheld.
+- **Compaction can still grow.** `14087` M3 went 15,135 -> 16,599 chars because the locked source
+  is larger than the Phase-1 body; the gate guarantees source, not shrinkage. The other three
+  shrank (`requests` -8,814, `13142` -1,464, `21930` -7,765). `10908` M3 never locked, so 4/5
+  compacted.
+- **`scikit-learn-10908` M2 still chases a non-existent file.** Ten `read_symbol` calls on
+  `sklearn/feature_extraction/text/count_vectorizer.py` (the symbol lives in `text.py`); the error
+  lists `text.py` and the model switches only at turn 14. Path resolution cannot repair a wrong
+  filename, and Task 4 only owes the suggestion list.
+- **`scikit-learn-10908` M3 ended `no_tool_call`** with empty `content` after 11 turns and a
+  629-char patch: a legitimate model stop, not an infrastructure failure, so it was not re-run.
+- The 5-task set is a smoke test, not the 50-task grid: per-variant counts are 5 cells each, and
+  nothing here re-estimates the grid's rates. `pytest tests` is 56/56 after the crash and manifest
+  tests.

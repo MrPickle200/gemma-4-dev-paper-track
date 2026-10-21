@@ -101,7 +101,7 @@ def failure_kind(status: str | None, error: str | None) -> str | None:
         return "syntax_gate"
     if "not a file:" in e or "not a directory:" in e:
         return "path"
-    if "no symbol named" in e:
+    if "no symbol named" in e or "not found in" in e or "is ambiguous" in e:
         return "symbol"
     return "other"
 
@@ -116,10 +116,13 @@ def main() -> int:
     ap.add_argument("--thinking", default="on")
     ap.add_argument("--max-turns", type=int, default=15)
     ap.add_argument("--glob", default="logs/runs/*.jsonl")
+    ap.add_argument("--experiment", help="read logs/experiments/<TAG>/runs/*.jsonl instead")
     ap.add_argument("--csv", help="write the per-bucket numbers to this CSV")
     ap.add_argument("--out", help="write the figure here (default figures/metric4_<model>.png)")
     ap.add_argument("--no-plot", action="store_true", help="numbers only, no figure (no matplotlib)")
     args = ap.parse_args()
+    if args.experiment:
+        args.glob = str(ROOT / "logs" / "experiments" / args.experiment / "runs" / "*.jsonl")
 
     # ---- one trace per cell, newest wins, scoreable only (same rule as summarize_batch) ----
     cells: dict[tuple, tuple] = {}

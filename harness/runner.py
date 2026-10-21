@@ -112,7 +112,9 @@ def run_instance(cfg: RunConfig, task: dict | None = None, verbose: bool = True,
     try:
         summary = run_agent(cfg, task, client, toolbox, logger, verbose=verbose)
         patch = collect_patch(workdir)
-        cfg.patch_path.write_text(patch, encoding="utf-8")
+        # newline="\n": `git diff` emits LF, and writing it in Windows text mode would turn the
+        # patch into CRLF - which the Linux SWE-bench evaluator (Bước 5) would then fail to apply.
+        cfg.patch_path.write_text(patch, encoding="utf-8", newline="\n")
         stat = git(["diff", "--shortstat"], cwd=workdir).stdout.strip()
         logger.write({
             "type": "artifacts",

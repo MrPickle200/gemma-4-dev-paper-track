@@ -39,7 +39,8 @@ def _matches(cfg: dict, model: str, thinking: str, max_turns: int) -> bool:
             and cfg.get("max_turns") == max_turns and cfg.get("line_numbers") is False)
 
 
-def grid_stats(model: str, variants: list[str], thinking: str, max_turns: int) -> dict:
+def grid_stats(model: str, variants: list[str], thinking: str, max_turns: int,
+               runs_dir: Path) -> dict:
     """Per-variant counts over **cells**, not traces: one trace per (task, variant), newest wins.
 
     This is the same rule the batch itself uses to decide what still needs running, so the
@@ -47,7 +48,7 @@ def grid_stats(model: str, variants: list[str], thinking: str, max_turns: int) -
     were still outstanding.
     """
     best: dict[tuple, tuple] = {}
-    for path in glob.glob(str(ROOT / "logs" / "runs" / "*.jsonl")):
+    for path in glob.glob(str(runs_dir / "*.jsonl")):
         try:
             recs = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
         except (OSError, json.JSONDecodeError):
@@ -94,7 +95,9 @@ def server_state(base_url: str) -> str:
 def build_report(args) -> str:
     n_tasks = len(json.loads(SUBSET.read_text(encoding="utf-8")))
     cells = n_tasks * len(args.variants)
-    rows = grid_stats(args.model, args.variants, args.thinking, args.max_turns)
+    runs_dir = (ROOT / "logs" / "experiments" / args.experiment / "runs"
+                if args.experiment else ROOT / "logs" / "runs")
+    rows = grid_stats(args.model, args.variants, args.thinking, args.max_turns, runs_dir)
     done = sum(r["done"] for r in rows.values())
 
     lines = [
@@ -119,6 +122,7 @@ def main() -> int:
     ap.add_argument("--thinking", default="on")
     ap.add_argument("--max-turns", type=int, default=15)
     ap.add_argument("--base-url", default="http://127.0.0.1:8080")
+    ap.add_argument("--experiment", help="count cells in logs/experiments/<TAG>/runs instead")
     ap.add_argument("--delay", type=int, default=0, help="seconds to wait before reporting (timer mode)")
     ap.add_argument("--append", action="store_true", help="also append the report to logs/batch_progress.log")
     args = ap.parse_args()

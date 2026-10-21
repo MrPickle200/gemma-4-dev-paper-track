@@ -23,8 +23,10 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import csv
 import glob
 import json
+import subprocess
 import sys
 import threading
 import time
@@ -35,7 +37,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import requests                                          # noqa: E402
 
-from harness.config import (MIN_RUN_CTX, RUNS, RunConfig, is_infra_failure,   # noqa: E402
+from harness import config                                      # noqa: E402
+from harness.config import (MIN_RUN_CTX, RunConfig, is_infra_failure,   # noqa: E402
                             is_proxy_capped, turn_error)
 from harness.llm import LLMClient, verify_run_context           # noqa: E402
 from harness.runner import load_tasks, run_instance        # noqa: E402
@@ -46,12 +49,21 @@ for _stream in (sys.stdout, sys.stderr):
 
 PRINT_LOCK = threading.Lock()
 
+# The per-cell columns of the experiment's results.csv. Fixed order so the file can be opened as a
+# table while the batch is still running, and joined to logs/runs/*.jsonl by run_id afterwards.
+RESULT_FIELDS = ("ts", "run_id", "instance_id", "variant", "model", "thinking", "stop_reason",
+                 "turns_used", "total_tokens", "peak_prompt_tokens", "edits_attempted",
+                 "edits_malformed", "edits_syntax_rejected", "edits_noop", "edits_ambiguous",
+                 "malformed_arguments", "arguments_repaired", "repeated_identical_calls",
+                 "loop_blocked", "lock_calls", "lock_rejected", "symbols_locked", "compactions",
+                 "patch_chars", "diff_stat", "log_path", "patch_path")
+
 
 def completed_run(instance_id: str, model: str, variant: str, thinking: str,
                   max_turns: int, line_numbers: bool,
                   rerun_proxy_capped: bool = False) -> str | None:
     """Return the run_id of a matching completed trace, or None."""
-    pattern = str(RUNS / f"{instance_id}__{model}__{variant}__*.jsonl")
+    pattern = str(config.RUNS / f"{instance_id}__{model}__{variant}__*.jsonl")
     for path in glob.glob(pattern):
         try:
             recs = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
@@ -81,25 +93,124 @@ def server_ok(base_url: str) -> bool:
         return False
 
 
-def ctx_per_run(args, workers: int) -> int | None:
-    """The context each of `workers` concurrent runs really gets - measured, not assumed.
+def probe_workers(args) -> tuple[int, int | None]:
+    """The number of concurrent cells this server can really serve, and the context each gets.
 
     llama-server hands out `-c / -np` per slot only when `-c` is big enough for per-slot caches;
-    started with a small `-c` it instead keeps ONE shared KV pool (`kv_unified = true`), and
-    `/props` advertises `n_ctx = 32768` in *both* cases. So the only trustworthy answer comes from
-    asking the server to serve `workers` full-window prompts at once. None means it failed, which
-    keeps `context_exceeded` in the re-run bucket instead of scoring a backend artefact.
+    started with a small `-c` it keeps ONE shared KV pool (`kv_unified = true`), and `/props`
+    advertises `n_ctx = 32768` in *both* cases. So the only trustworthy answer comes from asking
+    the server to serve that many full-window prompts at once (TASK.md Task 6.2). When it cannot,
+    the batch *lowers its concurrency* instead of letting the pool end long runs - a
+    `context_exceeded` produced that way is a reason we chose, not one the model chose.
     """
     advertised = LLMClient(args.base_url, args.model, api_key=args.api_key).ctx_pool()
     print(f"server advertises n_ctx = {advertised}")
-    share = verify_run_context(args.base_url, workers, api_key=args.api_key)
-    if share is None:
-        print(f"WARNING: {args.base_url} cannot serve {workers} concurrent {MIN_RUN_CTX}-token runs. "
-              f"On this server the pool, not the model, ends the long runs, so any 'Context size "
-              f"has been exceeded' is a backend artefact and those cells are excluded, not scored. "
-              f"Relaunch with `-c {MIN_RUN_CTX * max(1, workers)} -np {max(1, workers)}` (costs KV "
-              f"memory only - this box had ~3.7 GB of VRAM free) and re-run them.")
-    return share
+    workers = max(1, args.workers)
+    while True:
+        share = verify_run_context(args.base_url, workers, api_key=args.api_key)
+        if share:
+            return workers, share
+        if workers == 1:
+            print(f"WARNING: {args.base_url} cannot serve even one {MIN_RUN_CTX}-token run. An "
+                  f"'Context size has been exceeded' here is a backend artefact and those cells "
+                  f"are excluded, not scored. Relaunch with -c {MIN_RUN_CTX} -np 1.")
+            return 1, None
+        nxt = max(1, workers // 2)
+        print(f"WARNING: {args.base_url} cannot serve {workers} concurrent {MIN_RUN_CTX}-token "
+              f"runs. Lowering --workers to {nxt} (relaunch with "
+              f"-c {MIN_RUN_CTX * workers} -np {workers} to use {workers}).")
+        workers = nxt
+
+
+def experiment_dir(args) -> Path:
+    return config.EXPERIMENTS / args.experiment if args.experiment else config.LOGS
+
+
+def git_commit() -> str:
+    try:
+        return subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=config.ROOT,
+                              capture_output=True, text=True).stdout.strip()
+    except OSError:
+        return ""
+
+
+INVOCATION_KEYS = (
+    "created", "command", "git_commit", "model", "variants", "thinking", "max_turns",
+    "workers", "ctx_per_run", "base_url", "stream", "task_count", "task_ids",
+    "planned_cells", "already_done",
+)
+
+
+def write_manifest(args, tasks: list, todo: list, skipped: int) -> None:
+    """Record what this invocation is, next to the traces it writes (so a run set is reusable).
+
+    Written before the first cell, so a batch that is interrupted is still identifiable. A resume
+    or a single-cell re-run appends to `invocations` and unions the task ids; it must not replace
+    the plan that created the experiment, or the directory would look like a one-task run.
+    """
+    if not args.experiment:
+        return
+    out = experiment_dir(args)
+    out.mkdir(parents=True, exist_ok=True)
+    invocation = {
+        "created": time.strftime("%Y-%m-%dT%H:%M:%S"),
+        "command": subprocess.list2cmdline([Path(sys.argv[0]).name, *sys.argv[1:]]),
+        "git_commit": git_commit(),
+        "model": args.model,
+        "variants": args.variants,
+        "thinking": args.thinking,
+        "max_turns": args.max_turns,
+        "workers": args.workers,
+        "ctx_per_run": args.ctx_per_run,
+        "base_url": args.base_url,
+        "stream": not args.no_stream,
+        "task_count": len(tasks),
+        "task_ids": [t["instance_id"] for t in tasks],
+        "planned_cells": len(todo),
+        "already_done": skipped,
+    }
+
+    path = out / "manifest.json"
+    prev = {}
+    if path.exists():
+        try:
+            prev = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            prev = {}
+    history = prev.get("invocations") or ([prev] if prev else [])
+    history = [{k: inv.get(k) for k in INVOCATION_KEYS} for inv in history] + [invocation]
+
+    task_ids = list(dict.fromkeys(
+        [i for inv in history for i in (inv.get("task_ids") or [])]
+    ))
+    payload = {k: history[0].get(k) for k in INVOCATION_KEYS}
+    payload.update({
+        "experiment": args.experiment,
+        "task_count": len(task_ids),
+        "task_ids": task_ids,
+        "runs_dir": str(config.RUNS.relative_to(config.ROOT)),
+        "patches_dir": str(config.PATCHES.relative_to(config.ROOT)),
+        "invocations": history,
+    })
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def append_result(args, summary: dict, variant: str) -> None:
+    """One results.csv row per finished cell - the batch table, written as the batch runs."""
+    if not args.experiment:
+        return
+    out = experiment_dir(args) / "results.csv"
+    row = {k: summary.get(k) for k in RESULT_FIELDS}
+    row.update({"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "variant": variant,
+                "model": args.model, "thinking": args.thinking})
+    with PRINT_LOCK:
+        new = not out.exists()
+        out.parent.mkdir(parents=True, exist_ok=True)
+        with out.open("a", newline="", encoding="utf-8") as fh:
+            w = csv.DictWriter(fh, fieldnames=list(RESULT_FIELDS))
+            if new:
+                w.writeheader()
+            w.writerow({k: ("" if row.get(k) is None else row[k]) for k in RESULT_FIELDS})
 
 
 def make_config(args, task: dict, variant: str) -> RunConfig:
@@ -115,12 +226,14 @@ def run_cell(args, task: dict, variant: str) -> tuple[dict, bool]:
     Returns (summary, failed)."""
     cfg = make_config(args, task, variant)
     try:
-        return run_instance(cfg, task, verbose=args.workers == 1), False
+        summary, failed = run_instance(cfg, task, verbose=args.workers == 1), False
     except Exception as e:  # keep the grid going; the cell simply has no trace
         with PRINT_LOCK:
             print(f"  FAILED {task['instance_id']} {variant}: {type(e).__name__}: {e}")
         return ({"instance_id": task["instance_id"], "variant": variant,
                  "stop_reason": f"harness_error:{type(e).__name__}"}, True)
+    append_result(args, summary, variant)
+    return summary, failed
 
 
 def report(results: list[dict], todo: list, t0: float) -> None:
@@ -208,12 +321,18 @@ def main() -> int:
     ap.add_argument("--thinking", default="on", choices=["auto", "on", "off"])
     ap.add_argument("--max-turns", type=int, default=15)
     ap.add_argument("--repo", help="restrict to one repo")
+    ap.add_argument("--instance-id", action="append", default=[],
+                    help="only this task (repeatable) - use it to re-run specific cells")
     ap.add_argument("--limit", type=int, help="only the first N tasks")
     ap.add_argument("--base-url", default="http://127.0.0.1:8080")
     ap.add_argument("--api-key", default=None,
                     help="bearer token when the server was started with --api-key (e.g. over a tunnel)")
+    ap.add_argument("--experiment", default=None,
+                    help="write this batch to logs/experiments/<TAG>/ (runs, patches, manifest, "
+                         "results.csv) instead of the shared logs/runs/ + logs/patches/")
     ap.add_argument("--workers", type=int, default=1,
-                    help="run this many cells concurrently (needs a multi-slot backend)")
+                    help="run this many cells concurrently (needs a multi-slot backend; reduced "
+                         "automatically if the server cannot serve that many full windows)")
     ap.add_argument("--sleep", type=float, default=0.0, help="seconds to pause between runs")
     ap.add_argument("--no-skip", action="store_true", help="re-run cells that already have a trace")
     ap.add_argument("--rerun-proxy-capped", action="store_true",
@@ -225,11 +344,20 @@ def main() -> int:
                          "dies on any turn longer than the proxy's read timeout)")
     ap.add_argument("--dry-run", action="store_true", help="print the plan and exit")
     args = ap.parse_args()
-    args.ctx_per_run = ctx_per_run(args, args.workers)
+
+    # Point RUNS/PATCHES at the experiment before any RunConfig is built, so the traces, the
+    # patches, the manifest and results.csv of one batch live in one directory.
+    exp = config.set_experiment(args.experiment) if args.experiment else None
+    if exp is not None:
+        print(f"experiment: {args.experiment} -> {exp.relative_to(config.ROOT)}")
+    args.workers, args.ctx_per_run = probe_workers(args)
 
     tasks = load_tasks()
     if args.repo:
         tasks = [t for t in tasks if t["repo"] == args.repo]
+    if args.instance_id:
+        wanted = set(args.instance_id)
+        tasks = [t for t in tasks if t["instance_id"] in wanted]
     if args.limit:
         tasks = tasks[: args.limit]
 
@@ -258,6 +386,7 @@ def main() -> int:
             print(f"  ... and {len(todo) - 20} more")
         return 0
 
+    write_manifest(args, tasks, todo, skipped)
     if not todo:
         print("nothing to do")
         return 0

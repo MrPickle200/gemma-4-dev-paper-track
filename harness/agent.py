@@ -23,7 +23,7 @@ from pathlib import Path
 from . import astnav
 from .config import RunConfig, refined_stop_reason
 from .llm import Completion, LLMClient
-from .tools import ToolBox
+from .tools import ToolBox, ToolResult, split_symbol_ref
 
 _BASE_PROMPT = """You are a coding agent that repairs bugs in a Python repository.
 
@@ -48,9 +48,13 @@ _LOCALIZE_AST = """Work in this order:
 4. `apply_edit` with the exact text you saw.
 5. `finish` when the fix is complete."""
 
-_EDIT_STRUCTURED = """`apply_edit` takes `target_symbol` (the function or class the edit belongs to).
-The edit is parsed with ast.parse() before it is written: a syntactically broken edit is
-rejected, nothing is written, and the error comes back to you - fix it in the next turn."""
+_EDIT_STRUCTURED = """`apply_edit` in this variant also asks for `target_symbol`: the name of the function or class
+the edit belongs to. The edit is parsed with ast.parse() before it is written, so a
+syntactically broken edit is rejected, nothing is written, and the error comes back to you to fix
+in the next turn.
+
+Every tool call is one JSON object whose keys are exactly the parameter names listed for that
+tool. Never put a parameter name inside another parameter's value."""
 
 _M3_PHASES = """Work in two phases.
 Phase 1 - LOCALIZE: use the navigation tools to find the root cause. As soon as you know the
@@ -58,6 +62,15 @@ file(s) and symbol(s), call `lock_targets(files, symbols, root_cause_note)`.
 Phase 2 - PATCH: after `lock_targets` your scratch history is cleared and you continue with a
 clean context holding only the issue, your root-cause note and the locked symbols. Make the
 edit and call `finish`."""
+
+PHASE2_DIRECTIVE = ("=== PHASE 2: PATCHING === The full source code of your locked target symbols "
+                    "is provided above. Do NOT call get_repo_map or read_symbol on these targets "
+                    "again. Proceed directly to apply_edit.")
+
+LOOP_WARNING = ("LOOP DETECTED: You just executed the exact same tool call with identical "
+                "arguments as the previous turn. Repeating it again will not change the result. "
+                "You MUST modify your arguments (e.g., fix the search_block/symbol name) or "
+                "choose a different tool.")
 
 
 def system_prompt(variant: str) -> str:
@@ -86,7 +99,10 @@ class JsonlLogger:
     def __init__(self, path: Path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._fh = self.path.open("a", encoding="utf-8")
+        # newline="\n": on Windows text mode would turn every trace into CRLF. The evidence is
+        # read by scripts (and by a fresh clone, where .gitattributes says LF), so keep one
+        # convention everywhere and let git store it as LF.
+        self._fh = self.path.open("a", encoding="utf-8", newline="\n")
         self.records = 0
 
     def write(self, record: dict) -> None:
@@ -106,20 +122,30 @@ def _parse_args(raw: str) -> tuple[dict | None, str | None]:
         val = json.loads(raw)
     except json.JSONDecodeError as e:
         return None, f"arguments were not valid JSON: {e}"
+    except ValueError as e:
+        # Python 3.11 caps int<->str at 4300 digits; a model that emits a 15,000-digit number in
+        # its arguments raises ValueError from json.loads, not JSONDecodeError. That is still a
+        # malformed call (metric #2) and must not kill the run.
+        return None, f"arguments were not valid JSON: {e}"
     if not isinstance(val, dict):
         return None, f"arguments must be a JSON object, got {type(val).__name__}"
     return val, None
 
 
 def _locked_source(toolbox: ToolBox, locked: dict, max_chars: int = 12000) -> str:
-    """Source of the locked symbols, for the post-compaction context (IDEA.md §2 Module 3)."""
+    """Source of the locked symbols, for the post-compaction context (IDEA.md §2 Module 3).
+
+    Each block is labelled with the *resolved* repo-relative path and the symbol's line span, so
+    Phase 2 can copy text into `search_block` without re-reading the file. `lock_targets` has
+    already proven that every entry yields source; the whole-file fallback covers a lock that
+    named files but no symbols.
+    """
     blocks: list[str] = []
     files = [str(f) for f in locked.get("files", [])]
     entries = [str(s) for s in locked.get("symbols", [])]
     for entry in entries:
-        file_part, _, name = entry.partition("::")
-        name = name or file_part
-        candidates = [file_part] if name != file_part else files
+        file_part, name = split_symbol_ref(entry)
+        candidates = [file_part] if file_part else files
         for rel in candidates:
             try:
                 p = toolbox._resolve(rel)
@@ -129,9 +155,11 @@ def _locked_source(toolbox: ToolBox, locked: dict, max_chars: int = 12000) -> st
                 continue
             rel_path = p.relative_to(toolbox.workdir).as_posix()
             for sym in astnav.find_symbol(p, name, rel_path):
-                blocks.append(f"{rel_path}:{sym.start_line}-{sym.end_line}\n"
-                              + astnav.read_source(p, sym))
-    if not blocks:  # fall back to the raw files when no symbol resolved
+                blocks.append(
+                    f"=== {rel_path} :: {sym.qualified} (lines {sym.start_line}-{sym.end_line}) ===\n"
+                    + astnav.read_source(p, sym)
+                )
+    if not blocks:  # a lock on whole files (no symbols) still owes Phase 2 its code
         for rel in files:
             try:
                 p = toolbox._resolve(rel)
@@ -139,29 +167,40 @@ def _locked_source(toolbox: ToolBox, locked: dict, max_chars: int = 12000) -> st
                 continue
             if p.is_file():
                 rel_path = p.relative_to(toolbox.workdir).as_posix()
-                blocks.append(f"{rel_path}\n" + p.read_text(encoding="utf-8", errors="ignore"))
+                blocks.append(f"=== {rel_path} (whole file) ===\n"
+                              + p.read_text(encoding="utf-8", errors="ignore"))
     text = "\n\n".join(blocks)
     if len(text) > max_chars:
         text = text[:max_chars] + f"\n... [compacted source truncated at {max_chars} chars]"
     return text
 
 
-def compact_messages(sys_prompt: str, task: dict, toolbox: ToolBox,
-                     locked: dict) -> list[dict]:
-    """Build the clean Phase-2 context: issue + root-cause note + locked source only."""
+def phase2_body(task: dict, toolbox: ToolBox, locked: dict) -> str:
+    """The exact user message that starts the patching phase."""
     note = locked.get("root_cause_note") or "(none provided)"
-    body = (
+    return (
         "# Phase 2 - Patching\n\n"
         "Your localization history has been cleared. Everything you need is below.\n\n"
+        f"{PHASE2_DIRECTIVE}\n\n"
         f"## Issue\n{task['problem_statement']}\n\n"
         f"## Root cause (your note)\n{note}\n\n"
         "## Locked code (copy text verbatim into search_block; no line numbers)\n"
         + _locked_source(toolbox, locked)
     )
+
+
+def compact_messages(sys_prompt: str, task: dict, toolbox: ToolBox,
+                     locked: dict) -> tuple[list[dict], str]:
+    """Build the clean Phase-2 context: issue + root-cause note + locked source only.
+
+    Returns the messages and the body text, because the body is written to the trace under
+    `compacted_prompt_preview` - a compaction whose content cannot be inspected is not evidence.
+    """
+    body = phase2_body(task, toolbox, locked)
     return [
         {"role": "system", "content": sys_prompt},
         {"role": "user", "content": body},
-    ]
+    ], body
 
 
 def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
@@ -200,9 +239,19 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
     total_prompt_tokens = total_completion_tokens = 0
     peak_prompt_tokens = 0
     length_retries = 0
+    # Hard loop-breaker (TASK.md Task 5.3): the signatures executed in the *previous* turn, and
+    # what they returned. A byte-identical repeat is not executed again - its old result is
+    # replayed behind a mandatory warning, which is the only thing that has ever moved E2B off a
+    # loop (report §5.1: the model held the refusal and re-sent the call regardless).
+    prev_turn_sigs: set[tuple[str, str]] = set()
+    prev_results: dict[tuple[str, str], ToolResult] = {}
+    turn_sigs: set[tuple[str, str]] = set()
+    turn_results: dict[tuple[str, str], ToolResult] = {}
 
     for turn in range(1, cfg.max_turns + 1):
         turns_used = turn
+        prev_turn_sigs, prev_results = turn_sigs, turn_results
+        turn_sigs, turn_results = set(), {}
         comp: Completion = client.chat(messages, tools=specs)
 
         if comp.error:
@@ -299,15 +348,33 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
             # loop detection: IDEA.md §4 metric #4 (wrong/looping tool calls vs context depth)
             sig = (name, json.dumps(args, sort_keys=True))
             repeat_of = None
-            if sig == toolbox._last_call_sig:
-                toolbox.stats["repeated_identical_calls"] += 1
+            if sig in prev_turn_sigs:
                 repeat_of = turn - 1
-            toolbox._last_call_sig = sig
+            elif sig == toolbox._last_call_sig:
+                repeat_of = turn
+            if repeat_of is not None:
+                toolbox.stats["repeated_identical_calls"] += 1
 
-            res = toolbox.execute(name, args)
+            blocked = sig in prev_turn_sigs and sig in prev_results
+            if blocked:
+                cached = prev_results[sig]
+                toolbox.stats["tool_calls"] += 1
+                toolbox.stats["loop_blocked"] += 1
+                res = ToolResult(ok=cached.ok, output=cached.output, error=cached.error,
+                                 meta={k: v for k, v in cached.meta.items() if k != "lock"})
+            else:
+                res = toolbox.execute(name, args)
+            toolbox._last_call_sig = sig
+            turn_sigs.add(sig)
+            turn_results[sig] = res
+
             payload = {"ok": res.ok, "output": res.output}
             if res.error:
                 payload["error"] = res.error
+            if blocked:
+                # The warning goes first in the JSON object, so it is the first thing the model
+                # reads in the tool result (TASK.md Task 5.3).
+                payload = {"LOOP DETECTED": LOOP_WARNING, **payload}
             messages.append({
                 "role": "tool",
                 "tool_call_id": tc.get("id", ""),
@@ -324,13 +391,16 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
                 "error": res.error,
                 "meta": res.meta,
                 "repeat_of_turn": repeat_of,
+                "loop_blocked": blocked,
+                **({"loop_warning": LOOP_WARNING} if blocked else {}),
                 "output_chars": len(res.output),
                 "output_preview": res.output[:600],
                 "duration_s": round(time.time() - t0, 3),
             })
             if verbose:
                 flag = "ok " if res.ok else "ERR"
-                print(f"          [{flag}] {name} {res.error or ''}".rstrip())
+                print(f"          [{flag}] {name} {res.error or ''}".rstrip()
+                      + (" [loop blocked]" if blocked else ""))
             if res.meta.get("finish"):
                 stop_reason = "finish"
                 finished = True
@@ -343,10 +413,11 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
         # mechanism cannot trap the model in a lock loop.
         if toolbox.allow_lock and lock_this_turn and not compacted:
             chars_before = sum(len(m.get("content") or "") for m in messages)
-            messages = compact_messages(sys_prompt, task, toolbox, toolbox.locked)
+            messages, body = compact_messages(sys_prompt, task, toolbox, toolbox.locked)
             compacted = True
             phase = "patch"
             toolbox._last_call_sig = None
+            turn_sigs, turn_results = set(), {}
             toolbox.stats["compactions"] = toolbox.stats.get("compactions", 0) + 1
             chars_after = sum(len(m.get("content") or "") for m in messages)
             logger.write({
@@ -358,6 +429,11 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
                 "messages_after": len(messages),
                 "context_chars_before": chars_before,
                 "context_chars_after": chars_after,
+                # Full text handed to Phase 2 (TASK.md Task 5.2): without it a compaction could
+                # only be audited by replaying compact_messages against a deleted worktree.
+                "compacted_prompt_preview": body,
+                "phase2_directive": PHASE2_DIRECTIVE,
+                "locked_source_chars": len(_locked_source(toolbox, toolbox.locked)),
             })
             if verbose:
                 print(f"          [compaction] context {chars_before} -> {chars_after} chars, "

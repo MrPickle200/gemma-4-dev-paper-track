@@ -14,6 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from harness import config  # noqa: E402
 from harness.config import MIN_RUN_CTX, RunConfig  # noqa: E402
 from harness.llm import verify_run_context  # noqa: E402
 from harness.runner import load_tasks, run_instance  # noqa: E402
@@ -38,9 +39,15 @@ def main() -> int:
     ap.add_argument("--base-url", default="http://127.0.0.1:8080")
     ap.add_argument("--api-key", default=None, help="bearer token, for a proxied/remote server")
     ap.add_argument("--no-stream", action="store_true", help="buffer whole responses instead of SSE")
+    ap.add_argument("--experiment", default=None,
+                    help="write this run to logs/experiments/<TAG>/ instead of logs/runs/")
     ap.add_argument("--keep-worktree", action="store_true")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
+
+    if args.experiment:
+        exp = config.set_experiment(args.experiment)
+        print(f"experiment: {args.experiment} -> {exp.relative_to(config.ROOT)}")
 
     tasks = load_tasks()
     if args.instance_id:

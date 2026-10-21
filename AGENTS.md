@@ -18,8 +18,10 @@ Research project: a **micro-model-native harness** for Gemma 4 E2B/E4B on SWE-be
    `logs/*.log.*`, `logs/*.bak`). **Do commit the run evidence:** `logs/runs/*.jsonl` traces and
    `logs/patches/*.patch` diffs are the primary record behind every reported number, and the
    aggregate `logs/*.csv` tables are cited by `E2B_DIAGNOSTICS_REPORT.md`. `data/subset_50*.json`
-   (the task definition) is tracked for the same reason. The evidence is deliberately public so
-   any number in the report can be recomputed from `scripts/diagnostics_e2b.py`.
+   (the task definition) is tracked for the same reason. The same applies to every experiment
+   directory: `logs/experiments/<tag>/runs/*.jsonl`, `patches/*.patch`, `manifest.json`,
+   `results.csv` and `DIAGNOSTICS.md` are committed together. The evidence is deliberately public
+   so any number in the report can be recomputed from `scripts/diagnostics_e2b.py`.
 
 ## Environment (this machine, verified)
 
@@ -62,6 +64,8 @@ worktrees/<instance_id> per-task checkouts, created and removed per run (gitigno
 models/*.gguf           Gemma 4 weights (gitignored)
 tools/llama.cpp/        llama-server.exe (gitignored)
 logs/runs/*.jsonl       one trace per run; logs/patches/*.patch the model's diff (committed evidence)
+logs/experiments/<tag>/ optional per-experiment bundle: runs/, patches/, manifest.json,
+                        results.csv, DIAGNOSTICS.md (committed; see logs/experiments/README.md)
 ```
 
 ## Common commands
@@ -91,12 +95,21 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 # 6. inspect the results
 .\.venv\Scripts\python.exe scripts\summarize_run.py logs\runs\<run>.jsonl --show-tool apply_edit
 .\.venv\Scripts\python.exe scripts\summarize_batch.py --csv logs\batch.csv
+
+# 7. a named experiment keeps its evidence out of the committed 50-task grid
+#    (logs/experiments/<tag>/runs|patches, plus manifest.json and results.csv)
+.\.venv\Scripts\python.exe scripts\run_batch.py --model gemma-4-E2B --thinking on --workers 4 `
+    --experiment 20261021-fixes-smoke-e2b --instance-id psf__requests-1724 --instance-id scikit-learn-13142
+.\.venv\Scripts\python.exe scripts\diagnostics_e2b.py --experiment 20261021-fixes-smoke-e2b
+.\.venv\Scripts\python.exe scripts\summarize_batch.py --experiment 20261021-fixes-smoke-e2b
 ```
 
 ## Bước 2 harness facts
 
-- **Variants** (IDEA.md §3 ablation matrix): `B0` is implemented. `M1`/`M2`/`M3` are accepted by
-  `--variant` and recorded in the log, but their mechanisms are Bước 3 work.
+- **Variants** (IDEA.md §3 ablation matrix): all four are implemented — `B0` (cat/search_text),
+  `M1` (structured edit schema), `M2` (constrained symbol navigation), `M3` (compaction at
+  `lock_targets`). The 2026-10-21 harness fixes below apply to every variant; they are execution-layer
+  repairs, not new mechanisms, so the variant meanings are unchanged.
 - **Thinking mode must be explicit.** Measured `--thinking off` over 3 runs: **0 edits, 26 repeated
   identical calls**. With `--thinking on` over 4 runs: **1 run reached a clean edit and `finish`**.
   E2B frequently omits the comma between JSON arguments when thinking is off
@@ -139,6 +152,41 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
   nudges the model and retries (up to 2 times, `length_retry`) instead of ending the run empty-handed.
   Seen on E4B before its context was raised to 32768.
 - A run's diff is written to `logs/patches/<run_id>.patch` — that is the Bước 5 evaluator input.
+
+## Execution-layer repairs (2026-10-21, in every variant)
+
+These change what the model *sees*, so keep them constant across a comparison grid; do not read a
+before/after difference as a variant effect.
+
+- **Paths** go through `tools.resolve_repo_path`: exact, then drop the first directory component
+  (`psf/requests/sessions.py` → `requests/sessions.py`), then a unique suffix match in the worktree.
+  Ambiguous or missing paths raise `PathError`, which `ToolBox.execute` turns into a tool result
+  listing the closest matches. Applies to every `path`/`file`/lock argument.
+- **Tool schemas** all carry `"additionalProperties": false`. The argument parser also repairs the
+  glued-key shape `{"pattern=\"x\"\npath": ...}`; unrepairable shapes return "Invalid JSON keys" and
+  count as `malformed_arguments`.
+- **`apply_edit`** matches on a CRLF-normalised copy (real `\r\n` and literal `\\r\\n` both → `\n`)
+  in three tiers: exact, trailing-whitespace-insensitive, indentation-flexible (unique site only,
+  indentation offset applied to `replace_block` before the AST gate). Writes go through the original
+  text and preserve the file's newline style; the mismatch error keeps the `search_block not found`
+  prefix used by the diagnostics taxonomy and appends the closest region with line numbers.
+  Tiers 1/2 keep the old first-match semantics and count `edits_ambiguous`; tier 3 refuses an
+  ambiguous site instead of guessing.
+- **Symbols** accept `file.py::Class.method`, `Class.method`, or a bare name unique in `file`; a miss
+  lists the file's valid symbols (or repo-wide close matches) instead of an empty error.
+- **`lock_targets` is a gate (M3):** if any locked file/symbol does not resolve to non-empty source,
+  compaction is refused (`lock_rejected`), Phase 1 is kept and suggestions are returned. The Phase-2
+  message carries the per-symbol source and the "Do NOT call get_repo_map or read_symbol" directive,
+  and its full text is logged as `compacted_prompt_preview`.
+- **Loop-breaker:** an identical `(tool, canonical_json(args))` to the previous turn is not executed;
+  the previous result is replayed with a leading `{"LOOP DETECTED": ...}` key so the model's own
+  context still contains the refusal. Counted as `loop_blocked`. Argument text that `json.loads`
+  rejects with `ValueError` rather than `JSONDecodeError` (Python 3.11's 4,300-digit int limit) is a
+  malformed call too, not a harness error.
+- `run_batch.py --workers N` halves N until `llm.verify_run_context` passes, so an under-provisioned
+  server cannot silently produce `context_exceeded` cells.
+- `--experiment <tag>` sequences evidence under `logs/experiments/<tag>/`; the default paths are
+  unchanged, so committed grid numbers remain reproducible.
 
 ## Backend facts (measured, E2B Q4_0 on this GPU)
 

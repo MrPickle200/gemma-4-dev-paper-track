@@ -1,0 +1,82 @@
+{
+  "created": "2026-10-21T22:04:06",
+  "command": "run_batch.py --model gemma-4-E2B --thinking on --workers 4 --experiment 20261021-fixes-smoke-e2b --instance-id psf__requests-1724 --instance-id scikit-learn__scikit-learn-10908 --instance-id scikit-learn__scikit-learn-13142 --instance-id scikit-learn__scikit-learn-14087 --instance-id sympy__sympy-21930",
+  "git_commit": "fd68be5",
+  "model": "gemma-4-E2B",
+  "variants": [
+    "B0",
+    "M1",
+    "M2",
+    "M3"
+  ],
+  "thinking": "on",
+  "max_turns": 15,
+  "workers": 4,
+  "ctx_per_run": 32768,
+  "base_url": "http://127.0.0.1:8080",
+  "stream": true,
+  "task_count": 5,
+  "task_ids": [
+    "psf__requests-1724",
+    "scikit-learn__scikit-learn-10908",
+    "scikit-learn__scikit-learn-13142",
+    "scikit-learn__scikit-learn-14087",
+    "sympy__sympy-21930"
+  ],
+  "planned_cells": 20,
+  "already_done": 0,
+  "experiment": "20261021-fixes-smoke-e2b",
+  "runs_dir": "logs\\experiments\\20261021-fixes-smoke-e2b\\runs",
+  "patches_dir": "logs\\experiments\\20261021-fixes-smoke-e2b\\patches",
+  "invocations": [
+    {
+      "created": "2026-10-21T22:04:06",
+      "command": "run_batch.py --model gemma-4-E2B --thinking on --workers 4 --experiment 20261021-fixes-smoke-e2b --instance-id psf__requests-1724 --instance-id scikit-learn__scikit-learn-10908 --instance-id scikit-learn__scikit-learn-13142 --instance-id scikit-learn__scikit-learn-14087 --instance-id sympy__sympy-21930",
+      "git_commit": "fd68be5",
+      "model": "gemma-4-E2B",
+      "variants": [
+        "B0",
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "thinking": "on",
+      "max_turns": 15,
+      "workers": 4,
+      "ctx_per_run": 32768,
+      "base_url": "http://127.0.0.1:8080",
+      "stream": true,
+      "task_count": 5,
+      "task_ids": [
+        "psf__requests-1724",
+        "scikit-learn__scikit-learn-10908",
+        "scikit-learn__scikit-learn-13142",
+        "scikit-learn__scikit-learn-14087",
+        "sympy__sympy-21930"
+      ],
+      "planned_cells": 20,
+      "already_done": 0
+    },
+    {
+      "created": "2026-10-21T22:43:42",
+      "command": "run_batch.py --model gemma-4-E2B --thinking on --workers 1 --experiment 20261021-fixes-smoke-e2b --instance-id scikit-learn__scikit-learn-10908 --variants M1",
+      "git_commit": "fd68be5",
+      "model": "gemma-4-E2B",
+      "variants": [
+        "M1"
+      ],
+      "thinking": "on",
+      "max_turns": 15,
+      "workers": 1,
+      "ctx_per_run": 32768,
+      "base_url": "http://127.0.0.1:8080",
+      "stream": true,
+      "task_count": 1,
+      "task_ids": [
+        "scikit-learn__scikit-learn-10908"
+      ],
+      "planned_cells": 1,
+      "already_done": 0
+    }
+  ]
+}

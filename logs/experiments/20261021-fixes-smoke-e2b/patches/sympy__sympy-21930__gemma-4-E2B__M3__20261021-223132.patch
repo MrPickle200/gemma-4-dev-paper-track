@@ -1,0 +1,12 @@
+diff --git a/sympy/physics/secondquant.py b/sympy/physics/secondquant.py
+index d19ee2fc63..dbd6860845 100644
+--- a/sympy/physics/secondquant.py
++++ b/sympy/physics/secondquant.py
+@@ -218,6 +218,7 @@ def _sortkey(cls, index):
+             return (12, label, h)
+ 
+     def _latex(self, printer):
++        return r"\{" + self.args[0] + r"}"
+         return "%s^{%s}_{%s}" % (
+             self.symbol,
+             "".join([ i.name for i in self.args[1]]),
