@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..d350ad6f6e 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -958,7 +958,7 @@ def print_mathml(expr, printer='content', **settings):
+         s = MathMLPresentationPrinter(settings)
+     else:
+         s = MathMLContentPrinter(settings)
+-    xml = s._print(sympify(expr))
++    xml = s._print(expr)
+     s.apply_patch()
+     pretty_xml = xml.toprettyxml()
+     s.restore_patch()

@@ -1,0 +1,14 @@
+model,variant,thinking,line_numbers,runs,runs_with_edit,runs_real_edit,noop_edits,malformed_edit_rate,mean_total_tokens,mean_peak_context,mean_turns,finished,syntax_rejected,compactions,repeated_identical_calls
+gemma-4-E2B,B0,off,False,3,0,0,0,,38534,3242,15,0,0,0,26
+gemma-4-E2B,B0,off,,2,1,1,0,1.0,67692,5690,15,0,0,0,7
+gemma-4-E2B,B0,on,False,3,1,1,0,0.0,38249,5894,9.7,1,0,0,5
+gemma-4-E2B,B0,on,False,14,9,9,3,0.64,73554,7361,11.9,7,0,0,24
+gemma-4-E2B,M1,on,False,1,1,1,0,0.75,44417,4754,10,0,0,0,1
+gemma-4-E2B,M1,on,False,3,2,2,0,0.0,42930,5499,10.3,2,0,0,4
+gemma-4-E2B,M1,on,False,14,10,8,2,0.763,66576,6526,12.2,6,5,0,30
+gemma-4-E2B,M2,on,False,1,0,0,0,,44960,4548,10,0,0,0,5
+gemma-4-E2B,M2,on,False,4,3,3,0,0.0,27975,5484,5,3,0,0,0
+gemma-4-E2B,M2,on,False,14,10,9,5,0.771,66395,6442,10.9,5,0,0,19
+gemma-4-E2B,M3,on,False,6,6,6,1,0.0,39785,5128,8.7,6,0,11,1
+gemma-4-E2B,M3,on,False,13,9,9,0,0.588,54970,5791,12,5,0,10,24
+gemma-4-E4B,M3,on,False,2,1,1,0,0.0,24597,7503,4,1,0,1,0

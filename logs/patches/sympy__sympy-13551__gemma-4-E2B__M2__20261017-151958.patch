@@ -1,0 +1,13 @@
+diff --git a/sympy/concrete/products.py b/sympy/concrete/products.py
+index 66aafde2d6..6c9ca6d383 100644
+--- a/sympy/concrete/products.py
++++ b/sympy/concrete/products.py
+@@ -209,6 +209,8 @@ def doit(self, **hints):
+         f = self.function
+         for index, limit in enumerate(self.limits):
+             i, a, b = limit
++            if b <= a:
++                return S.One
+             dif = b - a
+             if dif.is_Integer and dif < 0:
+                 a, b = b + 1, a - 1

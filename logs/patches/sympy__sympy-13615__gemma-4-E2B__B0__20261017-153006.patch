@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..609265b797 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -183,6 +183,8 @@ def complement(self, universe):
+         UniversalSet() \ Interval(0, 1)
+ 
+         """
++        if isinstance(self, FiniteSet) and isinstance(universe, Interval):
++            return universe - self
+         return Complement(universe, self)
+ 
+     def _complement(self, other):

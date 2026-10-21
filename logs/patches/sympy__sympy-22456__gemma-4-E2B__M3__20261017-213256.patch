@@ -1,0 +1,23 @@
+diff --git a/sympy/codegen/ast.py b/sympy/codegen/ast.py
+index a02714b174..4b218f807b 100644
+--- a/sympy/codegen/ast.py
++++ b/sympy/codegen/ast.py
+@@ -257,16 +257,10 @@ def __new__(cls, *args, **kwargs):
+     def __eq__(self, other):
+         if not isinstance(other, self.__class__):
+             return False
+-        for attr in self.__slots__:
+-            if getattr(self, attr) != getattr(other, attr):
+-                return False
+-        return True
+-
+-    def _hashable_content(self):
+-        return tuple([getattr(self, attr) for attr in self.__slots__])
++        return self.text == other.text
+ 
+     def __hash__(self):
+-        return super().__hash__()
++        return hash(self.text)
+ 
+     def _joiner(self, k, indent_level):
+         return (',\n' + ' '*indent_level) if k in self.indented_args else ', '

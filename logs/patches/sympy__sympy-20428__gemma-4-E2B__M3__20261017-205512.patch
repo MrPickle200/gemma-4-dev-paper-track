@@ -1,0 +1,14 @@
+diff --git a/sympy/polys/polytools.py b/sympy/polys/polytools.py
+index 70112de3b6..85d2c26495 100644
+--- a/sympy/polys/polytools.py
++++ b/sympy/polys/polytools.py
+@@ -2244,6 +2244,9 @@ def clear_denoms(self, convert=False):
+             dom = f.rep.dom.get_ring()
+ 
+         if hasattr(f.rep, 'clear_denoms'):
++            terms = f.rep.terms
++            filtered_terms = [t for t in terms if t.coeff != 0]
++            f.rep = f.rep.make(filtered_terms, f.rep.exp, f.rep.dom)
+             coeff, result = f.rep.clear_denoms()
+         else:  # pragma: no cover
+             raise OperationNotSupported(f, 'clear_denoms')

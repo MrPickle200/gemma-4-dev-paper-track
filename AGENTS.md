@@ -13,7 +13,13 @@ Research project: a **micro-model-native harness** for Gemma 4 E2B/E4B on SWE-be
    ```
 2. **Report at every step.** After each action, state what changed, what the output proved, and what is next.
 3. Keep changes minimal and consistent with existing scripts; do not add frameworks or abstractions.
-4. Never commit model weights, `data/`, `logs/`, `.venv/`, or `tools/downloads/`.
+4. Never commit model weights, environments, or regenerable checkouts: `models/`, `.venv/`,
+   `repos/`, `worktrees/`, `tools/downloads/`, and server/console logs (`logs/*.log`,
+   `logs/*.log.*`, `logs/*.bak`). **Do commit the run evidence:** `logs/runs/*.jsonl` traces and
+   `logs/patches/*.patch` diffs are the primary record behind every reported number, and the
+   aggregate `logs/*.csv` tables are cited by `E2B_DIAGNOSTICS_REPORT.md`. `data/subset_50*.json`
+   (the task definition) is tracked for the same reason. The evidence is deliberately public so
+   any number in the report can be recomputed from `scripts/diagnostics_e2b.py`.
 
 ## Environment (this machine, verified)
 
@@ -55,7 +61,7 @@ repos/<owner>__<name>   full clones (gitignored)
 worktrees/<instance_id> per-task checkouts, created and removed per run (gitignored)
 models/*.gguf           Gemma 4 weights (gitignored)
 tools/llama.cpp/        llama-server.exe (gitignored)
-logs/runs/*.jsonl       one trace per run; logs/patches/*.patch the model's diff
+logs/runs/*.jsonl       one trace per run; logs/patches/*.patch the model's diff (committed evidence)
 ```
 
 ## Common commands

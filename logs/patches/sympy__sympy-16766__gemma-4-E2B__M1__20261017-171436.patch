@@ -1,0 +1,15 @@
+diff --git a/sympy/printing/pycode.py b/sympy/printing/pycode.py
+index a3f0310735..7bdcd081ce 100644
+--- a/sympy/printing/pycode.py
++++ b/sympy/printing/pycode.py
+@@ -249,7 +249,9 @@ def _print_Piecewise(self, expr):
+             result.append(' else None)')
+         return ''.join(result)
+ 
+-    def _print_Relational(self, expr):
++    def _print_Indexed(self, expr):
++        base, *index = expr.args
++        return "{}[{}]".format(str(base), ", ".join([self._print(ind) for ind in index]))
+         "Relational printer for Equality and Unequality"
+         op = {
+             '==' :'equal',

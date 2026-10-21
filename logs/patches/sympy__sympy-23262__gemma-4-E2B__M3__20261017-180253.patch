@@ -1,0 +1,13 @@
+diff --git a/sympy/utilities/lambdify.py b/sympy/utilities/lambdify.py
+index da67263b19..ff3cb711b7 100644
+--- a/sympy/utilities/lambdify.py
++++ b/sympy/utilities/lambdify.py
+@@ -1033,7 +1033,7 @@ def sub_expr(expr, dummies_dict):
+         # list is not sympified to Basic
+         elif isinstance(expr, list):
+             expr = [sub_expr(a, dummies_dict) for a in expr]
+-        return expr
++        return expr if not args else (expr,)
+ 
+     # Transform args
+     def isiter(l):

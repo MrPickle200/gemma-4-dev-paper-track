@@ -1,0 +1,13 @@
+diff --git a/sympy/physics/units/unitsystem.py b/sympy/physics/units/unitsystem.py
+index a436880c4b..ac5cb6d4b8 100644
+--- a/sympy/physics/units/unitsystem.py
++++ b/sympy/physics/units/unitsystem.py
+@@ -155,7 +155,7 @@ def _collect_factor_and_dimension(self, expr):
+         """
+         from sympy.physics.units import Quantity
+         if isinstance(expr, Quantity):
+-            return expr.scale_factor, expr.dimension
++            return expr.scale_factor, self.get_dimension_system()._quantity_dimension_map[expr.dimension]
+         elif isinstance(expr, Mul):
+             factor = 1
+             dimension = Dimension(1)

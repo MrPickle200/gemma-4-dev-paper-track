@@ -651,8 +651,28 @@ clean 2-message Phase-2 context and the file is edited.
   `get_repo_map` again before editing the locked file successfully.
 - `tests/test_diagnostics.py` pins the taxonomy mapping and the symbol normalisation, and runs the
   generator end-to-end over synthetic traces (including a grid with no M2 cells and no M3 cells).
-  `pytest tests` is 34/34. The grid traces themselves stay uncommitted (AGENTS.md rule 4), so the
-  report is reproducible on this machine but not from a fresh clone.
+  `pytest tests` is 34/34. The grid traces were uncommitted when this was written (AGENTS.md rule 4
+  as it then stood); that rule changed the same day - see "Repo policy" below.
+
+## Bước 5, diagnostics: the E2B grid is committed as evidence (2026-10-21)
+
+- Reversal of the line above: the grid's traces and patches are now tracked - `logs/runs/*.jsonl`
+  (373 files, 19.5 MB), `logs/patches/*.patch` (367 files, 0.11 MB) and the four aggregate
+  `logs/*.csv` tables. A fresh clone regenerates `E2B_DIAGNOSTICS_REPORT.md` with
+  `scripts/diagnostics_e2b.py`, so no number depends on laptop-only state any more.
+- AGENTS.md rule 4 was rewritten to match. It still forbids model weights, `.venv/`, `repos/`,
+  `worktrees/`, `tools/downloads/` and server/console logs (`logs/*.log`, `logs/*.log.*`,
+  `logs/*.bak`), and now names the run evidence as tracked. The 1.8 MB
+  `server-E2B.err.log.starved32768.bak` stays out: console noise, not model behaviour.
+- Pre-commit credential scan over every trace, patch and CSV found none: no `api_key` value, no
+  `Bearer` token, no `sk-` key. The only `Authorization` matches (12 lines) are SWE-bench source
+  text (`Proxy-Authorization` in `requests/auth.py`). `run_start` records `api_key_set` as a
+  boolean plus the (now expired) tunnel `base_url`, never the key itself.
+- Line endings, noticed while staging: the harness writes both `.jsonl` and `.patch` files with
+  CRLF on this machine, and `.gitattributes` (`*.jsonl text eol=lf`, `* text=auto`) stores them as
+  LF in the repository. The traces are unaffected (their newlines are file separators), but a
+  `logs/patches/*.patch` read from a clone on Linux is LF while the local copy is CRLF - the step 5
+  evaluator should take the patch from the trace's `artifacts` field, not assume either ending.
 
 
 

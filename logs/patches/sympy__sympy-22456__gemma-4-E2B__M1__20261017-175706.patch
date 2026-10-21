@@ -1,0 +1,17 @@
+diff --git a/sympy/codegen/ast.py b/sympy/codegen/ast.py
+index a02714b174..f39bd3aee7 100644
+--- a/sympy/codegen/ast.py
++++ b/sympy/codegen/ast.py
+@@ -907,6 +907,12 @@ def _construct_text(cls, text):
+     def _sympystr(self, printer, *args, **kwargs):
+         return self.text
+ 
++    def __call__(self, *args, **kwargs):
++        return self.text
++
++    def __call__(self, *args, **kwargs):
++        return self.text
++
+ 
+ class QuotedString(String):
+     """ Represents a string which should be printed with quotes. """

@@ -1,0 +1,13 @@
+diff --git a/sympy/functions/special/zeta_functions.py b/sympy/functions/special/zeta_functions.py
+index b8e2b66195..150a7e02b7 100644
+--- a/sympy/functions/special/zeta_functions.py
++++ b/sympy/functions/special/zeta_functions.py
+@@ -196,6 +196,8 @@ def _eval_rewrite_as_zeta(self, z, s, a):
+         return self._eval_rewrite_helper(z, s, a, zeta)
+ 
+     def _eval_rewrite_as_polylog(self, z, s, a):
++        if a == 1 and s == 1:
++            return -log(1 - z)
+         return self._eval_rewrite_helper(z, s, a, polylog)
+ 
+ ###############################################################################

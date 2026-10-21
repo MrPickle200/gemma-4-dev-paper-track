@@ -1,0 +1,13 @@
+diff --git a/sympy/core/add.py b/sympy/core/add.py
+index 83a5f2aedc..69bd7a012a 100644
+--- a/sympy/core/add.py
++++ b/sympy/core/add.py
+@@ -194,6 +194,8 @@ def flatten(cls, seq):
+             # s is an expression with number factor extracted
+             # let's collect terms with the same s, so e.g.
+             # 2*x**2 + 3*x**2  ->  5*x**2
++            if c is S.Zero:
++                continue
+             if s in terms:
+                 terms[s] += c
+                 if terms[s] is S.NaN:

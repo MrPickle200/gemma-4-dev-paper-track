@@ -1,0 +1,13 @@
+diff --git a/sklearn/metrics/_ranking.py b/sklearn/metrics/_ranking.py
+index 0cdead9233..b81f70e8e5 100644
+--- a/sklearn/metrics/_ranking.py
++++ b/sklearn/metrics/_ranking.py
+@@ -1103,6 +1103,8 @@ def roc_curve(
+     else:
+         tpr = tps / tps[-1]
+ 
++    thresholds = np.minimum(thresholds, 1.0)
++
+     return fpr, tpr, thresholds
+ 
+ 

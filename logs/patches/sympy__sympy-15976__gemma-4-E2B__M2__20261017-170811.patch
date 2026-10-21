@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..77e088104b 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -924,7 +924,7 @@ def mathml(expr, printer='content', **settings):
+      prints Presentation MathML else prints content MathML.
+     """
+     if printer == 'presentation':
+-        return MathMLPresentationPrinter(settings).doprint(expr)
++        return MathMLPresentationPrinter(settings={'symbol_rendering': 'standard'}).doprint(expr)
+     else:
+         return MathMLContentPrinter(settings).doprint(expr)
+ 

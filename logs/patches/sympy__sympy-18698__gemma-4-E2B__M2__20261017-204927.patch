@@ -1,0 +1,31 @@
+diff --git a/sympy/polys/polytools.py b/sympy/polys/polytools.py
+index c9e77a901f..5e482ec521 100644
+--- a/sympy/polys/polytools.py
++++ b/sympy/polys/polytools.py
+@@ -5989,14 +5989,21 @@ def _generic_factor_list(expr, gens, args, method):
+ 
+         _opt = opt.clone(dict(expand=True))
+ 
++        factors_map = {}
+         for factors in (fp, fq):
+-            for i, (f, k) in enumerate(factors):
++            for f, k in factors:
+                 if not f.is_Poly:
+                     f, _ = _poly_from_expr(f, _opt)
+-                    factors[i] = (f, k)
+-
+-        fp = _sorted_factors(fp, method)
+-        fq = _sorted_factors(fq, method)
++                
++                if f not in factors_map:
++                    factors_map[f] = k
++                else:
++                    factors_map[f] += k
++        
++        factors = [(f, k) for f, k in factors_map.items()]
++        
++        fp = _sorted_factors(factors, method)
++        fq = _sorted_factors(factors, method)
+ 
+         if not opt.polys:
+             fp = [(f.as_expr(), k) for f, k in fp]

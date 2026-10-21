@@ -8,6 +8,8 @@ __pycache__/
 *.pyc
 .hf_cache/
 
-# keep logs/runs/*.jsonl (traces) and logs/patches/*.patch as research evidence;
-# drop the noisy server/console logs at the root of logs/
+# keep logs/runs/*.jsonl (traces), logs/patches/*.patch and logs/*.csv (aggregates) as research
+# evidence - they are committed; drop the noisy server/console logs at the root of logs/
 logs/*.log
+logs/*.log.*
+logs/*.bak

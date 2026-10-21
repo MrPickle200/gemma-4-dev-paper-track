@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..2710e8f5e9 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -1728,6 +1728,8 @@ def reduce(A, B):
+         result = B._complement(A)
+         if result != None:
+             return result
++        elif isinstance(B, Interval) and isinstance(A, FiniteSet):
++            return A - B
+         else:
+             return Complement(A, B, evaluate=False)
+ 

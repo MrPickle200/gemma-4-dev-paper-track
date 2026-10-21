@@ -1,0 +1,13 @@
+diff --git a/sklearn/grid_search.py b/sklearn/grid_search.py
+index 6ba673d2fb..4850d94162 100644
+--- a/sklearn/grid_search.py
++++ b/sklearn/grid_search.py
+@@ -18,6 +18,8 @@ import operator
+ import warnings
+ 
+ import numpy as np
++import time
++import time
+ 
+ from .base import BaseEstimator, is_classifier, clone
+ from .base import MetaEstimatorMixin

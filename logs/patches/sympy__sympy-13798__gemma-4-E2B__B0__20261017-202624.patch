@@ -1,0 +1,15 @@
+diff --git a/sympy/printing/latex.py b/sympy/printing/latex.py
+index ad4d7d9613..6a91d7e727 100644
+--- a/sympy/printing/latex.py
++++ b/sympy/printing/latex.py
+@@ -1804,7 +1804,9 @@ def _print_RootSum(self, expr):
+         else:
+             return r"\operatorname{%s} {\left(%s\right)}" % (cls, ", ".join(args))
+ 
+-    def _print_PolyElement(self, poly):
++    def _print_PolyElement(self, poly, mul_symbol=None):
++        mul_symbol = mul_symbol if mul_symbol is not None else self._settings['mul_symbol_latex']
++        return poly.str(self, PRECEDENCE, \"{%s}^{%d}\", mul_symbol)
+         mul_symbol = self._settings['mul_symbol_latex']
+         return poly.str(self, PRECEDENCE, "{%s}^{%d}", mul_symbol)
+ 

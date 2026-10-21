@@ -1,0 +1,13 @@
+diff --git a/sympy/core/numbers.py b/sympy/core/numbers.py
+index 79f6a7d165..bbba29c073 100644
+--- a/sympy/core/numbers.py
++++ b/sympy/core/numbers.py
+@@ -1868,6 +1868,8 @@ def __eq__(self, other):
+         if not isinstance(other, Number):
+             # S(0) == S.false is False
+             # S(0) == False is True
++            if self == S.Zero and other is S.false:
++                return True
+             return False
+         if not self:
+             return not other

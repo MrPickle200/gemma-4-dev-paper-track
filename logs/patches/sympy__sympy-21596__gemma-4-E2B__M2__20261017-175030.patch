@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 9f19ecf2ab..16789a877b 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -376,6 +376,8 @@ def is_subset(self, other):
+             return False
+ 
+         # Dispatch on subclass rules
++        if other == S.Reals:
++            return self.is_real_set()
+         ret = self._eval_is_subset(other)
+         if ret is not None:
+             return ret

@@ -1,0 +1,13 @@
+diff --git a/sympy/functions/special/zeta_functions.py b/sympy/functions/special/zeta_functions.py
+index b8e2b66195..3862b9cf05 100644
+--- a/sympy/functions/special/zeta_functions.py
++++ b/sympy/functions/special/zeta_functions.py
+@@ -119,6 +119,8 @@ def _eval_expand_func(self, **hints):
+         from sympy import exp, I, floor, Add, Poly, Dummy, exp_polar, unpolarify
+         z, s, a = self.args
+         if z == 1:
++            if a == 1:
++                return -log(1 - z)
+             return zeta(s, a)
+         if s.is_Integer and s <= 0:
+             t = Dummy('t')

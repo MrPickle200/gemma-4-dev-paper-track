@@ -1,0 +1,14 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..338824c537 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -163,8 +163,7 @@ def mathml_tag(self, e):
+             if n in translate:
+                 return translate[n]
+         # Not found in the MRO set
+-        n = e.__class__.__name__
+-        return n.lower()
++        return 'symbol'
+ 
+     def _print_Mul(self, expr):
+ 

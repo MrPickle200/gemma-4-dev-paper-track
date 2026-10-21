@@ -1,0 +1,26 @@
+diff --git a/sympy/printing/repr.py b/sympy/printing/repr.py
+index c936a692c0..a8b35dbe7d 100644
+--- a/sympy/printing/repr.py
++++ b/sympy/printing/repr.py
+@@ -38,11 +38,21 @@ def emptyPrinter(self, expr):
+             return expr
+         elif hasattr(expr, "__srepr__"):
+             return expr.__srepr__()
++        elif isinstance(expr, set):
++            elements = [self._print(o) for o in expr]
++            return '{' + ', '.join(elements) + '}'
++        elif isinstance(expr, dict):
++            items = [f"{k}: {self._print(v)}" for k, v in expr.items()]
++            return '{' + ', '.join(items) + '}'
+         elif hasattr(expr, "args") and hasattr(expr.args, "__iter__"):
+             l = []
+             for o in expr.args:
+                 l.append(self._print(o))
+             return expr.__class__.__name__ + '(%s)' % ', '.join(l)
++            l = []
++            for o in expr.args:
++                l.append(self._print(o))
++            return expr.__class__.__name__ + '(%s)' % ', '.join(l)
+         elif hasattr(expr, "__module__") and hasattr(expr, "__name__"):
+             return "<'%s.%s'>" % (expr.__module__, expr.__name__)
+         else:

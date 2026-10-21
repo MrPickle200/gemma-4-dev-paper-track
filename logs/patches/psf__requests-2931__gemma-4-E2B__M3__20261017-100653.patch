@@ -1,0 +1,13 @@
+diff --git a/requests/utils.py b/requests/utils.py
+index 132cd2b5..e9957f5b 100644
+--- a/requests/utils.py
++++ b/requests/utils.py
+@@ -689,6 +689,8 @@ def to_native_string(string, encoding='ascii'):
+     string in the native string type, encoding and decoding where necessary.
+     This assumes ASCII unless told otherwise.
+     """
++    if isinstance(string, bytes):
++        return string
+     out = None
+ 
+     if isinstance(string, builtin_str):

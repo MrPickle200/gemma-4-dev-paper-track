@@ -1,0 +1,31 @@
+diff --git a/sympy/polys/sqfreetools.py b/sympy/polys/sqfreetools.py
+index 1783a7744a..f6b7d7de06 100644
+--- a/sympy/polys/sqfreetools.py
++++ b/sympy/polys/sqfreetools.py
+@@ -400,7 +400,7 @@ def dmp_sqf_list(f, u, K, all=False):
+     if dmp_degree(f, u) <= 0:
+         return coeff, []
+ 
+-    result, i = [], 1
++    result = []
+ 
+     h = dmp_diff(f, 1, u, K)
+     g, p, q = dmp_inner_gcd(f, h, u, K)
+@@ -410,15 +410,13 @@ def dmp_sqf_list(f, u, K, all=False):
+         h = dmp_sub(q, d, u, K)
+ 
+         if dmp_zero_p(h, u):
+-            result.append((p, i))
++            result.append((p, 1))
+             break
+ 
+         g, p, q = dmp_inner_gcd(p, h, u, K)
+ 
+         if all or dmp_degree(g, u) > 0:
+-            result.append((g, i))
+-
+-        i += 1
++            result.append((g, 1))
+ 
+     return coeff, result
+ 

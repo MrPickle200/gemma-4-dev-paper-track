@@ -1,0 +1,14 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..7ee4fdf425 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -54,6 +54,9 @@ def createRawTextNode(data):
+ 
+         self.dom.createTextNode = createRawTextNode
+ 
++        if settings and settings.get('printer') == 'presentation':
++            self.dom.settings['root_notation'] = False
++
+     def doprint(self, expr):
+         """
+         Prints the expression as MathML.

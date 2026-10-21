@@ -1,0 +1,14 @@
+diff --git a/sympy/plotting/experimental_lambdify.py b/sympy/plotting/experimental_lambdify.py
+index 6ba55cdd79..ee4eddbd4b 100644
+--- a/sympy/plotting/experimental_lambdify.py
++++ b/sympy/plotting/experimental_lambdify.py
+@@ -183,8 +183,7 @@ class lambdify(object):
+     def __init__(self, args, expr):
+         self.args = args
+         self.expr = expr
+-        self.lambda_func = experimental_lambdify(args, expr, use_evalf=True,
+-                                                 use_python_cmath=True)
++        self.lambda_func = experimental_lambdify(args, expr, use_evalf=True, use_python_cmath=True, use_python_math=True)
+         self.failure = False
+ 
+     def __call__(self, args):

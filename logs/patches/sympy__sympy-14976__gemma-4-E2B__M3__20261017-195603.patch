@@ -1,0 +1,13 @@
+diff --git a/sympy/plotting/experimental_lambdify.py b/sympy/plotting/experimental_lambdify.py
+index 6ba55cdd79..eb8e19c5f2 100644
+--- a/sympy/plotting/experimental_lambdify.py
++++ b/sympy/plotting/experimental_lambdify.py
+@@ -216,7 +216,7 @@ def __call__(self, args):
+                                                in str(e)):
+                 self.lambda_func = experimental_lambdify(self.args, self.expr,
+                                                          use_evalf=True,
+-                                                         use_python_math=True)
++                                                         use_python_cmath=True)
+                 result = self.lambda_func(args.real)
+                 return result
+             else:

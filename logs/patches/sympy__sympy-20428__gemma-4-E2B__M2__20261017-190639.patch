@@ -1,0 +1,13 @@
+diff --git a/sympy/polys/polyclasses.py b/sympy/polys/polyclasses.py
+index 238a0f0b25..a0fde2b4e1 100644
+--- a/sympy/polys/polyclasses.py
++++ b/sympy/polys/polyclasses.py
+@@ -585,6 +585,8 @@ def l1_norm(f):
+ 
+     def clear_denoms(f):
+         """Clear denominators, but keep the ground domain. """
++        if f.is_zero():
++            return S.One, f.per(DMP([], f.dom, f.lev, f.ring))
+         coeff, F = dmp_clear_denoms(f.rep, f.lev, f.dom)
+         return coeff, f.per(F)
+ 

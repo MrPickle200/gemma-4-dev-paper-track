@@ -1,0 +1,13 @@
+diff --git a/sympy/functions/special/zeta_functions.py b/sympy/functions/special/zeta_functions.py
+index b8e2b66195..08c65ab230 100644
+--- a/sympy/functions/special/zeta_functions.py
++++ b/sympy/functions/special/zeta_functions.py
+@@ -298,6 +298,8 @@ def _eval_expand_func(self, **hints):
+             for _ in range(-s):
+                 start = u*start.diff(u)
+             return expand_mul(start).subs(u, z)
++        if s == 2:
++            return -log(2)**2/2 + pi**2/12
+         return polylog(s, z)
+ 
+ ###############################################################################

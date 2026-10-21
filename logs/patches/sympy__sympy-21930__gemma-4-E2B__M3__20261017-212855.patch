@@ -1,0 +1,12 @@
+diff --git a/sympy/physics/quantum/commutator.py b/sympy/physics/quantum/commutator.py
+index bdbcc4bb42..4ab7bd7466 100644
+--- a/sympy/physics/quantum/commutator.py
++++ b/sympy/physics/quantum/commutator.py
+@@ -231,5 +231,5 @@ def _pretty(self, printer, *args):
+         return pform
+ 
+     def _latex(self, printer, *args):
+-        return "\\left[%s,%s\\right]" % tuple([
+-            printer._print(arg, *args) for arg in self.args])
++        args_str = ", ".join([printer._print(arg, *args) for arg in self.args])
++        return "\\left\{%s\\right]" % args_str

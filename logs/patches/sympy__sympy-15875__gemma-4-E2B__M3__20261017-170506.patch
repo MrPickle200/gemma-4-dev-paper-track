@@ -1,0 +1,13 @@
+diff --git a/sympy/core/add.py b/sympy/core/add.py
+index 83a5f2aedc..7a2a1b9edb 100644
+--- a/sympy/core/add.py
++++ b/sympy/core/add.py
+@@ -280,6 +280,8 @@ def flatten(cls, seq):
+         if noncommutative:
+             return [], newseq, None
+         else:
++            if coeff is S.Zero:
++                return [], [], None
+             return newseq, [], None
+ 
+     @classmethod

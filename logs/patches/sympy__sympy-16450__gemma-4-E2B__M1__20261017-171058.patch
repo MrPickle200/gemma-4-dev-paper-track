@@ -1,0 +1,13 @@
+diff --git a/sympy/simplify/simplify.py b/sympy/simplify/simplify.py
+index c6b511f206..c224867e36 100644
+--- a/sympy/simplify/simplify.py
++++ b/sympy/simplify/simplify.py
+@@ -252,7 +252,7 @@ def posify(eq):
+         return f(eq), {r: s for s, r in reps.items()}
+ 
+     reps = {s: Dummy(s.name, positive=True)
+-                 for s in eq.free_symbols if s.is_positive is None}
++                 for s in eq.free_symbols if s.is_positive is None and not s.is_finite}
+     eq = eq.subs(reps)
+     return eq, {r: s for s, r in reps.items()}
+ 

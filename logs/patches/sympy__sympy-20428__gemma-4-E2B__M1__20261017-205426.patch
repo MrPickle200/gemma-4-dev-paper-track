@@ -1,0 +1,14 @@
+diff --git a/sympy/polys/densetools.py b/sympy/polys/densetools.py
+index f057824642..e2ed2e7fc0 100644
+--- a/sympy/polys/densetools.py
++++ b/sympy/polys/densetools.py
+@@ -1241,6 +1241,9 @@ def dmp_clear_denoms(f, u, K0, K1=None, convert=False):
+     if not u:
+         return dup_clear_denoms(f, K0, K1, convert=convert)
+ 
++    if f.rep.is_zero():
++        return K1.one, f
++
+     if K1 is None:
+         if K0.has_assoc_Ring:
+             K1 = K0.get_ring()

@@ -1,0 +1,12 @@
+diff --git a/sympy/polys/sqfreetools.py b/sympy/polys/sqfreetools.py
+index 1783a7744a..0e10a326e9 100644
+--- a/sympy/polys/sqfreetools.py
++++ b/sympy/polys/sqfreetools.py
+@@ -332,6 +332,7 @@ def dup_sqf_list(f, K, all=False):
+ 
+         i += 1
+ 
++    result.sort(key=lambda x: x[0])
+     return coeff, result
+ 
+ 

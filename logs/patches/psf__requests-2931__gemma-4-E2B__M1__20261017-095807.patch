@@ -1,0 +1,14 @@
+diff --git a/requests/utils.py b/requests/utils.py
+index 132cd2b5..1c6deeab 100644
+--- a/requests/utils.py
++++ b/requests/utils.py
+@@ -684,6 +684,9 @@ def get_auth_from_url(url):
+ 
+ 
+ def to_native_string(string, encoding='ascii'):
++    if isinstance(string, bytes):
++        return string.decode(encoding)
++    return string
+     """
+     Given a string object, regardless of type, returns a representation of that
+     string in the native string type, encoding and decoding where necessary.

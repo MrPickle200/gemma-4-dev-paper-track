@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/str.py b/sympy/printing/str.py
+index cc1d19fcce..81b518b957 100644
+--- a/sympy/printing/str.py
++++ b/sympy/printing/str.py
+@@ -56,6 +56,8 @@ def _print_Add(self, expr, order=None):
+         l = []
+         for term in terms:
+             t = self._print(term)
++            if self._settings.get("sympy_integers", False) and isinstance(term, Rational):
++                t = 'S(%s)' % t
+             if t.startswith('-'):
+                 sign = "-"
+                 t = t[1:]
