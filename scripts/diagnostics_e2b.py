@@ -1,6 +1,6 @@
 """Generate E2B_DIAGNOSTICS_REPORT.md from the run traces (DIAGNOSTICS_SPEC.md).
 
-The report is a *derived artefact*: every number comes from logs/runs/*.jsonl, using the same
+The report is a *derived artefact*: every number comes from experiments/<tag>/runs/*.jsonl, using the same
 selection rule as the ablation table (one trace per cell, newest wins, infrastructure failures
 excluded). That rule matters more here than anywhere else: the spec asks for sample sizes per
 context bin, because a 78% failure rate computed over 18 calls is not the same claim as one
@@ -92,8 +92,10 @@ def taxonomy(name: str, status: str | None, error: str | None) -> str | None:
 
 
 def select(model: str, thinking: str, max_turns: int,
-           pattern: str = "logs/runs/*.jsonl") -> tuple[dict, Counter]:
+           pattern: str | None = None) -> tuple[dict, Counter]:
     """Newest scoreable trace per (instance, variant), plus counts of what was dropped."""
+    if pattern is None:
+        pattern = str(config.RUNS / "*.jsonl")
     cells: dict[tuple, tuple] = {}
     dropped: Counter = Counter()
     for path in sorted(glob.glob(str(ROOT / pattern))):
@@ -176,11 +178,11 @@ def main() -> int:
     ap.add_argument("--max-turns", type=int, default=15)
     ap.add_argument("--out", default=None,
                     help="report path (default: E2B_DIAGNOSTICS_REPORT.md, or DIAGNOSTICS.md "
-                         "inside logs/experiments/<TAG>/ when --experiment is used)")
-    ap.add_argument("--glob", default="logs/runs/*.jsonl",
+                         "inside experiments/<TAG>/ when --experiment is used)")
+    ap.add_argument("--glob", default=str(config.RUNS / "*.jsonl"),
                     help="trace glob, relative to the repo root")
     ap.add_argument("--experiment", default=None,
-                    help="read logs/experiments/<TAG>/runs/*.jsonl and write the report there")
+                    help="read experiments/<TAG>/runs/*.jsonl and write the report there")
     args = ap.parse_args()
     if args.experiment:
         args.glob = str(config.EXPERIMENTS / args.experiment / "runs" / "*.jsonl")

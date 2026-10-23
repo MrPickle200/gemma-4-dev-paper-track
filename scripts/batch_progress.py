@@ -1,7 +1,7 @@
 """Bước 4 batch progress snapshot: grid cells done per variant, plus server health.
 
 Used both by the 15-minute trigger and for manual checks. Prints one block; with --append it
-also appends that block (timestamped) to logs/batch_progress.log, so the trail survives even if
+also appends that block (timestamped) to experiments/batch_progress.log, so the trail survives even if
 the console is gone.
 
 Usage:
@@ -31,7 +31,7 @@ for _stream in (sys.stdout, sys.stderr):
         _stream.reconfigure(encoding="utf-8", errors="replace")
 
 SUBSET = ROOT / "data" / "subset_50.json"
-PROGRESS_LOG = ROOT / "logs" / "batch_progress.log"
+PROGRESS_LOG = ROOT / "experiments" / "batch_progress.log"
 
 
 def _matches(cfg: dict, model: str, thinking: str, max_turns: int) -> bool:
@@ -95,8 +95,8 @@ def server_state(base_url: str) -> str:
 def build_report(args) -> str:
     n_tasks = len(json.loads(SUBSET.read_text(encoding="utf-8")))
     cells = n_tasks * len(args.variants)
-    runs_dir = (ROOT / "logs" / "experiments" / args.experiment / "runs"
-                if args.experiment else ROOT / "logs" / "runs")
+    runs_dir = (ROOT / "experiments" / args.experiment / "runs"
+                if args.experiment else ROOT / "experiments" / "_default" / "runs")
     rows = grid_stats(args.model, args.variants, args.thinking, args.max_turns, runs_dir)
     done = sum(r["done"] for r in rows.values())
 
@@ -122,9 +122,9 @@ def main() -> int:
     ap.add_argument("--thinking", default="on")
     ap.add_argument("--max-turns", type=int, default=15)
     ap.add_argument("--base-url", default="http://127.0.0.1:8080")
-    ap.add_argument("--experiment", help="count cells in logs/experiments/<TAG>/runs instead")
+    ap.add_argument("--experiment", help="count cells in experiments/<TAG>/runs instead")
     ap.add_argument("--delay", type=int, default=0, help="seconds to wait before reporting (timer mode)")
-    ap.add_argument("--append", action="store_true", help="also append the report to logs/batch_progress.log")
+    ap.add_argument("--append", action="store_true", help="also append the report to experiments/batch_progress.log")
     args = ap.parse_args()
 
     if args.delay > 0:

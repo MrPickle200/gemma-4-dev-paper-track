@@ -53,7 +53,7 @@ action space by AST, force the output through a schema, and compact context at p
 ╚════════════════════════════════════╤════════════════════════════════════╝
                                      │  unified diff
                                      ▼
-                           logs/patches/<run_id>.patch
+                           experiments/<tag>/patches/<run_id>.patch
 ```
 
 | # | Variant | Navigation | Editing | Context | Isolates |
@@ -144,8 +144,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 .\.venv\Scripts\python.exe scripts\run_task.py --instance-id psf__requests-1724 --thinking on
 
 # 6. read the results
-.\.venv\Scripts\python.exe scripts\summarize_run.py logs\runs\<run>.jsonl --show-tool apply_edit
-.\.venv\Scripts\python.exe scripts\summarize_batch.py --csv logs\batch.csv
+.\.venv\Scripts\python.exe scripts\summarize_run.py experiments\<tag>\runs\<run>.jsonl --show-tool apply_edit
+.\.venv\Scripts\python.exe scripts\summarize_batch.py --experiment <tag>
 ```
 
 ---
@@ -170,8 +170,8 @@ scripts/summarize_run.py     reads one .jsonl trace
 scripts/summarize_batch.py   aggregates runs into the ablation table
 
 data/subset_50.json      the 50 tasks   ·  data/subset_50.meta.json  filter+seed manifest
-logs/runs/*.jsonl        per-turn traces (evidence)
-logs/patches/*.patch     the model's diff, fed to the SWE-bench evaluator
+experiments/<tag>/runs/*.jsonl   per-turn traces (evidence), one directory per experiment
+experiments/<tag>/patches/*.patch  the model's diff, fed to the SWE-bench evaluator
 repos/ · worktrees/      clones + per-task detached checkouts (regenerated, not committed)
 ```
 

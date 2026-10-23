@@ -873,3 +873,33 @@ sklearn-9288` (M3).
 - Evidence: `logs/experiments/<tag>/predictions/` (one file per cell),
   `reports/*.json` (one per cell) and `swebench_results.csv`. The per-instance Docker logs
   under `logs/run_evaluation/` are gitignored and reproducible with `--force`.
+
+### 2026-10-23 - directory layout: `logs/` retired, `experiments/<tag>/` is the only tree
+
+`logs/` no longer exists. The first level under `experiments/` is the experiment name and the
+second level is everything belonging to it:
+
+```
+experiments/<tag>/runs/  patches/  predictions/  reports/  run_evaluation/
+                  manifest.json  results.csv  DIAGNOSTICS.md  swebench_results.csv
+```
+
+- `harness/config.py`: `EXPERIMENTS = ROOT/"experiments"`; `RUNS`/`PATCHES` now default to
+  `experiments/_default/{runs,patches}` (scratch, only reachable without `--experiment`).
+- `scripts/plot_metric4.py`, `batch_progress.py`, `build_predictions.py`, `run_swebench_eval.py`,
+  `split_predictions.py` follow the new root; `summarize_batch.py`/`diagnostics_e2b.py` take their
+  default glob from `config.RUNS` instead of a literal `logs/runs/*.jsonl`.
+- swebench hardcodes `logs/run_evaluation/<run_id>`; `run_swebench_eval.py` moves each run's log
+  directory into `experiments/<tag>/run_evaluation/` after the cell finishes and removes the empty
+  `logs/` shell, verified by re-running E2B/M3 with `--force`: `logs/` does not exist afterwards and
+  all four `swe-20261023-e2b-grid-*` directories sit inside the bundle.
+- `experiments/README.md` rewritten for the new layout; AGENTS.md rules 4/5, the layout table, the
+  command block and README.md updated. `.gitignore` ignores `experiments/**/run_evaluation/` and any
+  console log under `experiments/`.
+- The 16 historical console logs previously tracked inside
+  `experiments/20261017-original-e2b/*.log` (batch/server/first-run logs) are no longer tracked, per
+  rule 5: `git add -A` skipped them once the recursive ignore rule existed. The files stay on disk
+  and remain in git history; the traces and patches of that bundle are untouched, so no number
+  depends on them.
+- `pytest tests` 56/56 after the move; `summarize_batch.py --experiment 20261023-e2b-grid` and
+  `run_swebench_eval.py --experiment ... --merge-only` reproduce the same tables as before.

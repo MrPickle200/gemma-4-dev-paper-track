@@ -1,4 +1,4 @@
-"""Aggregate every run in logs/runs/*.jsonl into an ablation table.
+"""Aggregate every run in experiments/<tag>/runs/*.jsonl into an ablation table.
 
 Seeds the Bước 5 table in IDEA.md §4: per (model, variant, thinking) group it reports the
 run count, how many runs produced an edit, malformed edit rate, total and peak context
@@ -7,7 +7,8 @@ reported later, not here.
 
 Usage:
   .\\.venv\\Scripts\\python.exe scripts\\summarize_batch.py
-  .\\.venv\\Scripts\\python.exe scripts\\summarize_batch.py --csv logs\\batch.csv
+  .\\.venv\\Scripts\\python.exe scripts\\summarize_batch.py --experiment 20261023-e2b-grid
+  .\\.venv\\Scripts\\python.exe scripts\\summarize_batch.py --experiment 20261023-e2b-grid --csv experiments\\20261023-e2b-grid\\results.csv
 """
 
 from __future__ import annotations
@@ -41,8 +42,8 @@ def load(path: str) -> tuple[dict, dict, list[dict]]:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--glob", default="logs/runs/*.jsonl")
-    ap.add_argument("--experiment", help="read logs/experiments/<TAG>/runs/*.jsonl instead")
+    ap.add_argument("--glob", default=str(config.RUNS / "*.jsonl"))
+    ap.add_argument("--experiment", help="read experiments/<TAG>/runs/*.jsonl instead")
     ap.add_argument("--csv", help="also write the table to this CSV path")
     ap.add_argument("--thinking", choices=["on", "off", "auto"],
                     help="only runs with this thinking setting (the grid's other settings are probes)")

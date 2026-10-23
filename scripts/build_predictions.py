@@ -35,7 +35,7 @@ def main():
     ap.add_argument("--out-dir", default=None)
     a = ap.parse_args()
 
-    root = os.path.join("logs", "experiments", a.experiment)
+    root = os.path.join("experiments", a.experiment)
     out_dir = a.out_dir or os.path.join(root, "predictions")
     os.makedirs(out_dir, exist_ok=True)
 

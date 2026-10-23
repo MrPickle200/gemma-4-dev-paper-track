@@ -6,7 +6,7 @@ tunnel, see colab/README.md). The harness only ever speaks OpenAI-compatible HTT
 interchangeable; run_start records `base_url` so the traces can be told apart afterwards.
 
 The grid is resumable: before each (task, variant) cell it looks for a *completed* trace in
-logs/runs whose config matches (model, variant, thinking, max_turns, line_numbers); if one
+experiments/<tag>/runs whose config matches (model, variant, thinking, max_turns, line_numbers); if one
 exists the cell is skipped. Re-running after an interruption therefore picks up where it left off.
 
 --workers N runs N cells concurrently. This only pays off against a backend with several slots
@@ -50,7 +50,7 @@ for _stream in (sys.stdout, sys.stderr):
 PRINT_LOCK = threading.Lock()
 
 # The per-cell columns of the experiment's results.csv. Fixed order so the file can be opened as a
-# table while the batch is still running, and joined to logs/runs/*.jsonl by run_id afterwards.
+# table while the batch is still running, and joined to experiments/<tag>/runs/*.jsonl by run_id afterwards.
 RESULT_FIELDS = ("ts", "run_id", "instance_id", "variant", "model", "thinking", "stop_reason",
                  "turns_used", "total_tokens", "peak_prompt_tokens", "edits_attempted",
                  "edits_malformed", "edits_syntax_rejected", "edits_noop", "edits_ambiguous",
@@ -123,7 +123,7 @@ def probe_workers(args) -> tuple[int, int | None]:
 
 
 def experiment_dir(args) -> Path:
-    return config.EXPERIMENTS / args.experiment if args.experiment else config.LOGS
+    return config.EXPERIMENTS / (args.experiment or config.DEFAULT_EXPERIMENT)
 
 
 def git_commit() -> str:
@@ -328,8 +328,8 @@ def main() -> int:
     ap.add_argument("--api-key", default=None,
                     help="bearer token when the server was started with --api-key (e.g. over a tunnel)")
     ap.add_argument("--experiment", default=None,
-                    help="write this batch to logs/experiments/<TAG>/ (runs, patches, manifest, "
-                         "results.csv) instead of the shared logs/runs/ + logs/patches/")
+                    help="write this batch to experiments/<TAG>/ (runs, patches, manifest, "
+                         "results.csv) instead of the shared experiments/_default/runs/ + patches/")
     ap.add_argument("--workers", type=int, default=1,
                     help="run this many cells concurrently (needs a multi-slot backend; reduced "
                          "automatically if the server cannot serve that many full windows)")

@@ -7,14 +7,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-LOGS = ROOT / "logs"
-EXPERIMENTS = LOGS / "experiments"
-RUNS = LOGS / "runs"                 # default location, unchanged for the committed E2B grid
-PATCHES = LOGS / "patches"
+# Every run lives under `experiments/<tag>/`: the first level is the experiment name and the
+# second level is everything that belongs to it (runs/, patches/, manifest, tables, reports).
+EXPERIMENTS = ROOT / "experiments"
+DEFAULT_EXPERIMENT = "_default"      # only used when a script is run without --experiment
+RUNS = EXPERIMENTS / DEFAULT_EXPERIMENT / "runs"
+PATCHES = EXPERIMENTS / DEFAULT_EXPERIMENT / "patches"
 WORKTREES = ROOT / "worktrees"
 REPOS = ROOT / "repos"
 
-# The tag of the experiment this process writes into, or None for the default logs/runs.
+# The tag of the experiment this process writes into, or None for `experiments/_default/`.
 # Set through `set_experiment()` (scripts expose it as --experiment) so one batch = one directory.
 EXPERIMENT: str | None = None
 
@@ -22,18 +24,18 @@ VARIANTS = ("B0", "M1", "M2", "M3")
 
 
 def set_experiment(tag: str | None) -> Path:
-    """Write this run's traces and patches under `logs/experiments/<tag>/` and return that dir.
+    """Write this run's traces and patches under `experiments/<tag>/` and return that dir.
 
-    Every batch used to land in the flat `logs/runs/`, so a smoke test, a regression re-run and
+    Every batch used to land in one flat directory, so a smoke test, a regression re-run and
     the full grid were only distinguishable by timestamp inside the file names. An experiment tag
-    keeps its evidence together (runs, patches, manifest, tables, diagnostics report) and lets the
-    aggregate scripts select it with a single `--experiment` instead of a hand-written glob.
-    `tag=None` restores the default paths, which is what the committed E2B grid uses.
+    keeps its evidence together (runs, patches, manifest, tables, diagnostics report, predictions,
+    evaluation reports) and lets the aggregate scripts select it with a single `--experiment`
+    instead of a hand-written glob. `tag=None` falls back to `experiments/_default/`.
     """
     global EXPERIMENT, RUNS, PATCHES
     tag = (tag or "").strip().strip("/\\")
     EXPERIMENT = tag or None
-    base = (EXPERIMENTS / tag) if tag else LOGS
+    base = EXPERIMENTS / (tag or DEFAULT_EXPERIMENT)
     RUNS = base / "runs"
     PATCHES = base / "patches"
     RUNS.mkdir(parents=True, exist_ok=True)

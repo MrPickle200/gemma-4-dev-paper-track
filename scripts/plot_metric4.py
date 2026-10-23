@@ -19,7 +19,7 @@ infrastructure failures excluded), so a run a broken backend killed cannot bias 
 
 Usage:
   .\\.venv\\Scripts\\python.exe scripts\\plot_metric4.py --model gemma-4-E2B
-  .\\.venv\\Scripts\\python.exe scripts\\plot_metric4.py --csv logs\\metric4_e2b.csv
+  .\\.venv\\Scripts\\python.exe scripts\\plot_metric4.py --csv experiments\\20261023-e2b-grid\\metric4.csv
 """
 
 from __future__ import annotations
@@ -115,14 +115,14 @@ def main() -> int:
     ap.add_argument("--variants", nargs="+", default=["B0", "M1", "M2", "M3"])
     ap.add_argument("--thinking", default="on")
     ap.add_argument("--max-turns", type=int, default=15)
-    ap.add_argument("--glob", default="logs/runs/*.jsonl")
-    ap.add_argument("--experiment", help="read logs/experiments/<TAG>/runs/*.jsonl instead")
+    ap.add_argument("--glob", default=str(ROOT / "experiments" / "_default" / "runs" / "*.jsonl"))
+    ap.add_argument("--experiment", help="read experiments/<TAG>/runs/*.jsonl instead")
     ap.add_argument("--csv", help="write the per-bucket numbers to this CSV")
     ap.add_argument("--out", help="write the figure here (default figures/metric4_<model>.png)")
     ap.add_argument("--no-plot", action="store_true", help="numbers only, no figure (no matplotlib)")
     args = ap.parse_args()
     if args.experiment:
-        args.glob = str(ROOT / "logs" / "experiments" / args.experiment / "runs" / "*.jsonl")
+        args.glob = str(ROOT / "experiments" / args.experiment / "runs" / "*.jsonl")
 
     # ---- one trace per cell, newest wins, scoreable only (same rule as summarize_batch) ----
     cells: dict[tuple, tuple] = {}

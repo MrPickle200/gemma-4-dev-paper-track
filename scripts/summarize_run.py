@@ -4,8 +4,8 @@ This is the primitive Bước 5 will aggregate over (IDEA.md §4): resolve rate 
 malformed edit rate, peak context and token totals, and loop/error behaviour.
 
 Usage:
-  .\\.venv\\Scripts\\python.exe scripts\\summarize_run.py logs\\runs\\<run>.jsonl
-  .\\.venv\\Scripts\\python.exe scripts\\summarize_run.py logs\\runs\\<run>.jsonl --show-tool apply_edit
+  .\\.venv\\Scripts\\python.exe scripts\\summarize_run.py experiments\\<tag>\\runs\\<run>.jsonl
+  .\\.venv\\Scripts\\python.exe scripts\\summarize_run.py experiments\\<tag>\\runs\\<run>.jsonl --show-tool apply_edit
 """
 
 from __future__ import annotations

@@ -377,7 +377,7 @@ def test_batch_can_be_pinned_to_an_experiment_directory(tmp_path: Path, monkeypa
         assert cfg.patch_path.parent == base / "patches"
         assert cfg.as_dict()["experiment"] == "smoke-run"
     finally:
-        config.set_experiment(None)          # restore the default logs/runs + logs/patches
+        config.set_experiment(None)          # restore the default experiments/_default/runs + patches
 
 
 def test_manifest_merges_a_resume_instead_of_replacing_the_plan(tmp_path: Path, monkeypatch) -> None:

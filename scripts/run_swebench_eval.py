@@ -26,7 +26,26 @@ def report_path(report_dir, model_name, run_id):
     return os.path.join(report_dir, "{}.{}.json".format(model_name, run_id))
 
 
-def run_one(pred_path, report_dir, run_id, max_workers, timeout):
+def harvest_eval_logs(run_id, log_root):
+    """Move swebench's `logs/run_evaluation/<run_id>` into the experiment bundle."""
+    src = os.path.join("logs", "run_evaluation", run_id)
+    if not os.path.isdir(src):
+        return
+    os.makedirs(log_root, exist_ok=True)
+    dst = os.path.join(log_root, run_id)
+    if os.path.isdir(dst):
+        shutil.rmtree(dst)
+    shutil.move(src, dst)
+    # swebench recreates logs/run_evaluation on every run; drop the empty shell so the repo
+    # keeps a single top-level evidence directory.
+    for d in (os.path.join("logs", "run_evaluation"), os.path.join("logs")):
+        try:
+            os.rmdir(d)
+        except OSError:
+            break
+
+
+def run_one(pred_path, report_dir, run_id, max_workers, timeout, log_root):
     model_name = os.path.basename(pred_path)[: -len(".jsonl")]
     cmd = [
         PYTHON,
@@ -50,6 +69,9 @@ def run_one(pred_path, report_dir, run_id, max_workers, timeout):
     env = dict(os.environ, PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
     print("[eval] {} -> run_id={}".format(model_name, run_id), flush=True)
     proc = subprocess.run(cmd, env=env)
+    # swebench hardcodes its per-instance scratch dir to logs/run_evaluation/<run_id>; move it
+    # under experiments/<tag>/run_evaluation/ so an experiment owns everything about itself.
+    harvest_eval_logs(run_id, log_root)
     out = report_path(report_dir, model_name, run_id)
     if not os.path.exists(out):
         print("[eval] {} produced no report (exit {})".format(model_name, proc.returncode))
@@ -81,9 +103,10 @@ def main():
     ap.add_argument("--only", default=None, help="substring filter on cell file name")
     a = ap.parse_args()
 
-    root = os.path.join("logs", "experiments", a.experiment)
+    root = os.path.join("experiments", a.experiment)
     pred_dir = os.path.join(root, "predictions")
     report_dir = os.path.join(root, "reports")
+    log_root = os.path.join(root, "run_evaluation")
     os.makedirs(report_dir, exist_ok=True)
 
     if not a.merge_only:
@@ -102,7 +125,7 @@ def main():
         run_id = "swe-" + a.experiment + "-" + model_name
         out = report_path(report_dir, model_name, run_id)
         if a.force:
-            for stale in (out, os.path.join("logs", "run_evaluation", run_id)):
+            for stale in (out, os.path.join(log_root, run_id)):
                 if os.path.isdir(stale):
                     shutil.rmtree(stale)
                 elif os.path.exists(stale):
@@ -113,7 +136,7 @@ def main():
                     rows.append(summarize(json.load(f), model_name))
                 print("[skip] {} already has a report".format(model_name))
             continue
-        report = run_one(pred, report_dir, run_id, a.max_workers, a.timeout)
+        report = run_one(pred, report_dir, run_id, a.max_workers, a.timeout, log_root)
         if report is not None:
             rows.append(summarize(report, model_name))
 

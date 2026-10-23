@@ -8,7 +8,7 @@ script slices each such file into N round-robin parts (round-robin keeps every
 part mixed across repos instead of grouping them by instance_id order).
 
     python scripts/split_predictions.py \
-        --pred-dir logs/experiments/20261023-e2b-grid/predictions \
+        --pred-dir experiments/20261023-e2b-grid/predictions \
         --chunks 2 --out-dir D:\\swe\\e2b_parts
 """
 

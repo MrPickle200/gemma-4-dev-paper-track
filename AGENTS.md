@@ -13,20 +13,22 @@ Research project: a **micro-model-native harness** for Gemma 4 E2B/E4B on SWE-be
    ```
 2. **Report at every step.** After each action, state what changed, what the output proved, and what is next.
 3. Keep changes minimal and consistent with existing scripts; do not add frameworks or abstractions.
-4. **Organise every experiment under `logs/experiments/<tag>/`.** Use `run_batch.py --experiment <tag>`
+4. **Organise every experiment under `experiments/<tag>/`.** Use `run_batch.py --experiment <tag>`
    (and `run_task.py --experiment <tag>` for single-cell follow-ups) so traces, patches, manifest,
-   results.csv and DIAGNOSTICS.md land in `logs/experiments/<tag>/{runs,patches}/` together. Never
-   drop experiment traces into the shared `logs/runs/` + `logs/patches/` — those hold only the
-   committed 50-task baseline grid. See `logs/experiments/README.md`.
+   results.csv, DIAGNOSTICS.md, predictions/ and reports/ all land in `experiments/<tag>/` together.
+   The first level under `experiments/` is the experiment name and nothing else; everything that
+   belongs to an experiment sits below its name. Never drop traces into another experiment's
+   `runs/`, and never write to a top-level run directory. See `experiments/README.md`.
 5. Never commit model weights, environments, or regenerable checkouts: `models/`, `.venv/`,
-   `repos/`, `worktrees/`, `tools/downloads/`, and server/console logs (`logs/*.log`,
-   `logs/*.log.*`, `logs/*.bak`). **Do commit the run evidence:** `logs/runs/*.jsonl` traces and
-   `logs/patches/*.patch` diffs are the primary record behind every reported number, and the
-   aggregate `logs/*.csv` tables are cited by `E2B_DIAGNOSTICS_REPORT.md`. `data/subset_50*.json`
-   (the task definition) is tracked for the same reason. The same applies to every experiment
-   directory: `logs/experiments/<tag>/runs/*.jsonl`, `patches/*.patch`, `manifest.json`,
-   `results.csv` and `DIAGNOSTICS.md` are committed together. The evidence is deliberately public
-   so any number in the report can be recomputed from `scripts/diagnostics_e2b.py`.
+   `repos/`, `worktrees/`, `tools/downloads/`, and server/console logs (`experiments/*.log`,
+   `experiments/*.log.*`, `experiments/*.bak`). **Do commit the run evidence:** every file in an
+   experiment bundle is the primary record behind its reported numbers —
+   `experiments/<tag>/runs/*.jsonl`, `patches/*.patch`, `manifest.json`, `results.csv`,
+   `DIAGNOSTICS.md`, `predictions/*.jsonl`, `reports/*.json` and `swebench_results.csv` — except
+   `run_evaluation/`, which is regenerable Docker scratch and gitignored. `data/subset_50*.json`
+   (the task definition) is tracked for the same reason. The evidence is deliberately public so any
+   number in the report can be recomputed from `scripts/diagnostics_e2b.py` or the committed
+   `reports/`.
 
 ## Environment (this machine, verified)
 
@@ -68,9 +70,10 @@ repos/<owner>__<name>   full clones (gitignored)
 worktrees/<instance_id> per-task checkouts, created and removed per run (gitignored)
 models/*.gguf           Gemma 4 weights (gitignored)
 tools/llama.cpp/        llama-server.exe (gitignored)
-logs/runs/*.jsonl       one trace per run; logs/patches/*.patch the model's diff (committed evidence)
-logs/experiments/<tag>/ optional per-experiment bundle: runs/, patches/, manifest.json,
-                        results.csv, DIAGNOSTICS.md (committed; see logs/experiments/README.md)
+experiments/<tag>/      one directory per experiment; everything that belongs to it sits below it:
+                        runs/, patches/, manifest.json, results.csv, DIAGNOSTICS.md,
+                        predictions/, reports/, swebench_results.csv (committed;
+                        run_evaluation/ is gitignored scratch) - see experiments/README.md
 ```
 
 ## Common commands
@@ -98,15 +101,19 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 .\.venv\Scripts\python.exe scripts\check_endpoint.py --base-url <url> --api-key <key>   # verify a backend
 
 # 6. inspect the results
-.\.venv\Scripts\python.exe scripts\summarize_run.py logs\runs\<run>.jsonl --show-tool apply_edit
-.\.venv\Scripts\python.exe scripts\summarize_batch.py --csv logs\batch.csv
+.\.venv\Scripts\python.exe scripts\summarize_run.py experiments\<tag>\runs\<run>.jsonl --show-tool apply_edit
+.\.venv\Scripts\python.exe scripts\summarize_batch.py --experiment <tag>
 
-# 7. a named experiment keeps its evidence out of the committed 50-task grid
-#    (logs/experiments/<tag>/runs|patches, plus manifest.json and results.csv)
+# 7. every run set is a named experiment under experiments/<tag>/
+#    (runs/, patches/, manifest.json, results.csv, DIAGNOSTICS.md, predictions/, reports/)
 .\.venv\Scripts\python.exe scripts\run_batch.py --model gemma-4-E2B --thinking on --workers 4 `
     --experiment 20261021-fixes-smoke-e2b --instance-id psf__requests-1724 --instance-id scikit-learn-13142
 .\.venv\Scripts\python.exe scripts\diagnostics_e2b.py --experiment 20261021-fixes-smoke-e2b
 .\.venv\Scripts\python.exe scripts\summarize_batch.py --experiment 20261021-fixes-smoke-e2b
+
+# 8. Bước 5: SWE-bench resolve rate for one experiment (Docker; ~5 min per 50-task cell)
+.\.venv\Scripts\python.exe scripts\build_predictions.py --experiment 20261023-e2b-grid
+.\.venv\Scripts\python.exe scripts\run_swebench_eval.py --experiment 20261023-e2b-grid --max-workers 4
 ```
 
 ## Bước 2 harness facts
@@ -156,7 +163,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B
 - A turn cut off by the **context limit** returns `finish_reason=length` with no tool call; the loop
   nudges the model and retries (up to 2 times, `length_retry`) instead of ending the run empty-handed.
   Seen on E4B before its context was raised to 32768.
-- A run's diff is written to `logs/patches/<run_id>.patch` — that is the Bước 5 evaluator input.
+- A run's diff is written to `experiments/<tag>/patches/<run_id>.patch` - that is the Bước 5 evaluator input.
 
 ## Execution-layer repairs (2026-10-21, in every variant)
 
@@ -190,8 +197,8 @@ before/after difference as a variant effect.
   malformed call too, not a harness error.
 - `run_batch.py --workers N` halves N until `llm.verify_run_context` passes, so an under-provisioned
   server cannot silently produce `context_exceeded` cells.
-- `--experiment <tag>` sequences evidence under `logs/experiments/<tag>/`; the default paths are
-  unchanged, so committed grid numbers remain reproducible.
+- `--experiment <tag>` sequences evidence under `experiments/<tag>/`; without a tag a script falls
+  back to `experiments/_default/`, so a named bundle is always a deliberate `--experiment`.
 
 ## Bước 5 evaluation facts (2026-10-23, swebench 5.0.2)
 
@@ -213,6 +220,11 @@ before/after difference as a variant effect.
 - Warm evaluation is ~7-20 s per instance, so a 50-cell file takes 4-9 minutes at `--max_workers 4`;
   the first pass pays the image pulls. `--workers` has nothing to do with the 6 GB GPU — this stage
   is CPU/disk bound.
+- **Measured end to end: all 400 cells (8 cells x 50 tasks) took ~40 min**, the 50 image pulls
+  included (E2B 21 min from cold, E4B 15 min with the images cached), deduped disk ~60-70 GB.
+  Do not quote the "5-30 min per instance, days total" figure: that is the *build-from-Dockerfile*
+  flow of the old `princeton-nlp/...` dataset, which this version does not use. Splitting across
+  machines only adds a re-pull of the same 50 images on each machine.
 - Do **not** read "ambiguous failures" as infrastructure faults: the classifier greps for
   `no tests ran` / `ModuleNotFoundError`, which pytest's own test suite prints as test data. The
   instances stay in `unresolved`, so the denominator stays at 50.

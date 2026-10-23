@@ -8,13 +8,19 @@ __pycache__/
 *.pyc
 .hf_cache/
 
-# keep logs/runs/*.jsonl (traces), logs/patches/*.patch and logs/*.csv (aggregates) as research
-# evidence - they are committed; drop the noisy server/console logs at the root of logs/
+# keep experiments/<tag>/runs/*.jsonl (traces), patches/*.patch, reports/*.json and the *.csv
+# aggregates as research evidence - they are committed; drop any server/console log instead
 logs/*.log
 logs/*.log.*
 logs/*.bak
+experiments/*.log
+experiments/*.log.*
+experiments/*.bak
+experiments/**/*.log
+experiments/**/*.log.*
+experiments/**/*.bak
 
 # per-instance Docker evaluator logs (eval.sh, patch.diff, test_output.txt, report.json)
 # regenerate with scripts/run_swebench_eval.py --force; the merged per-cell summary
-# (logs/experiments/<tag>/reports/*.json and swebench_results.csv) is committed instead
-logs/run_evaluation/
+# (experiments/<tag>/reports/*.json and swebench_results.csv) is committed instead
+experiments/*/run_evaluation/

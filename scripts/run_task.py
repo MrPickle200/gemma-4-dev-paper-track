@@ -40,7 +40,7 @@ def main() -> int:
     ap.add_argument("--api-key", default=None, help="bearer token, for a proxied/remote server")
     ap.add_argument("--no-stream", action="store_true", help="buffer whole responses instead of SSE")
     ap.add_argument("--experiment", default=None,
-                    help="write this run to logs/experiments/<TAG>/ instead of logs/runs/")
+                    help="write this run to experiments/<TAG>/ instead of experiments/_default/runs/")
     ap.add_argument("--keep-worktree", action="store_true")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()

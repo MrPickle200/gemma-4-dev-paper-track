@@ -656,6 +656,7 @@
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-13798:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-13852:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-14531:latest",
+        "swebench/sweb.eval.x86_64.sympy_1776_sympy-14976:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-15017:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-15599:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-15875:latest",
@@ -671,6 +672,7 @@
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-21596:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-21930:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-22456:latest",
+        "swebench/sweb.eval.x86_64.sympy_1776_sympy-23262:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-23413:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-23824:latest",
         "swebench/sweb.eval.x86_64.sympy_1776_sympy-24213:latest"
