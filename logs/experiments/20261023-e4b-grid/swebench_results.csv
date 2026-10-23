@@ -1,0 +1,5 @@
+model,resolved,unresolved,error,empty_patch,infra_failure,submitted,resolved_ids
+gemma-4-E4B_B0,3,30,0,17,0,50,scikit-learn__scikit-learn-13135 scikit-learn__scikit-learn-14141 sympy__sympy-13480
+gemma-4-E4B_M1,6,32,0,12,0,50,psf__requests-1724 scikit-learn__scikit-learn-13135 scikit-learn__scikit-learn-13496 scikit-learn__scikit-learn-14141 sympy__sympy-13480 sympy__sympy-16766
+gemma-4-E4B_M2,8,33,0,9,0,50,psf__requests-1724 scikit-learn__scikit-learn-13135 scikit-learn__scikit-learn-13496 scikit-learn__scikit-learn-14141 sympy__sympy-12096 sympy__sympy-13480 sympy__sympy-19346 sympy__sympy-24213
+gemma-4-E4B_M3,8,34,0,8,0,50,psf__requests-1724 psf__requests-2931 pytest-dev__pytest-5262 scikit-learn__scikit-learn-13496 scikit-learn__scikit-learn-14141 scikit-learn__scikit-learn-9288 sympy__sympy-13480 sympy__sympy-16766

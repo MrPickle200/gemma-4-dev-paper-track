@@ -193,6 +193,30 @@ before/after difference as a variant effect.
 - `--experiment <tag>` sequences evidence under `logs/experiments/<tag>/`; the default paths are
   unchanged, so committed grid numbers remain reproducible.
 
+## Bước 5 evaluation facts (2026-10-23, swebench 5.0.2)
+
+- **Dataset is `SWE-bench/SWE-bench_Verified`**, not `princeton-nlp/SWE-bench_Verified`. The old
+  name has no `image` column and `make_test_spec` dies with `KeyError: 'image'`. The new one ships
+  prebuilt images, so nothing is built locally: one image per task (~3.6-6.9 GB), pulled once and
+  reused by every variant and by both models. The 50-task subset needs **50 images**.
+- **One predictions file per (model, variant).** `run_evaluation.py:743` rewrites the list as
+  `{instance_id: pred}`, so a file holding B0/M1/M2/M3 of the same task keeps only the last row.
+  `scripts/build_predictions.py --experiment <tag>` writes `predictions/<model>_<variant>.jsonl`
+  with 50 unique ids each; `scripts/run_swebench_eval.py` runs one cell per `--run_id` and merges
+  the reports into `swebench_results.csv`.
+- **`scripts/patch_swebench_windows.py` is mandatory on Windows** and the runner calls it before
+  every run. `Path.write_text` writes `eval.sh` with CRLF, so inside the Linux container
+  `cd /testbed\r` fails, conda never activates (`ModuleNotFoundError: mpmath`) and `bin/test ...\r`
+  collects nothing; `test_output.txt` is also opened in the cp1252 locale and raises
+  `UnicodeEncodeError` on box-drawing characters. Either bug silently turns a whole cell into
+  `resolved = 0`.
+- Warm evaluation is ~7-20 s per instance, so a 50-cell file takes 4-9 minutes at `--max_workers 4`;
+  the first pass pays the image pulls. `--workers` has nothing to do with the 6 GB GPU — this stage
+  is CPU/disk bound.
+- Do **not** read "ambiguous failures" as infrastructure faults: the classifier greps for
+  `no tests ran` / `ModuleNotFoundError`, which pytest's own test suite prints as test data. The
+  instances stay in `unresolved`, so the denominator stays at 50.
+
 ## Backend facts (measured, E2B Q4_0 on this GPU)
 
 - Load time ~10 s; generation **~85 tok/s**; prompt processing ~13 tok/s (first pass, uncached).

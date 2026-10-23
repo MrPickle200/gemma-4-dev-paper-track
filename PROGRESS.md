@@ -796,3 +796,80 @@ fixes, not new modules, and are active in B0/M1/M2/M3 alike.
 - The 5-task set is a smoke test, not the 50-task grid: per-variant counts are 5 cells each, and
   nothing here re-estimates the grid's rates. `pytest tests` is 56/56 after the crash and manifest
   tests.
+
+## 2026-10-23 - BƯỚC 5: SWE-bench evaluation of the E2B/E4B grids
+
+### Setup
+
+- `swebench` 5.0.2 installed into `.venv`; Docker 29.7.2 already present.
+- The dataset is **`SWE-bench/SWE-bench_Verified`**, not `princeton-nlp/SWE-bench_Verified`.
+  The old name has no `image` column, so `make_test_spec` dies with `KeyError: 'image'`.
+  The new name ships **prebuilt images** (`swebench/sweb.eval.x86_64.<repo>_1776_<tag>:latest`),
+  so there is no per-task Docker build: one image per task, ~3.6-6.9 GB, pulled once and
+  reused by all four variants and by both models. The 50-task subset needs **50 images**
+  (48 for E2B alone, because 2 tasks never got a non-empty patch).
+- Predictions are rebuilt by `scripts/build_predictions.py`, which writes **one file per
+  (model, variant)** under `logs/experiments/<tag>/predictions/`. This is required:
+  `run_evaluation.py:743` collapses the prediction list into `{instance_id: pred}`, so the
+  earlier single `predictions.jsonl` (204 rows, 50 unique ids, 4 variants each) would have
+  evaluated 50 cells with the last variant silently winning. 278 of the 400 cells carry a
+  non-empty patch; the other 122 are empty diffs and are scored unresolved without a container.
+
+### Two Windows bugs that produced a false 0/124
+
+The first full pass returned `resolved = 0` for all four E2B cells with 12-23 "ambiguous
+failures" per cell. The cause was ours, not the model's:
+
+- **`eval.sh` was written with CRLF.** `run_evaluation.py:360` uses `Path.write_text`, which
+  translates `\n` to `\r\n` on Windows. Inside the Linux container every line then carries a
+  `\r`: `cd $'/testbed\r'` fails, `conda activate $'testbed\r'` never activates the env (hence
+  `ModuleNotFoundError: No module named 'mpmath'`), and `bin/test $'...test_lambdify.py\r'`
+  collects nothing. Sympy cells all landed in the ambiguous bucket.
+- **`test_output.txt` was opened in the cp1252 locale**, so any box-drawing character raised
+  `UnicodeEncodeError` and aborted the instance (`PYTHONUTF8=1` alone fixes this one).
+
+`scripts/patch_swebench_windows.py` applies three idempotent edits to the installed harness
+(`patch.diff`, `eval.sh`, `test_output.txt` all written LF; the output file also UTF-8) and
+`scripts/run_swebench_eval.py` calls it before every run. Verified on `sympy__sympy-12096`:
+`eval.sh` has 0 CR bytes and the suite runs (42 passed, 26 skipped, 3 exceptions) instead of
+collecting nothing.
+
+### Runner
+
+`scripts/run_swebench_eval.py --experiment <tag> [--max-workers 4] [--force] [--merge-only]`
+runs one `run_evaluation` per cell file with a unique `--run_id`, then merges the per-cell
+reports into `logs/experiments/<tag>/swebench_results.csv`. Warm runs take ~7-20 s per
+instance (image cached), so a 50-cell file is 4-9 minutes at 4 workers.
+
+### Results (SWE-bench Verified, 50 tasks per cell, temperature 0)
+
+| model | cell | resolved | unresolved | empty patch | resolve rate |
+|---|---|---|---|---|---|
+| E2B | B0 | 3 | 23 | 24 | 6% |
+| E2B | M1 | 4 | 19 | 27 | 8% |
+| E2B | M2 | 5 | 30 | 15 | 10% |
+| E2B | M3 | 3 | 37 | 10 | 6% |
+| E4B | B0 | 3 | 30 | 17 | 6% |
+| E4B | M1 | 6 | 32 | 12 | 12% |
+| E4B | M2 | 8 | 33 | 9 | 16% |
+| E4B | M3 | 8 | 34 | 8 | 16% |
+
+Resolved ids (E2B B0 / M1 / M2 / M3):
+`requests-1724, sklearn-14141, sympy-13480` / `+ sklearn-13496` /
+`requests-1724, sklearn-13135, sklearn-13496, sympy-13480, sympy-16766` /
+`requests-1724, sympy-13480, sympy-16766`.
+E4B adds `sympy-12096, sympy-19346, sympy-24213` (M2) and `requests-2931, pytest-5262,
+sklearn-9288` (M3).
+
+- Resolve rate uses the full denominator of 50; an empty diff is a failure, not an exclusion.
+- **M2 and M3 both reach 16% on E4B, double B0's 6%.** The structural modules matter more on
+  the larger model; E2B stays at 6-10% across all four.
+- M3 wins the harness metrics (fewest malformed calls, most `finish`) but ties M2 on resolve
+  rate, so compaction buys clean stopping, not correctness, in both models.
+- The 3-4 "ambiguous failures" per cell are all `pytest-dev__pytest-*` and are **advisory
+  only**: swebench 5.x flags a log containing `no tests ran`/`ModuleNotFoundError`, and
+  pytest's own suite prints those strings as test data. They remain in `unresolved`, so the
+  denominator is unchanged. Do not read them as infrastructure failures.
+- Evidence: `logs/experiments/<tag>/predictions/` (one file per cell),
+  `reports/*.json` (one per cell) and `swebench_results.csv`. The per-instance Docker logs
+  under `logs/run_evaluation/` are gitignored and reproducible with `--force`.

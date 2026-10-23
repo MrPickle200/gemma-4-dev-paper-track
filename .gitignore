@@ -13,3 +13,8 @@ __pycache__/
 logs/*.log
 logs/*.log.*
 logs/*.bak
+
+# per-instance Docker evaluator logs (eval.sh, patch.diff, test_output.txt, report.json)
+# regenerate with scripts/run_swebench_eval.py --force; the merged per-cell summary
+# (logs/experiments/<tag>/reports/*.json and swebench_results.csv) is committed instead
+logs/run_evaluation/
