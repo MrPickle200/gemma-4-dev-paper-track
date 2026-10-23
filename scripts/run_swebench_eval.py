@@ -144,6 +144,16 @@ def main():
         raise SystemExit("no reports to summarise")
 
     out_csv = os.path.join(root, "swebench_results.csv")
+    # A --only re-run touches one cell; keep the rows of the cells it did not look at so the
+    # table stays a complete record of the experiment (the CSV is committed evidence).
+    done = {r["model"] for r in rows}
+    if os.path.exists(out_csv):
+        with open(out_csv, encoding="utf-8", newline="") as f:
+            for old in csv.DictReader(f):
+                if old.get("model") not in done:
+                    rows.append(old)
+    rows.sort(key=lambda r: r["model"])
+
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         w.writeheader()

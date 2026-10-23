@@ -903,3 +903,7 @@ experiments/<tag>/runs/  patches/  predictions/  reports/  run_evaluation/
   depends on them.
 - `pytest tests` 56/56 after the move; `summarize_batch.py --experiment 20261023-e2b-grid` and
   `run_swebench_eval.py --experiment ... --merge-only` reproduce the same tables as before.
+- `run_swebench_eval.py` used to rewrite `swebench_results.csv` from only the cells it processed, so
+  the forced single-cell E2B/M3 re-run (used to verify the log harvest) briefly left the CSV with
+  one row. It now keeps the rows of the cells it did not look at and sorts by model; a second
+  `--merge-only` restored the full table (B0 3, M1 4, M2 5, M3 3 of 50 = 15/200).
