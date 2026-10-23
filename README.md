@@ -11,225 +11,152 @@
 
 **Do small models fail SWE-bench because they cannot reason — or because the harness drowns them?**
 
-![python](https://img.shields.io/badge/python-3.11-3776AB)
 ![backend](https://img.shields.io/badge/backend-llama.cpp%20%2B%20Q4__0%20QAT-2E8B57)
 ![benchmark](https://img.shields.io/badge/benchmark-SWE--bench%20Verified%20Mini%20(N%3D50)-8A2BE2)
-![status](https://img.shields.io/badge/progress-B%C6%B0%E1%BB%9Bc%201--2%20complete-success)
+![status](https://img.shields.io/badge/progress-B%C6%B0%E1%BB%9Bc%201--5%20complete-success)
 
-A research harness that tests one hypothesis: a 2B-effective model like **Gemma 4 E2B** fails
-real repository bugs not for lack of logic, but because of two *systemic* bottlenecks —
+Gemma 4 **E2B / E4B**, 50 SWE-bench Verified tasks, 4 harness variants, **400 Docker-evaluated
+cells** on one 6 GB laptop GPU. Short answer: the harness matters — symbol navigation more than
+doubles E4B's resolve rate (6 % → 16 %) — but it does not close the gap to a frontier model.
 
-1. **Context degradation** — attention quality collapses once the window is flooded with raw
-   `grep`/`cat` output and long stack traces.
-2. **Syntactic fragility** — high rates of malformed output when asked to emit structured
-   formats (JSON tool calls, line-number-based patches).
+## Hypothesis
 
-So we move the burden from **model reasoning** to a **deterministic harness**: constrain the
-action space by AST, force the output through a schema, and compact context at phase boundaries.
+A 2B-effective model fails real repository bugs not for lack of logic, but because of two
+*systemic* bottlenecks:
 
----
+1. **Context degradation** — attention collapses once the window is flooded with raw `grep`/`cat`
+   output and long stack traces.
+2. **Syntactic fragility** — high malformed-output rates when asked to emit structured formats
+   (JSON tool calls, line-number patches).
 
-## The harness
-
-```text
-┌─────────────────────────────────────────────────────────────────────────┐
-│ SWE-bench Verified Mini · 50 tasks · 1 file per patch · <50 lines       │
-└─────────────────────────────────────────────────────────────────────────┘
-                                     │  issue text
-                                     ▼
-╔═ PHASE 1 · LOCALIZATION ════════════════════════════════════════════════╗
-║ M2 · AST-Nav   get_repo_map() · read_symbol() · find_references()       ║
-║ symbol-level navigation instead of grep/cat context dumps               ║
-╚════════════════════════════════════╤════════════════════════════════════╝
-                                     │  lock_targets(files, symbols, note)
-╔═ M3 · EPISODIC COMPACTION   scratch history discarded ══════════════════╗
-║ context := issue + locked symbol sources + root_cause_note              ║
-║ everything the agent grepped and cat'ed before is gone                  ║
-╚════════════════════════════════════╤════════════════════════════════════╝
-                                     ▼
-╔═ PHASE 2 · PATCHING & VERIFICATION ═════════════════════════════════════╗
-║ M1 · AST-Edit   constrained JSON schema + in-memory ast.parse() gate    ║
-║ nothing reaches disk unless the file still parses                       ║
-╚════════════════════════════════════╤════════════════════════════════════╝
-                                     │  unified diff
-                                     ▼
-                           experiments/<tag>/patches/<run_id>.patch
-```
+So move the burden from **model reasoning** to a **deterministic harness**: constrain the action
+space by AST, force output through a schema, compact context at phase boundaries.
 
 | # | Variant | Navigation | Editing | Context | Isolates |
 |---|---------|-----------|---------|---------|----------|
 | 1 | `B0` | `grep` / `cat` / `find` | raw search/replace, no gate | full history | baseline |
 | 2 | `M1` | `grep` / `cat` / `find` | **+** JSON-schema decoding **+** `ast.parse()` gate | full history | AST-Edit |
-| 3 | `M2` | **+** tree-sitter symbols | **+** gate | full history | AST-Nav |
-| 4 | `M3` | **+** tree-sitter symbols | **+** gate | **+** phase compaction | full |
+| 3 | `M2` | **+** AST symbols | **+** gate | full history | AST-Nav |
+| 4 | `M3` | **+** AST symbols | **+** gate | **+** phase compaction | full |
 
-Every run writes a complete `.jsonl` transcript (full prompt, raw response, `reasoning_content`,
-token counts, tool status, timings) plus the model's diff. Nothing is asserted that the trace
-does not show.
+Every run writes a per-turn `.jsonl` trace (full prompt, raw response, `reasoning_content`, token
+counts, tool status) and the model's diff. Nothing is claimed that the trace does not show.
 
----
+## Results — resolve rate, n = 50 per cell
 
-## Field notes (measured, not assumed)
+| model | `B0` | `M1` | `M2` | `M3` | total |
+|---|---:|---:|---:|---:|---:|
+| Gemma 4 **E2B** | 3 | 4 | 5 | 3 | **15 / 200** (7.5 %) |
+| Gemma 4 **E4B** | 3 | 6 | **8** | **8** | **25 / 200** (12.5 %) |
 
-These are the failure modes actually observed on this hardware, with the traces to back them.
+Reproduce from the committed bundles (`experiments/20261023-{e2b,e4b}-grid/`):
 
-```text
-gemma-4-E2B · B0 · thinking = off · turn 1
-   {"pattern="req.method = method.upper()"
-    path": ...}                      ← the comma between keys: never heard of her
-   ✗ 15 turns · 0 edits · 26 identical retries
-
-gemma-4-E2B · B0 · thinking = off
-   search_block := "  314:         req = Request("
-   ✗ line-number prefixes copied straight out of read_file into the patch
-
-gemma-4-E2B · B0 · thinking = on
-   search_block := "            method = method.upper(),"
-   replace_block := "            method = str(method).upper(),"
-   ✓ 5 turns · 1 file changed · equivalent to the gold patch's builtin_str(method)
+```powershell
+.\.venv\Scripts\python.exe scripts\summarize_batch.py --experiment 20261023-e2b-grid
+.\.venv\Scripts\python.exe scripts\build_predictions.py --experiment 20261023-e2b-grid
+.\.venv\Scripts\python.exe scripts\run_swebench_eval.py --experiment 20261023-e2b-grid --max-workers 4
 ```
 
-- **Thinking mode is a first-order variable, not a default.** With thinking off, 3/3 runs
-  produced *no edit at all*. With it on, 1/4 produced a clean, plausible fix.
-- **Localization is the real bottleneck.** Several 15-turn runs searched successfully with zero
-  tool errors and simply never committed to an edit — exactly what M1/M3 target.
-- **The malformed arguments are the model, not the backend.** A control probe
-  (`scripts/diag_toolcalls.py`) showed llama.cpp's Gemma 4 tool-call → JSON conversion is clean
-  (3/3). The corruption is hypothesis #2, caught in the act.
+### What actually moved
 
-> ⚠️ One confound was found and removed: the first `read_file` printed line numbers, and the
-> model copied them into `search_block`, manufacturing a fake 11/11 malformed-edit rate.
-> `B0` is specified as `cat`, which has no line numbers, so the tool now matches `cat`.
-> Baseline numbers below are post-fix. See `PROGRESS.md`.
-
-### Baseline so far — E2B only, small n
-
-| config | runs | reached an edit | malformed edit rate | identical retries |
-|---|---:|---:|---:|---:|
-| `B0`, thinking off | 3 | **0** | n/a | 26 |
-| `B0`, thinking on | 4 | **1** | 0.0 | 14 |
-
-Reproduce with `scripts/summarize_batch.py`. **`edited` ≠ `resolved`** — resolution rate needs the
-SWE-bench Docker evaluator (Bước 5). No claim of a solved task is made here yet.
-
----
+- **Symbol navigation is the win.** `M2`/`M3` go from 6 % to 16 % on E4B — the only change that
+  survives contact with all 50 tasks.
+- **`M3`'s gain is stopping cleanly, not being right.** On E4B it compacts at `lock_targets`, ends
+  runs deliberately (`finish` 42/50 vs 30/50 for `B0`) and cuts tokens, but resolves no more tasks
+  than `M2`.
+- **Thinking mode is a first-order variable, not a default.** With it off, E2B produced 0 edits in
+  3 runs and 26 identical retries. All grid cells run thinking on.
+- **E2B has a ceiling the harness cannot lift.** 6–10 % across every variant; the malformed-edit
+  rate stays 33–67 %.
+- ⚠️ **Read E2B's `M1` column with care.** The structured-edit prompt also garbles *unrelated*
+  calls (9/50 cells wrote Gemma template tokens into `search_text` args, which no other variant
+  did at temperature 0), so its number is not a clean measure of the syntax gate.
+- A run that ended on `context_exceeded` is only scored when the server proved 32768 tokens *per
+  slot*; otherwise it is a backend-pool artefact and is re-run.
 
 ## Quickstart
 
-Backend is **llama.cpp** + official **QAT Q4_0** GGUF, not vLLM: vLLM is Linux-only and the
-development GPU has 6 GB of VRAM, which cannot hold the bf16 weights (E2B = 10.25 GB,
-E4B = 16 GB). The harness speaks only the OpenAI `/v1` API, so pointing `--base-url` at a
-vLLM or SGLang server is the only change needed on a bigger GPU.
+Backend is **llama.cpp** + official **QAT Q4_0** GGUF, not vLLM: vLLM is Linux-only and the dev GPU
+has 6 GB of VRAM (bf16 needs 10.25 GB for E2B, 16 GB for E4B). The harness speaks only the OpenAI
+`/v1` API — pointing `--base-url` at vLLM/SGLang on a bigger GPU is the only change needed.
 
 ```powershell
-# 0. environment (venv is mandatory; never the system interpreter)
 uv venv .venv --python 3.11
 uv pip install --python .\.venv\Scripts\python.exe -r requirements.txt
 
-# 1. build the N=50 subset from SWE-bench Verified
 .\.venv\Scripts\python.exe scripts\filter_subset.py --n 50 --seed 0
-
-# 2. fetch llama.cpp + the Gemma 4 quantised weights (~9 GB, idempotent)
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\setup_inference.ps1
-
-# 3. serve the model (OpenAI-compatible on :8080)
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\setup_inference.ps1   # ~9 GB, idempotent
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\serve.ps1 -Model E2B -Ctx 32768
+.\.venv\Scripts\python.exe scripts\smoke_test.py        # endpoint, thinking, JSON, tool calls
 
-# 4. prove the backend works: endpoint, thinking control, constrained JSON, tool calls
-.\.venv\Scripts\python.exe scripts\smoke_test.py
-
-# 5. clone the repos and run the agent
 .\.venv\Scripts\python.exe scripts\fetch_repos.py
-.\.venv\Scripts\python.exe scripts\run_task.py --list
-.\.venv\Scripts\python.exe scripts\run_task.py --instance-id psf__requests-1724 --thinking on
-
-# 6. read the results
-.\.venv\Scripts\python.exe scripts\summarize_run.py experiments\<tag>\runs\<run>.jsonl --show-tool apply_edit
-.\.venv\Scripts\python.exe scripts\summarize_batch.py --experiment <tag>
+.\.venv\Scripts\python.exe scripts\run_task.py --instance-id psf__requests-1724 --thinking on `
+    --experiment 20261023-e2b-grid
 ```
-
----
 
 ## Layout
 
 ```text
-harness/config.py        RunConfig (model, variant, limits, thinking) + log paths
-harness/llm.py           OpenAI-compatible /v1/chat/completions client
-harness/tools.py         tool schemas + implementations + metric counters
-harness/agent.py         the agent loop and the per-turn JSONL trace
-harness/runner.py        git worktree setup, task loading, patch collection
+harness/config.py   RunConfig (model, variant, limits, thinking) + experiment paths
+harness/llm.py      OpenAI-compatible /v1 client (streaming, usage accounting)
+harness/tools.py    tool schemas + implementations + metric counters
+harness/agent.py    the agent loop and the per-turn JSONL trace
+harness/runner.py   git worktrees, task loading, patch collection
 
-scripts/filter_subset.py     builds data/subset_50.json from SWE-bench Verified
-scripts/fetch_repos.py       clones the repos, verifies every base_commit
-scripts/setup_inference.ps1  downloads llama.cpp + Gemma 4 GGUFs
-scripts/serve.ps1            starts llama-server
-scripts/smoke_test.py        backend acceptance test
-scripts/diag_toolcalls.py    probes the Gemma 4 tool-call -> JSON conversion
-scripts/run_task.py          runs the agent on one or more tasks
-scripts/summarize_run.py     reads one .jsonl trace
-scripts/summarize_batch.py   aggregates runs into the ablation table
+scripts/            filter_subset · fetch_repos · serve.ps1 · smoke_test · run_task/run_batch
+                    summarize_run/summarize_batch · diagnostics_e2b · build_predictions
+                    run_swebench_eval (+ patch_swebench_windows)
 
-data/subset_50.json      the 50 tasks   ·  data/subset_50.meta.json  filter+seed manifest
-experiments/<tag>/runs/*.jsonl   per-turn traces (evidence), one directory per experiment
-experiments/<tag>/patches/*.patch  the model's diff, fed to the SWE-bench evaluator
-repos/ · worktrees/      clones + per-task detached checkouts (regenerated, not committed)
+data/subset_50.json the 50 tasks      ·  data/subset_50.meta.json  filter + seed manifest
+experiments/<tag>/  one directory per experiment, everything that belongs to it:
+                    runs/ patches/ predictions/ reports/ manifest.json results.csv
+                    DIAGNOSTICS.md swebench_results.csv   (run_evaluation/ is gitignored scratch)
 ```
 
 Each task runs in its own detached **git worktree** pinned at `base_commit`, so the shared clones
-are never mutated and disk use stays bounded.
+are never mutated. See [`experiments/README.md`](experiments/README.md).
 
----
+## Metrics (IDEA.md §4)
 
-## Metrics tracked
+| # | Metric | Field in the trace | Tests |
+|---|--------|-------------------|-------|
+| 1 | Resolve rate | Docker evaluator (`swebench_results.csv`) | overall |
+| 2 | Malformed edit rate | `edits_malformed / edits_attempted` | `M1` |
+| 3 | Peak context & total tokens | `peak_prompt_tokens`, `total_tokens` | `M2`, `M3` |
+| 4 | Error rate vs. context depth | `repeated_identical_calls` per turn | E2B/E4B limits |
 
-Extracted from the traces by `scripts/summarize_batch.py`:
-
-| # | Metric | Field in the trace | Tests the claim |
-|---|--------|-------------------|-----------------|
-| 1 | Resolve rate | *(Docker evaluator, Bước 5)* | overall |
-| 2 | Malformed edit rate | `edits_malformed / edits_attempted` | M1 |
-| 3 | Peak context & total tokens | `peak_prompt_tokens`, `total_tokens` | M2, M3 |
-| 4 | Error rate vs. context depth | `repeated_identical_calls`, prompt tokens per turn | E2B/E4B limits |
-
-Token accounting is split deliberately: `reasoning_content` (chain of thought) is logged
-separately from `content`, because thinking mode is the dominant cost driver and would otherwise
-make the token charts meaningless.
-
----
+`reasoning_content` is logged separately from `content`: thinking is the dominant cost driver and
+would otherwise make the token charts meaningless.
 
 ## Hardware reality check
-
-This was developed on a laptop, not a cluster:
 
 ```text
 GPU     RTX 4050 Laptop · 6141 MiB VRAM · driver 596.21 (CUDA 13.2)
 Host    15.7 GB RAM · Windows · CUDA 13.0 toolkit
-Model   gemma-4-E2B-it QAT Q4_0 (3.12 GiB) via llama.cpp CUDA build b11696
-Speed   ~10 s load · ~85 tok/s generation · ~13 tok/s uncached prefill
+Model   gemma-4-E2B-it (3.12 GiB) and E4B (4.8 GiB) QAT Q4_0 via llama.cpp b11696
+Speed   ~10-13 s load · ~85 tok/s generation · ~13 tok/s uncached prefill
 ```
 
-That last number is the interesting one: **prefill, not decode, is the bottleneck** — which is
-itself an argument for Module 1, since dumping raw files into context is paid for in prefill.
-
-E4B (4.8 GiB) has not been run yet and will need a reduced `-ngl` or a smaller `-c`.
-
----
+**Prefill, not decode, is the bottleneck** — which is itself an argument for `M1`/`M2`: dumping raw
+files into context is paid for up front. `-c` is the *server's* context and each slot gets `-c/np`,
+so a 4-worker grid needs `serve.ps1 -Ctx 131072 -Slots 4` to give every run a real 32768-token
+window.
 
 ## What this repo does *not* claim
 
-- No resolve rate yet. One clean diff is not one solved task.
-- Sample sizes are 3–4 runs per config. The thinking-mode result is a **lead**, not a conclusion.
+- Single seed, temperature 0, `n = 50` per cell — a lead, not a benchmark leaderboard entry.
+- No frontier-model comparison; no claim that the harness closes the gap.
 - Gemma 4 is multimodal; this harness is **text-only**.
-- The repos cloned under `repos/` belong to their respective upstream projects and carry their
-  own licenses; nothing from them is redistributed here.
+- Repos under `repos/` belong to their upstream projects and keep their own licenses; nothing from
+  them is redistributed here.
 
 ## Progress
 
 - [x] **Bước 1** — venv, N=50 subset (117/500 passed the filter), llama.cpp backend, acceptance test
 - [x] **Bước 2** — agent loop, per-turn `.jsonl` traces, worktrees, baseline measured
-- [ ] **Bước 3** — implement the three modules: AST-Edit, AST-Nav, `compact_context()`
-- [ ] **Bước 4** — batch 4 variants × 2 models × 50 tasks
-- [ ] **Bước 5** — SWE-bench Docker evaluation, ablation table, context-depth degradation chart
+- [x] **Bước 3** — AST-Edit, AST-Nav, `compact_context()`, all four variants
+- [x] **Bước 4** — batch 4 variants × 2 models × 50 tasks (400 traces)
+- [x] **Bước 5** — SWE-bench Docker evaluation (400 cells, ~40 min) and the ablation table
 
-Full step-by-step history, including the bugs and the confound retraction: [`PROGRESS.md`](PROGRESS.md).
-The research spec: [`IDEA.md`](IDEA.md). Working notes for agents: [`AGENTS.md`](AGENTS.md).
+History, bugs and retractions: [`PROGRESS.md`](PROGRESS.md). Spec: [`IDEA.md`](IDEA.md).
+Working notes for agents: [`AGENTS.md`](AGENTS.md).
