@@ -1,0 +1,15 @@
+diff --git a/src/_pytest/capture.py b/src/_pytest/capture.py
+index 25eab7fdf..0eed28640 100644
+--- a/src/_pytest/capture.py
++++ b/src/_pytest/capture.py
+@@ -429,6 +429,10 @@ class EncodedFile(object):
+         self.buffer = buffer
+         self.encoding = encoding
+ 
++    @property
++    def mode(self):
++        return 'w'
++
+     def write(self, obj):
+         if isinstance(obj, six.text_type):
+             obj = obj.encode(self.encoding, "replace")

@@ -1,0 +1,13 @@
+diff --git a/sympy/physics/hep/gamma_matrices.py b/sympy/physics/hep/gamma_matrices.py
+index 23284e4a92..176ae1c328 100644
+--- a/sympy/physics/hep/gamma_matrices.py
++++ b/sympy/physics/hep/gamma_matrices.py
+@@ -544,7 +544,7 @@ def kahane_simplify(expression):
+                 if block_free_count != 0:
+                     if i - cum_sign < len(index_is_free):
+                         if index_is_free[i - cum_sign]:
+-                            links[i - cum_sign].append(i)
++                            links[i].append(i - cum_sign)
+             block_free_count = 0
+ 
+         cum_sign_list[i] = cum_sign

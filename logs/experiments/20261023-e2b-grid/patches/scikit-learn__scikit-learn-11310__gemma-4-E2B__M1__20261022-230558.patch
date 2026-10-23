@@ -1,0 +1,54 @@
+diff --git a/sklearn/grid_search.py b/sklearn/grid_search.py
+index 6ba673d2fb..c0a50b0c67 100644
+--- a/sklearn/grid_search.py
++++ b/sklearn/grid_search.py
+@@ -29,7 +29,7 @@ from .utils import check_random_state
+ from .utils.random import sample_without_replacement
+ from .utils.validation import _num_samples, indexable
+ from .utils.metaestimators import if_delegate_has_method
+-from .metrics.scorer import check_scoring
++import time
+ 
+ 
+ __all__ = ['GridSearchCV', 'ParameterGrid', 'fit_grid_point',
+@@ -578,6 +578,28 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         n_fits = len(out)
+         n_folds = len(cv)
+ 
++        scores = list()
++        grid_scores = list()
++        for grid_start in range(0, n_fits, n_folds):
++            n_test_samples = 0
++            score = 0
++            all_scores = []
++            for this_score, this_n_test_samples, _, parameters in \
++                    out[grid_start:grid_start + n_folds]:
++                all_scores.append(this_score)
++                if self.iid:
++                    this_score *= this_n_test_samples
++                    n_test_samples += this_n_test_samples
++                score += this_score
++            if self.iid:
++                score /= float(n_test_samples)
++            else:
++                score /= float(n_folds)
++            scores.append((score, parameters))
++        # Out is a list of triplet: score, estimator, n_test_samples
++        n_fits = len(out)
++        n_folds = len(cv)
++
+         scores = list()
+         grid_scores = list()
+         for grid_start in range(0, n_fits, n_folds):
+@@ -597,6 +619,11 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+                 score /= float(n_folds)
+             scores.append((score, parameters))
+             # TODO: shall we also store the test_fold_sizes?
++            if self.refit:
++                start_time = time.time()
++                self.best_estimator_.fit(X, y)
++                end_time = time.time()
++                self.refit_time_ = end_time - start_time
+             grid_scores.append(_CVScoreTuple(
+                 parameters,
+                 score,

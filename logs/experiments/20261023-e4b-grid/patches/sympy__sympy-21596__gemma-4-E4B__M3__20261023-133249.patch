@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/fancysets.py b/sympy/sets/fancysets.py
+index 80189c344c..9ebc2b73c5 100644
+--- a/sympy/sets/fancysets.py
++++ b/sympy/sets/fancysets.py
+@@ -450,6 +450,8 @@ def get_equations(expr, candidate):
+ 
+         # Get the basic objects together:
+         other = _sympify(other)
++        if other == Reals:
++            return expr.is_real
+         expr = self.lamda.expr
+         sig = self.lamda.signature
+         variables = self.lamda.variables

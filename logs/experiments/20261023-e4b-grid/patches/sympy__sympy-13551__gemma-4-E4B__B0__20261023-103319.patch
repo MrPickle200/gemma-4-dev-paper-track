@@ -1,0 +1,22 @@
+diff --git a/sympy/concrete/products.py b/sympy/concrete/products.py
+index 66aafde2d6..f2b3598d26 100644
+--- a/sympy/concrete/products.py
++++ b/sympy/concrete/products.py
+@@ -7,7 +7,7 @@
+ from sympy.concrete.expr_with_intlimits import ExprWithIntLimits
+ from sympy.functions.elementary.exponential import exp, log
+ from sympy.polys import quo, roots
+-from sympy.simplify import powsimp
++from sympy.simplify import powsimp, simplify
+ from sympy.core.compatibility import range
+ 
+ 
+@@ -223,7 +223,7 @@ def doit(self, **hints):
+         if hints.get('deep', True):
+             return f.doit(**hints)
+         else:
+-            return powsimp(f)
++            return simplify(f)
+ 
+     def _eval_adjoint(self):
+         if self.is_commutative:

@@ -1,0 +1,433 @@
+=== Bước 4 batch progress  2026-10-17 12:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 49/200 cells done (151 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     13      7    8    8    3    71505      7342
+M1     12      5    8    6    2    66933      6814
+M2     12      3    8    7    5    73243      6461
+M3     12      4    8    8    0    57480      5987
+
+=== Bước 4 batch progress  2026-10-17 13:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 53/200 cells done (147 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     14      7    9    9    3    73554      7361
+M1     13      6    9    7    2    62707      6592
+M2     13      4    9    8    5    69836      6546
+M3     13      5    9    9    0    54970      5791
+
+=== Bước 4 batch progress  2026-10-17 13:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 58/200 cells done (142 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     15      7    9    9    3    75029      7344
+M1     15      6   10    8    2    65203      6326
+M2     14      5   10    9    5    66395      6442
+M3     14      6   10   10    0    53144      5702
+
+=== Bước 4 batch progress  2026-10-17 13:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 63/200 cells done (137 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     16      8   10   10    3    70815      7031
+M1     16      7   11    9    2    62066      6101
+M2     16      5   11   10    5    68745      6209
+M3     15      7   11   11    0    51937      5730
+
+=== Bước 4 batch progress  2026-10-17 13:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 71/200 cells done (129 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     18     10   12   12    3    65838      6855
+M1     18      9   13   11    2    56803      5782
+M2     18      7   13   12    5    63430      6009
+M3     17      8   13   13    0    56336      6008
+
+=== Bước 4 batch progress  2026-10-17 14:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 75/200 cells done (125 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     19     10   13   13    3    68418      7029
+M1     19     10   14   12    2    55037      5788
+M2     19      8   14   13    5    61415      6020
+M3     18      9   14   14    0    57613      6118
+
+=== Bước 4 batch progress  2026-10-17 14:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 80/200 cells done (120 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     20     11   14   14    3    65983      6912
+M1     20     10   15   13    3    55834      5774
+M2     20      9   15   14    5    59022      5934
+M3     20     10   15   15    0    61166      6644
+
+=== Bước 4 batch progress  2026-10-17 14:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 84/200 cells done (116 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     21     11   15   15    4    70656      7318
+M1     21     10   15   13    3    62101      6473
+M2     21     10   16   15    6    58882      6076
+M3     21     11   16   16    0    62577      6803
+
+=== Bước 4 batch progress  2026-10-17 14:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 90/200 cells done (110 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     23     12   17   17    4    67207      6875
+M1     23     11   17   15    3    59450      6234
+M2     22     11   17   16    6    57282      6065
+M3     22     12   17   17    0    61691      6834
+
+=== Bước 4 batch progress  2026-10-17 15:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 93/200 cells done (107 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     24     13   18   18    4    64992      6752
+M1     23     11   17   15    3    59450      6234
+M2     23     11   18   17    6    61018      6184
+M3     23     12   18   18    1    65622      7020
+
+=== Bước 4 batch progress  2026-10-17 15:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 97/200 cells done (103 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     25     13   19   19    4    67007      6852
+M1     24     11   17   15    3    57770      6029
+M2     24     12   19   18    6    59237      6162
+M3     24     13   19   19    1    64156      6939
+
+=== Bước 4 batch progress  2026-10-17 15:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 100/200 cells done (100 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     25     13   19   19    4    67007      6852
+M1     25     11   18   16    3    59083      6059
+M2     25     13   20   19    9    61089      6326
+M3     25     14   20   20    1    63138      6920
+
+=== Bước 4 batch progress  2026-10-17 15:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 103/200 cells done (97 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     26     14   20   20    4    66548      6862
+M1     26     12   19   17    3    58503      6145
+M2     26     14   21   20    9    60469      6297
+M3     25     14   20   20    1    63138      6920
+
+=== Bước 4 batch progress  2026-10-17 16:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 105/200 cells done (95 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     27     14   21   21    4    67908      6981
+M1     26     12   19   17    3    58503      6145
+M2     26     14   21   20    9    60469      6297
+M3     26     14   20   20    1    63710      6872
+
+=== Bước 4 batch progress  2026-10-17 16:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 108/200 cells done (92 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     27     14   21   21    4    67908      6981
+M1     27     12   19   17    3    61851      6365
+M2     27     15   22   21    9    60663      6408
+M3     27     15   21   21    1    64950      7059
+
+=== Bước 4 batch progress  2026-10-17 16:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 124/200 cells done (76 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     32     16   24   24    4    68497      7106
+M1     32     16   23   21    3    58387      6247
+M2     30     16   23   22    9    60472      6565
+M3     30     16   24   24    1    68471      7530
+
+=== Bước 4 batch progress  2026-10-17 16:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15 server=ok
+grid 137/200 cells done (63 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     35     16   25   25    4    67916      7152
+M1     34     18   25   23    3    58260      6398
+M2     34     18   26   25    9    59019      6724
+M3     34     16   26   26    4    68152      7572
+
+=== Bước 4 batch progress  2026-10-17 17:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 128/200 cells done (72 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     32     16   24   24    4    68497      7106
+M1     33     19   26   24    3    58130      6501
+M2     32     19   26   25    9    59418      6610
+M3     31     17   25   25    1    68195      7526
+
+=== Bước 4 batch progress  2026-10-17 17:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 140/200 cells done (60 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     35     19   27   26    5    64505      6932
+M1     35     21   28   26    3    55732      6370
+M2     34     21   28   27    9    57309      6512
+M3     36     21   30   30    1    65961      7551
+
+=== Bước 4 batch progress  2026-10-17 17:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 151/200 cells done (49 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     38     22   30   29    5    62603      6936
+M1     39     24   32   30    3    56348      6667
+M2     37     24   31   30   12    56461      6464
+M3     37     22   31   31    1    65148      7497
+
+=== Bước 4 batch progress  2026-10-17 17:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 157/200 cells done (43 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     39     22   31   30    7    63940      6953
+M1     41     24   34   32    3    59270      6876
+M2     38     24   32   31   12    57823      6589
+M3     39     22   31   31    1    67760      7593
+
+=== Bước 4 batch progress  2026-10-17 18:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 169/200 cells done (31 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     42     24   34   32    8    62715      6887
+M1     44     25   36   34    3    59495      6893
+M2     41     26   35   34   14    56843      6531
+M3     42     24   34   34    1    66393      7483
+
+=== Bước 4 batch progress  2026-10-17 18:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 173/200 cells done (27 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     43     24   34   32    8    65932      7232
+M1     44     25   36   34    3    59495      6893
+M2     42     26   36   35   15    57842      6557
+M3     44     26   36   36    1    65798      7548
+
+=== Bước 4 batch progress  2026-10-17 18:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 175/200 cells done (25 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     44     25   35   33    8    64818      7175
+M1     44     25   36   34    3    59495      6893
+M2     43     26   37   36   16    59131      6595
+M3     44     26   36   36    1    65798      7548
+
+=== Bước 4 batch progress  2026-10-17 18:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 175/200 cells done (25 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     44     25   35   33    8    64818      7175
+M1     44     25   36   34    3    59495      6893
+M2     43     26   37   36   16    59131      6595
+M3     44     26   36   36    1    65798      7548
+
+=== Bước 4 batch progress  2026-10-17 19:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 175/200 cells done (25 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     44     25   35   33    8    64818      7175
+M1     44     25   36   34    3    59495      6893
+M2     43     26   37   36   16    59131      6595
+M3     44     26   36   36    1    65798      7548
+
+=== Bước 4 batch progress  2026-10-17 19:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34    8    65988      7225
+M1     45     26   37   35    3    60370      6876
+M2     47     28   40   39   16    62262      6861
+M3     46     28   38   38    1    64962      7525
+
+=== Bước 4 batch progress  2026-10-17 19:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34    8    65988      7225
+M1     45     26   37   35    3    60370      6876
+M2     47     28   40   39   16    62262      6861
+M3     46     28   38   38    1    64962      7525
+
+=== Bước 4 batch progress  2026-10-17 19:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34    8    65988      7225
+M1     45     26   37   35    3    60370      6876
+M2     47     28   40   39   16    62262      6861
+M3     46     28   38   38    1    64962      7525
+
+=== Bước 4 batch progress  2026-10-17 20:02:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 198/200 cells done (2 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     48     26   37   35    8    65430      7189
+M1     50     27   40   38    3    59034      6593
+M2     51     32   44   43   16    59931      6907
+M3     49     31   41   41    1    63526      7564
+
+=== Bước 4 batch progress  2026-10-17 20:17:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 213/200 cells done (-13 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     51     28   40   37   12    64527      7186
+M1     57     32   45   43    3    55374      6362
+M2     53     34   46   45   16    58758      6817
+M3     52     34   44   44    1    62048      7474
+
+=== Bước 4 batch progress  2026-10-17 20:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34   11    66472      7341
+M1     45     24   36   34    3    58761      6396
+M2     47     28   40   39   16    62792      6982
+M3     46     28   38   38    1    64889      7612
+
+=== Bước 4 batch progress  2026-10-17 20:44:11 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34   12    67621      7477
+M1     45     23   35   33    3    60044      6429
+M2     47     28   40   39   16    61818      6895
+M3     46     28   38   37    2    64726      7576
+
+=== Bước 4 batch progress  2026-10-17 20:47:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34   12    67621      7477
+M1     45     23   35   33    3    60044      6429
+M2     47     28   40   39   16    61719      6854
+M3     46     27   38   37    2    65976      7593
+
+=== Bước 4 batch progress  2026-10-17 21:02:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 184/200 cells done (16 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     46     25   36   34   15    66833      7467
+M1     45     23   35   33    3    60549      6402
+M2     47     27   40   39   13    62330      6842
+M3     46     27   36   35    2    68602      7700
+
+=== Bước 4 batch progress  2026-10-17 21:17:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 188/200 cells done (12 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     48     25   38   35   18    69787      7722
+M1     45     24   35   33    3    59839      6475
+M2     47     28   40   39   13    61073      6826
+M3     48     29   38   37    2    68706      7781
+
+=== Bước 4 batch progress  2026-10-17 21:32:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 189/200 cells done (11 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     48     25   38   36   17    70194      7798
+M1     45     24   35   33    4    61277      6583
+M2     48     27   41   40   15    66078      7107
+M3     48     28   38   37    2    70009      7747
+
+=== Bước 4 batch progress  2026-10-17 21:47:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 192/200 cells done (8 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     49     26   39   37   19    68631      7637
+M1     47     25   36   34    4    62991      6813
+M2     48     27   41   40   13    65856      7105
+M3     48     29   38   37    2    69812      7747
+
+=== Bước 4 batch progress  2026-10-17 22:02:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 197/200 cells done (3 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     25   40   37   26    71247      7704
+M1     49     25   37   35    5    63552      6907
+M2     50     29   43   42   12    66318      7197
+M3     48     28   38   37    2    71809      7714
+
+=== Bước 4 batch progress  2026-10-17 22:17:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 199/200 cells done (1 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     24   40   37   26    72478      7713
+M1     49     25   37   35    5    63552      6907
+M2     50     29   43   42   12    66318      7197
+M3     50     30   40   39    3    70547      7586
+
+=== Bước 4 batch progress  2026-10-17 22:32:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 200/200 cells done (0 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     24   40   37   26    72478      7713
+M1     50     25   38   36    5    63882      6835
+M2     50     30   43   42   11    65041      7086
+M3     50     30   40   39    3    70547      7586
+
+=== Bước 4 batch progress  2026-10-17 22:47:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 200/200 cells done (0 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     24   40   37   26    72478      7713
+M1     50     25   38   36    5    63882      6835
+M2     50     30   43   42   11    65041      7086
+M3     50     30   40   39    3    70547      7586
+
+=== Bước 4 batch progress  2026-10-17 23:02:03 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=ok   (http://127.0.0.1:8080)
+grid 200/200 cells done (0 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     24   40   37   26    72478      7713
+M1     50     25   38   36    5    63882      6835
+M2     50     30   43   42   11    65041      7086
+M3     50     30   40   39    3    70547      7586
+
+=== Bước 4 batch progress  2026-10-18 10:21:55 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=DOWN   (http://127.0.0.1:8080)
+grid 200/200 cells done (0 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     24   40   37   26    72478      7713
+M1     50     25   38   36    5    63882      6835
+M2     50     30   43   42   11    65041      7086
+M3     50     30   40   39    3    70547      7586
+
+=== Bước 4 batch progress  2026-10-18 10:32:02 ===
+model=gemma-4-E2B thinking=on max_turns=15
+server=DOWN   (http://127.0.0.1:8080)
+grid 200/200 cells done (0 left)
+var  done finish edit real noop mean_tok mean_peak
+B0     50     24   40   37   26    72478      7713
+M1     50     25   38   36    5    63882      6835
+M2     50     30   43   42   11    65041      7086
+M3     50     30   40   39    3    70547      7586
+

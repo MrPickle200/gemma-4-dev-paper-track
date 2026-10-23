@@ -1,0 +1,18 @@
+diff --git a/sympy/functions/elementary/complexes.py b/sympy/functions/elementary/complexes.py
+index 8f38ae7fe7..72b224ad5c 100644
+--- a/sympy/functions/elementary/complexes.py
++++ b/sympy/functions/elementary/complexes.py
+@@ -110,8 +110,11 @@ def _eval_is_algebraic(self):
+         return self.args[0].is_algebraic
+ 
+     def _eval_is_zero(self):
+-        # is_imaginary implies nonzero
+-        return fuzzy_or([self.args[0].is_imaginary, self.args[0].is_zero])
++        # Check if both real and imaginary parts are zero.
++        # If not decidable, return None.
++        if self.args[0].is_real:
++            return self.args[0].is_zero
++        return self.args[0].re == 0 and self.args[0].im == 0
+ 
+     def _sage_(self):
+         import sage.all as sage

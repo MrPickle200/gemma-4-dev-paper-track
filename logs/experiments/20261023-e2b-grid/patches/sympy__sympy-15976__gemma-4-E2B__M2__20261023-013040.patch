@@ -1,0 +1,13 @@
+diff --git a/sympy/core/symbol.py b/sympy/core/symbol.py
+index 44674d1984..bd2a6ce084 100644
+--- a/sympy/core/symbol.py
++++ b/sympy/core/symbol.py
+@@ -641,7 +641,7 @@ def literal(s):
+             if not name:
+                 raise ValueError('missing symbol')
+ 
+-            if ':' not in name:
++            if ':' not in name and not name.endswith(string.digits):
+                 symbol = cls(literal(name), **args)
+                 result.append(symbol)
+                 continue

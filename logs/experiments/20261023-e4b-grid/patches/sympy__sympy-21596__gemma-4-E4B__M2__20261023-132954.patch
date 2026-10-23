@@ -1,0 +1,15 @@
+diff --git a/sympy/sets/fancysets.py b/sympy/sets/fancysets.py
+index 80189c344c..53a0c40a06 100644
+--- a/sympy/sets/fancysets.py
++++ b/sympy/sets/fancysets.py
+@@ -470,6 +470,10 @@ def get_equations(expr, candidate):
+                 return False
+             equations.append(eq)
+ 
++        # If other is S.Reals, we must ensure the expression is real.
++        if other == S.Reals:
++            equations.append(Eq(expr.imag, 0))
++
+         # Map the symbols in the signature to the corresponding domains
+         symsetmap = get_symsetmap(sig, base_sets)
+         if symsetmap is None:

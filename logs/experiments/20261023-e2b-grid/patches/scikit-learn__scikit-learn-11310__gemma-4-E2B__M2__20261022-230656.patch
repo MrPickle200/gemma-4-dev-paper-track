@@ -1,0 +1,16 @@
+diff --git a/sklearn/model_selection/_search.py b/sklearn/model_selection/_search.py
+index 99d6096af7..42184fe463 100644
+--- a/sklearn/model_selection/_search.py
++++ b/sklearn/model_selection/_search.py
+@@ -697,9 +697,8 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+                                             axis=1, weights=weights))
+             results['std_%s' % key_name] = array_stds
+ 
+-            if rank:
+-                results["rank_%s" % key_name] = np.asarray(
+-                    rankdata(-array_means, method='min'), dtype=np.int32)
++            if self.refit and key_name == 'fit_time':
++                results['refit_time_'] = fit_time
+ 
+         _store('fit_time', fit_time)
+         _store('score_time', score_time)

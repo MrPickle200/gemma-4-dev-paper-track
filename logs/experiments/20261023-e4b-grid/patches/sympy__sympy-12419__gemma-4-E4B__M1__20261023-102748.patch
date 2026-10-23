@@ -1,0 +1,22 @@
+diff --git a/sympy/assumptions/refine.py b/sympy/assumptions/refine.py
+index 612ae724df..ed5a623cd6 100644
+--- a/sympy/assumptions/refine.py
++++ b/sympy/assumptions/refine.py
+@@ -24,11 +24,12 @@ def refine(expr, assumptions=True):
+ 
+     """
+     if not isinstance(expr, Basic):
+-        return expr
+-    if not expr.is_Atom:
+-        args = [refine(arg, assumptions) for arg in expr.args]
+-        # TODO: this will probably not work with Integral or Polynomial
+-        expr = expr.func(*args)
++        if hasattr(expr, 'args') and hasattr(expr, 'func'):
++            args = [refine(arg, assumptions) for arg in expr.args]
++            # TODO: this will probably not work with Integral or Polynomial
++            expr = expr.func(*args)
++        else:
++            return expr
+     if hasattr(expr, '_eval_refine'):
+         ref_expr = expr._eval_refine(assumptions)
+         if ref_expr is not None:

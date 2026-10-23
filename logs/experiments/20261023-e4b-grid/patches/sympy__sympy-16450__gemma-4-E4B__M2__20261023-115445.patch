@@ -1,0 +1,17 @@
+diff --git a/sympy/assumptions/handlers/calculus.py b/sympy/assumptions/handlers/calculus.py
+index aa0d00acad..a8bf511eaf 100644
+--- a/sympy/assumptions/handlers/calculus.py
++++ b/sympy/assumptions/handlers/calculus.py
+@@ -46,8 +46,10 @@ def Symbol(expr, assumptions):
+         True
+ 
+         """
+-        if expr.is_finite is not None:
+-            return expr.is_finite
++        if expr.is_finite is True:
++            return True
++        if expr.is_finite is False:
++            return False
+         if Q.finite(expr) in conjuncts(assumptions):
+             return True
+         return None

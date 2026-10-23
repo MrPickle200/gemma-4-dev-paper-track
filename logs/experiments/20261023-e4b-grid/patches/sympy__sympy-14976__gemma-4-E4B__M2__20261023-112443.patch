@@ -1,0 +1,15 @@
+diff --git a/sympy/utilities/lambdify.py b/sympy/utilities/lambdify.py
+index f71bea25f5..a8bb2e860f 100644
+--- a/sympy/utilities/lambdify.py
++++ b/sympy/utilities/lambdify.py
+@@ -746,6 +746,10 @@ def _preprocess(self, args, expr):
+     def _subexpr(self, expr, dummies_dict):
+         from sympy.matrices import DeferredVector
+         from sympy import sympify
++        from sympy.core.numbers import Rational
++
++        if isinstance(expr, Rational):
++            return expr
+ 
+         try:
+             expr = sympify(expr).xreplace(dummies_dict)

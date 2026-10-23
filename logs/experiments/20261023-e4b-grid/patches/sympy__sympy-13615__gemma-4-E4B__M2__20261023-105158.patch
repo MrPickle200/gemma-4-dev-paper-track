@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..499dfa3bad 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -1725,7 +1725,7 @@ def reduce(A, B):
+         if isinstance(B, Union):
+             return Intersection(s.complement(A) for s in B.args)
+ 
+-        result = B._complement(A)
++        result = A._complement(B)
+         if result != None:
+             return result
+         else:

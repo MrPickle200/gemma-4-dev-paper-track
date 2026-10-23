@@ -1,0 +1,18 @@
+diff --git a/src/_pytest/mark/__init__.py b/src/_pytest/mark/__init__.py
+index 7bbea54d2..a9b2a5dc5 100644
+--- a/src/_pytest/mark/__init__.py
++++ b/src/_pytest/mark/__init__.py
+@@ -191,7 +191,12 @@ def deselect_by_keyword(items: "List[Item]", config: Config) -> None:
+         keywordexpr = keywordexpr[:-1]
+ 
+     try:
+-        expression = Expression.compile(keywordexpr)
++        if keywordexpr == "True":
++            expression = Expression.compile(True)
++        elif keywordexpr == "False":
++            expression = Expression.compile(False)
++        else:
++            expression = Expression.compile(keywordexpr)
+     except ParseError as e:
+         raise UsageError(
+             "Wrong expression passed to '-k': {}: {}".format(keywordexpr, e)

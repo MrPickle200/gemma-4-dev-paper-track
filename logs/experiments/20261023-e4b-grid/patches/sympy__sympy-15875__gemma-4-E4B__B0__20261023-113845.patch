@@ -1,0 +1,19 @@
+diff --git a/sympy/assumptions/handlers/order.py b/sympy/assumptions/handlers/order.py
+index 4b3366bd20..904f30823d 100644
+--- a/sympy/assumptions/handlers/order.py
++++ b/sympy/assumptions/handlers/order.py
+@@ -189,10 +189,10 @@ class AskZeroHandler(CommonHandler):
+     def Expr(expr, assumptions):
+         return expr.is_zero
+ 
+-    @staticmethod
+-    def Basic(expr, assumptions):
+-        return fuzzy_and([fuzzy_not(ask(Q.nonzero(expr), assumptions)),
+-            ask(Q.real(expr), assumptions)])
++        if expr.is_number:
++            r, i = expr.as_real_imag()
++            return r == 0 and i == 0
++        return None
+ 
+     @staticmethod
+     def Mul(expr, assumptions):

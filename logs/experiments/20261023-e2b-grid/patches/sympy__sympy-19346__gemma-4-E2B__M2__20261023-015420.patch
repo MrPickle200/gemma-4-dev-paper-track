@@ -1,0 +1,14 @@
+diff --git a/sympy/printing/repr.py b/sympy/printing/repr.py
+index c936a692c0..f143ebfbd5 100644
+--- a/sympy/printing/repr.py
++++ b/sympy/printing/repr.py
+@@ -38,7 +38,8 @@ def emptyPrinter(self, expr):
+             return expr
+         elif hasattr(expr, "__srepr__"):
+             return expr.__srepr__()
+-        elif hasattr(expr, "args") and hasattr(expr.args, "__iter__"):
++        elif isinstance(expr, (set, dict)):
++            return str(expr)
+             l = []
+             for o in expr.args:
+                 l.append(self._print(o))

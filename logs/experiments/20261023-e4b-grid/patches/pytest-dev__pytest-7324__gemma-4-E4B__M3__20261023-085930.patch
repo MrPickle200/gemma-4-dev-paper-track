@@ -1,0 +1,13 @@
+diff --git a/src/_pytest/_code/code.py b/src/_pytest/_code/code.py
+index a40b23470..6032ce808 100644
+--- a/src/_pytest/_code/code.py
++++ b/src/_pytest/_code/code.py
+@@ -58,6 +58,8 @@ class Code:
+             rawcode = getrawcode(rawcode)
+         if not isinstance(rawcode, CodeType):
+             raise TypeError("not a code object: {!r}".format(rawcode))
++        if rawcode.co_name in ("None", "True", "False"):
++            raise ValueError(f"Code object name cannot be a reserved keyword: {rawcode.co_name}")
+         self.filename = rawcode.co_filename
+         self.firstlineno = rawcode.co_firstlineno - 1
+         self.name = rawcode.co_name

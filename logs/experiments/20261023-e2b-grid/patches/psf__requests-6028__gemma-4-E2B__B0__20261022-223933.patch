@@ -1,0 +1,26 @@
+diff --git a/requests/sessions.py b/requests/sessions.py
+index 3f59cab9..748fc6d6 100644
+--- a/requests/sessions.py
++++ b/requests/sessions.py
+@@ -288,13 +288,15 @@ class SessionRedirectMixin(object):
+         if 'Proxy-Authorization' in headers:
+             del headers['Proxy-Authorization']
+ 
+-        try:
+-            username, password = get_auth_from_url(new_proxies[scheme])
+-        except KeyError:
+-            username, password = None, None
++        scheme_proxy = new_proxies.get(scheme)
++        if scheme_proxy:
++            try:
++                username, password = get_auth_from_url(scheme_proxy)
++            except KeyError:
++                username, password = None, None
+ 
+-        if username and password:
+-            headers['Proxy-Authorization'] = _basic_auth_str(username, password)
++            if username and password:
++                headers['Proxy-Authorization'] = _basic_auth_str(username, password)
+ 
+         return new_proxies
+ 

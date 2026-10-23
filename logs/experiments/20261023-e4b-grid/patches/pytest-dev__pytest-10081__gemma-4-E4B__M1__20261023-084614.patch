@@ -1,0 +1,13 @@
+diff --git a/src/_pytest/unittest.py b/src/_pytest/unittest.py
+index 851e4943b..889547f6a 100644
+--- a/src/_pytest/unittest.py
++++ b/src/_pytest/unittest.py
+@@ -195,6 +195,8 @@ class TestCaseFunction(Function):
+         return getattr(self.parent.obj, self.originalname)  # type: ignore[attr-defined]
+ 
+     def setup(self) -> None:
++        if self.callobj is None:
++            return
+         # A bound method to be called during teardown() if set (see 'runtest()').
+         self._explicit_tearDown: Optional[Callable[[], None]] = None
+         assert self.parent is not None

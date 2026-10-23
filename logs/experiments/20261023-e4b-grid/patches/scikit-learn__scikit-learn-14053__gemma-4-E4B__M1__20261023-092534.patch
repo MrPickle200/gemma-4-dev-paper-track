@@ -1,0 +1,13 @@
+diff --git a/sklearn/tree/export.py b/sklearn/tree/export.py
+index 1fe11e596a..4d42f32aee 100644
+--- a/sklearn/tree/export.py
++++ b/sklearn/tree/export.py
+@@ -201,6 +201,8 @@ class _BaseTreeExporter(object):
+         # Find the appropriate color & intensity for a node
+         if self.colors['bounds'] is None:
+             # Classification tree
++            if len(value) == 0:
++                return '#000000'
+             color = list(self.colors['rgb'][np.argmax(value)])
+             sorted_values = sorted(value, reverse=True)
+             if len(sorted_values) == 1:

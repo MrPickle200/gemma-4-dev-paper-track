@@ -1,0 +1,25 @@
+diff --git a/sklearn/model_selection/_search.py b/sklearn/model_selection/_search.py
+index 99d6096af7..da9ccd8219 100644
+--- a/sklearn/model_selection/_search.py
++++ b/sklearn/model_selection/_search.py
+@@ -424,6 +424,7 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         self.pre_dispatch = pre_dispatch
+         self.error_score = error_score
+         self.return_train_score = return_train_score
++        self.refit_time_ = None
+ 
+     @property
+     def _estimator_type(self):
+@@ -673,6 +674,12 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         if self.return_train_score:
+             train_scores = _aggregate_score_dicts(train_score_dicts)
+ 
++        if self.refit:
++            import time
++            start_time = time.time()
++            self.best_estimator_.fit(X, y, **fit_params)
++            self.refit_time_ = time.time() - start_time
++
+         # TODO: replace by a dict in 0.21
+         results = (DeprecationDict() if self.return_train_score == 'warn'
+                    else {})

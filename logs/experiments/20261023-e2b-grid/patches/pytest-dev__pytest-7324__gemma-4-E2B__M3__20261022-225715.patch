@@ -1,0 +1,13 @@
+diff --git a/src/_pytest/mark/expression.py b/src/_pytest/mark/expression.py
+index 04c73411a..6790d7198 100644
+--- a/src/_pytest/mark/expression.py
++++ b/src/_pytest/mark/expression.py
+@@ -200,7 +200,7 @@ class Expression:
+         """
+         astexpr = expression(Scanner(input))
+         code = compile(
+-            astexpr, filename="<pytest match expression>", mode="eval",
++            astexpr, filename="<pytest match expression>", mode="single",
+         )  # type: types.CodeType
+         return Expression(code)
+ 

@@ -1,0 +1,12 @@
+diff --git a/sympy/polys/sqfreetools.py b/sympy/polys/sqfreetools.py
+index 1783a7744a..b2199b2249 100644
+--- a/sympy/polys/sqfreetools.py
++++ b/sympy/polys/sqfreetools.py
+@@ -329,6 +329,7 @@ def dup_sqf_list(f, K, all=False):
+ 
+         if all or dup_degree(g) > 0:
+             result.append((g, i))
++            p = p / g
+ 
+         i += 1
+ 

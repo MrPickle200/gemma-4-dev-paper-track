@@ -1,0 +1,12 @@
+diff --git a/sklearn/grid_search.py b/sklearn/grid_search.py
+index 6ba673d2fb..579599adcf 100644
+--- a/sklearn/grid_search.py
++++ b/sklearn/grid_search.py
+@@ -397,6 +397,7 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         self.verbose = verbose
+         self.pre_dispatch = pre_dispatch
+         self.error_score = error_score
++        self.refit_time_ = None
+ 
+     @property
+     def _estimator_type(self):

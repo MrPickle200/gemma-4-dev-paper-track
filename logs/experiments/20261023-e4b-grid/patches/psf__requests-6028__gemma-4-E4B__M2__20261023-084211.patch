@@ -1,0 +1,13 @@
+diff --git a/requests/auth.py b/requests/auth.py
+index eeface39..ac091a6a 100644
+--- a/requests/auth.py
++++ b/requests/auth.py
+@@ -101,7 +101,7 @@ class HTTPProxyAuth(HTTPBasicAuth):
+     """Attaches HTTP Proxy Authentication to a given Request object."""
+ 
+     def __call__(self, r):
+-        r.headers['Proxy-Authorization'] = _basic_auth_str(self.username, self.password)
++        r.headers.update({'Proxy-Authorization': _basic_auth_str(self.username, self.password)})
+         return r
+ 
+ 

@@ -1,0 +1,13 @@
+diff --git a/sympy/functions/special/zeta_functions.py b/sympy/functions/special/zeta_functions.py
+index b8e2b66195..1a87e13ec5 100644
+--- a/sympy/functions/special/zeta_functions.py
++++ b/sympy/functions/special/zeta_functions.py
+@@ -152,6 +152,8 @@ def _eval_expand_func(self, **hints):
+                 mul = z**n
+                 add = Add(*[z**(n - 1 - k)/(a - k - 1)**s for k in range(n)])
+ 
++            if a == 1:
++                return polylog(s, z)._eval_expand_func(**hints)
+             m, n = S([a.p, a.q])
+             zet = exp_polar(2*pi*I/n)
+             root = z**(1/n)

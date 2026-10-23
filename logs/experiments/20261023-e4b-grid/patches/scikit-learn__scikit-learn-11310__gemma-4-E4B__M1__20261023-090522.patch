@@ -1,0 +1,12 @@
+diff --git a/sklearn/model_selection/_search.py b/sklearn/model_selection/_search.py
+index 99d6096af7..33fc19ecf3 100644
+--- a/sklearn/model_selection/_search.py
++++ b/sklearn/model_selection/_search.py
+@@ -424,6 +424,7 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         self.pre_dispatch = pre_dispatch
+         self.error_score = error_score
+         self.return_train_score = return_train_score
++        self.refit_time_ = None
+ 
+     @property
+     def _estimator_type(self):

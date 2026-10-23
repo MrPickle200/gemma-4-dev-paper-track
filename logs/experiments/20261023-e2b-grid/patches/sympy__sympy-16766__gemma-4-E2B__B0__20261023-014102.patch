@@ -1,0 +1,24 @@
+diff --git a/sympy/printing/pycode.py b/sympy/printing/pycode.py
+index a3f0310735..d2ca720f4d 100644
+--- a/sympy/printing/pycode.py
++++ b/sympy/printing/pycode.py
+@@ -249,7 +249,9 @@ def _print_Piecewise(self, expr):
+             result.append(' else None)')
+         return ''.join(result)
+ 
+-    def _print_Relational(self, expr):
++    def _print_Indexed(self, expr):
++        base, *index = expr.args
++        return "{}[{}]".format(str(base), ", ".join([self._print(ind) for ind in index]))
+         "Relational printer for Equality and Unequality"
+         op = {
+             '==' :'equal',
+@@ -532,6 +534,8 @@ def _print_Piecewise(self, expr):
+         return '{0}({1}, {2}, default=numpy.nan)'.format(self._module_format('numpy.select'), conds, exprs)
+ 
+     def _print_Relational(self, expr):
++        \"Relational printer for Equality and Unequality\"
++        op = {\n            '==' :'equal',\n            '!=' :'not_equal',\n            '<'  :'less',\n            '<=' :'less_equal',\n            '>'  :'greater',\n            '>=' :'greater_equal',\n        }\n        if expr.rel_op in op:\n            lhs = self._print(expr.lhs)\n            rhs = self._print(expr.rhs)\n            return '({lhs} {op} {rhs})'.format(op=expr.rel_op, lhs=lhs, rhs=rhs)\n        return super(AbstractPythonCodePrinter, self)._print_Relational(expr)\n\n    def _print_Indexed(self, expr):\n        base, *index = expr.args\n        return "{}[{}]".format(str(base), ", ".join([self._print(ind) for ind in index]))
+         "Relational printer for Equality and Unequality"
+         op = {
+             '==' :'equal',

@@ -1,0 +1,13 @@
+{
+    "tag":  "20261023-e2b-grid",
+    "tasks":  50,
+    "thinking":  "on",
+    "model":  "gemma-4-E2B",
+    "cells":  200,
+    "variants":  [
+                     "B0",
+                     "M1",
+                     "M2",
+                     "M3"
+                 ]
+}

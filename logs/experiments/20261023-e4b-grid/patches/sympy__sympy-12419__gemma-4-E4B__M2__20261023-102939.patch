@@ -1,0 +1,13 @@
+diff --git a/sympy/assumptions/handlers/matrices.py b/sympy/assumptions/handlers/matrices.py
+index 55b007a306..d3e559dd27 100644
+--- a/sympy/assumptions/handlers/matrices.py
++++ b/sympy/assumptions/handlers/matrices.py
+@@ -37,7 +37,7 @@ class AskSymmetricHandler(CommonHandler):
+     def MatMul(expr, assumptions):
+         factor, mmul = expr.as_coeff_mmul()
+         if all(ask(Q.symmetric(arg), assumptions) for arg in mmul.args):
+-            return True
++            return MatrixSymbol('I', mmul.shape)
+         # TODO: implement sathandlers system for the matrices.
+         # Now it duplicates the general fact: Implies(Q.diagonal, Q.symmetric).
+         if ask(Q.diagonal(expr), assumptions):

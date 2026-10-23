@@ -1,0 +1,13 @@
+diff --git a/sympy/functions/special/error_functions.py b/sympy/functions/special/error_functions.py
+index e200cd727e..70ac9aa0e4 100644
+--- a/sympy/functions/special/error_functions.py
++++ b/sympy/functions/special/error_functions.py
+@@ -1074,7 +1074,7 @@ def fdiff(self, argindex=1):
+ 
+     def _eval_evalf(self, prec):
+         if (self.args[0]/polar_lift(-1)).is_positive:
+-            return Function._eval_evalf(self, prec) + (I*pi)._eval_evalf(prec)
++            return Function._eval_evalf(self, prec).evalf(prec) + (I*pi)._eval_evalf(prec).evalf(prec)
+         return Function._eval_evalf(self, prec)
+ 
+     def _eval_rewrite_as_uppergamma(self, z):

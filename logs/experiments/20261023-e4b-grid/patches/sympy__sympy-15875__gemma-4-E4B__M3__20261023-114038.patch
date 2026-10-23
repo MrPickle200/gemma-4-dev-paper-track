@@ -1,0 +1,13 @@
+diff --git a/sympy/assumptions/handlers/order.py b/sympy/assumptions/handlers/order.py
+index 4b3366bd20..a2cdc11e01 100644
+--- a/sympy/assumptions/handlers/order.py
++++ b/sympy/assumptions/handlers/order.py
+@@ -192,7 +192,7 @@ def Expr(expr, assumptions):
+     @staticmethod
+     def Basic(expr, assumptions):
+         return fuzzy_and([fuzzy_not(ask(Q.nonzero(expr), assumptions)),
+-            ask(Q.real(expr), assumptions)])
++            fuzzy_and([ask(Q.real(expr), assumptions), ask(Q.im(expr), assumptions)])])
+ 
+     @staticmethod
+     def Mul(expr, assumptions):

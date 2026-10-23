@@ -1,0 +1,22 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..6aed8f1f6f 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -1725,11 +1725,13 @@ def reduce(A, B):
+         if isinstance(B, Union):
+             return Intersection(s.complement(A) for s in B.args)
+ 
+-        result = B._complement(A)
+-        if result != None:
+-            return result
++        if isinstance(B, Complement):
++            # B = U \ C. We want A \ B = A \cap C
++            C = B.args[1]
++            return A.intersect(C)
+         else:
+-            return Complement(A, B, evaluate=False)
++            # A \ B = A \cap B^c
++            return A.intersect(B.complement())
+ 
+     def _contains(self, other):
+         A = self.args[0]

@@ -1,0 +1,13 @@
+diff --git a/sympy/polys/polyclasses.py b/sympy/polys/polyclasses.py
+index 16a183b085..c07199b399 100644
+--- a/sympy/polys/polyclasses.py
++++ b/sympy/polys/polyclasses.py
+@@ -784,7 +784,7 @@ def sqf_part(f):
+     def sqf_list(f, all=False):
+         """Returns a list of square-free factors of ``f``. """
+         coeff, factors = dmp_sqf_list(f.rep, f.lev, f.dom, all)
+-        return coeff, [ (f.per(g), k) for g, k in factors ]
++        return coeff, list(map((f.per, lambda g, k: (g, k)), factors))
+ 
+     def sqf_list_include(f, all=False):
+         """Returns a list of square-free factors of ``f``. """

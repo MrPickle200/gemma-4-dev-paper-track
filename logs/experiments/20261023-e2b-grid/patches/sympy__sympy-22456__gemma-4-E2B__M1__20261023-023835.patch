@@ -1,0 +1,41 @@
+diff --git a/sympy/codegen/ast.py b/sympy/codegen/ast.py
+index a02714b174..620484624f 100644
+--- a/sympy/codegen/ast.py
++++ b/sympy/codegen/ast.py
+@@ -907,6 +907,36 @@ def _construct_text(cls, text):
+     def _sympystr(self, printer, *args, **kwargs):
+         return self.text
+ 
++    def func(self, *args, **kwargs):
++        if not self.is_Atom:
++            return self
++
++        # Check positional arguments invariance
++        if self.args and self.func(*self.args) == self:
++            return self
++
++        # Check keyword arguments invariance
++        if self.kwargs and self.func(**self.kwargs) == self:
++            return self
++
++        # Fallback to standard behavior if invariance doesn't hold
++        return self.func(*args, **kwargs)
++
++    def __call__(self, *args, **kwargs):
++        return self
++
++    def func(self, *args):
++        return self
++
++    def __call__(self, *args, **kwargs):
++        return self.text
++
++    def __call__(self, *args, **kwargs):
++        return self
++
++    def __call__(self, *args, **kwargs):
++        return self
++
+ 
+ class QuotedString(String):
+     """ Represents a string which should be printed with quotes. """

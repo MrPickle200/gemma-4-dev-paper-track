@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 9f19ecf2ab..76a140306a 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -393,6 +393,8 @@ def is_subset(self, other):
+         # XXX: We shouldn't do this. A query like this should be handled
+         # without evaluating new Set objects. It should be the other way round
+         # so that the intersect method uses is_subset for evaluation.
++        if other is Reals:
++            return not self.is_empty
+         if self.intersect(other) == self:
+             return True
+ 

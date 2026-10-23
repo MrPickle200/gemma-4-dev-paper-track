@@ -1,0 +1,30 @@
+diff --git a/sympy/printing/str.py b/sympy/printing/str.py
+index cc1d19fcce..ebb4f62bff 100644
+--- a/sympy/printing/str.py
++++ b/sympy/printing/str.py
+@@ -88,6 +88,9 @@ def _print_Or(self, expr):
+     def _print_AppliedPredicate(self, expr):
+         return '%s(%s)' % (expr.func, expr.arg)
+ 
++    def _print_Eq(self, expr):
++        return "Eq(%s, %s)" % (self._print(expr.args[0]), self._print(expr.args[1]))
++
+     def _print_Basic(self, expr):
+         l = [self._print(o) for o in expr.args]
+         return expr.__class__.__name__ + "(%s)" % ", ".join(l)
+@@ -215,10 +218,13 @@ def _print_LatticeOp(self, expr):
+ 
+     def _print_Limit(self, expr):
+         e, z, z0, dir = expr.args
++        e_str = self._print(e)
++        z_str = self._print(z)
++        z0_str = self._print(z0)
+         if str(dir) == "+":
+-            return "Limit(%s, %s, %s)" % (e, z, z0)
++            return "Limit(%s, %s, %s)" % (e_str, z_str, z0_str)
+         else:
+-            return "Limit(%s, %s, %s, dir='%s')" % (e, z, z0, dir)
++            return "Limit(%s, %s, %s, dir='%s')" % (e_str, z_str, z0_str, dir)
+ 
+     def _print_list(self, expr):
+         return "[%s]" % self.stringify(expr, ", ")

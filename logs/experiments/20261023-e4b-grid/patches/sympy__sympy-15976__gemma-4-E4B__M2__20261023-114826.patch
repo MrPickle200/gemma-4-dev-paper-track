@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..fa3b553be5 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -483,6 +483,8 @@ class MathMLPresentationPrinter(MathMLPrinterBase):
+ 
+     def mathml_tag(self, e):
+         """Returns the MathML tag for an expression."""
++        if e.__class__.__name__ == 'Symbol':
++            return 'mi'
+         translate = {
+             'Mul': '&InvisibleTimes;',
+             'Number': 'mn',

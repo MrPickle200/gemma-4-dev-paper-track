@@ -1,0 +1,14 @@
+diff --git a/sympy/core/basic.py b/sympy/core/basic.py
+index 8e82778c7d..1a4865f37d 100644
+--- a/sympy/core/basic.py
++++ b/sympy/core/basic.py
+@@ -215,6 +215,9 @@ def compare(self, other):
+         c = (n1 > n2) - (n1 < n2)
+         if c:
+             return c
++        # Check for numerical zero equivalent to S.false
++        if (self == 0 and other == S.false) or (self == S.false and other == 0):
++            return 0
+         #
+         st = self._hashable_content()
+         ot = other._hashable_content()

@@ -1,0 +1,15 @@
+diff --git a/sympy/functions/elementary/piecewise.py b/sympy/functions/elementary/piecewise.py
+index 91bfceafaa..0d6ee195af 100644
+--- a/sympy/functions/elementary/piecewise.py
++++ b/sympy/functions/elementary/piecewise.py
+@@ -22,9 +22,7 @@ def __new__(cls, expr, cond):
+         elif cond == False:
+             return Tuple.__new__(cls, expr, false)
+         elif isinstance(cond, Basic) and cond.has(Piecewise):
+-            cond = piecewise_fold(cond)
+-            if isinstance(cond, Piecewise):
+-                cond = cond.rewrite(ITE)
++            cond = cond.rewrite(ITE)
+ 
+         if not isinstance(cond, Boolean):
+             raise TypeError(filldedent('''

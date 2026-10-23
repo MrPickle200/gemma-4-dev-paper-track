@@ -1,0 +1,13 @@
+diff --git a/sympy/physics/hep/gamma_matrices.py b/sympy/physics/hep/gamma_matrices.py
+index 23284e4a92..448b4b101f 100644
+--- a/sympy/physics/hep/gamma_matrices.py
++++ b/sympy/physics/hep/gamma_matrices.py
+@@ -633,7 +633,7 @@ def kahane_simplify(expression):
+             break
+         if pointer >=0 and free_pos[pointer] is not None:
+             for ri in resulting_indices:
+-                ri.append(free_pos[pointer])
++                ri.insert(0, free_pos[pointer])
+ 
+     # The following loop removes the remaining connected components in `links`.
+     # If there are free indices inside a connected component, it gives a

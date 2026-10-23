@@ -1,0 +1,20 @@
+diff --git a/sklearn/ensemble/iforest.py b/sklearn/ensemble/iforest.py
+index 8a1bd36259..6d050669e2 100644
+--- a/sklearn/ensemble/iforest.py
++++ b/sklearn/ensemble/iforest.py
+@@ -173,6 +173,7 @@ class IsolationForest(BaseBagging, OutlierMixin):
+                  n_jobs=None,
+                  behaviour='old',
+                  random_state=None,
++                 warm_start=False,
+                  verbose=0):
+         super().__init__(
+             base_estimator=ExtraTreeRegressor(
+@@ -187,6 +188,7 @@ class IsolationForest(BaseBagging, OutlierMixin):
+             max_features=max_features,
+             n_jobs=n_jobs,
+             random_state=random_state,
++            warm_start=warm_start,
+             verbose=verbose)
+ 
+         self.behaviour = behaviour

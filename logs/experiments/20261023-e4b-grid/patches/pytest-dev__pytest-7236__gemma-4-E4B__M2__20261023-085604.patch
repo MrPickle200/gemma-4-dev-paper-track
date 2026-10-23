@@ -1,0 +1,22 @@
+diff --git a/src/_pytest/unittest.py b/src/_pytest/unittest.py
+index 773f545af..f1d47ea41 100644
+--- a/src/_pytest/unittest.py
++++ b/src/_pytest/unittest.py
+@@ -210,6 +210,9 @@ class TestCaseFunction(Function):
+ 
+         maybe_wrap_pytest_function_for_tracing(self)
+ 
++        if getattr(self.obj, "__unittest_skip__", False):
++            return
++
+         # let the unittest framework handle async functions
+         if is_async_function(self.obj):
+             self._testcase(self)
+@@ -224,6 +227,7 @@ class TestCaseFunction(Function):
+                 self._explicit_tearDown = self._testcase.tearDown
+                 setattr(self._testcase, "tearDown", lambda *args: None)
+ 
++
+             # we need to update the actual bound method with self.obj, because
+             # wrap_pytest_function_for_tracing replaces self.obj by a wrapper
+             setattr(self._testcase, self.name, self.obj)

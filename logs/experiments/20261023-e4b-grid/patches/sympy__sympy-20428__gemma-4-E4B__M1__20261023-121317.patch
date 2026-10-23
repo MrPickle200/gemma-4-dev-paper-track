@@ -1,0 +1,12 @@
+diff --git a/sympy/polys/densetools.py b/sympy/polys/densetools.py
+index f057824642..84c14e5342 100644
+--- a/sympy/polys/densetools.py
++++ b/sympy/polys/densetools.py
+@@ -1248,6 +1248,7 @@ def dmp_clear_denoms(f, u, K0, K1=None, convert=False):
+             K1 = K0
+ 
+     common = _rec_clear_denoms(f, u, K0, K1)
++    return common, dmp_strip(f, u)
+ 
+     if not K1.is_one(common):
+         f = dmp_mul_ground(f, common, u, K0)

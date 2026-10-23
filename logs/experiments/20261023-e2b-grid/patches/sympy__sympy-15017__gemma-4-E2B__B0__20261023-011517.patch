@@ -1,0 +1,18 @@
+diff --git a/sympy/tensor/array/ndim_array.py b/sympy/tensor/array/ndim_array.py
+index 099b291167..95a5570829 100644
+--- a/sympy/tensor/array/ndim_array.py
++++ b/sympy/tensor/array/ndim_array.py
+@@ -175,7 +175,12 @@ def __len__(self):
+         9
+ 
+         """
+-        return self._loop_size
++        if not self._shape:
++            return 1
++        size = 1
++        for dim in self._shape:
++            size *= dim
++        return size
+ 
+     @property
+     def shape(self):

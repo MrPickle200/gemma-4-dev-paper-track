@@ -1,0 +1,12 @@
+diff --git a/sklearn/utils/_show_versions.py b/sklearn/utils/_show_versions.py
+index e5d3141bf0..1d6f6bbb9a 100644
+--- a/sklearn/utils/_show_versions.py
++++ b/sklearn/utils/_show_versions.py
+@@ -114,4 +114,6 @@ def show_versions():
+ 
+     print('\nPython deps:')
+     for k, stat in deps_info.items():
+-        print("{k:>10}: {stat}".format(k=k, stat=stat))
++        print("{k:>10}: {k}: {stat}".format(k=k, stat=stat))
++    if 'joblib' not in deps_info:
++        print("joblib")

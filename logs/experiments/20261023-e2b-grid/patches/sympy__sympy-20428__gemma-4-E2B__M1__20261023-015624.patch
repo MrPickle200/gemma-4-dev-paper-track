@@ -1,0 +1,14 @@
+diff --git a/sympy/polys/densetools.py b/sympy/polys/densetools.py
+index f057824642..197c72f5a4 100644
+--- a/sympy/polys/densetools.py
++++ b/sympy/polys/densetools.py
+@@ -84,7 +84,8 @@ def dmp_integrate(f, m, u, K):
+     1/6*x**3 + x**2*y
+ 
+     """
+-    if not u:
++    if f.is_zero():
++        return (K1.one, [])
+         return dup_integrate(f, m, K)
+ 
+     if m <= 0 or dmp_zero_p(f, u):

@@ -1,0 +1,17 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..5d62a7b3a7 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -204,8 +204,10 @@ def _complement(self, other):
+             return Union(p for p in product_sets if p != other)
+ 
+         elif isinstance(other, Interval):
+-            if isinstance(self, Interval) or isinstance(self, FiniteSet):
+-                return Intersection(other, self.complement(S.Reals))
++            if isinstance(self, FiniteSet):
++                return FiniteSet(*[el for el in self if not other.contains(el)])
++            elif isinstance(self, Interval):
++                return self.intersect(other.complement(S.Reals))
+ 
+         elif isinstance(other, Union):
+             return Union(o - self for o in other.args)

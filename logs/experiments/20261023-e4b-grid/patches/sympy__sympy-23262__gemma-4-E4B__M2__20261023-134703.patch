@@ -1,0 +1,13 @@
+diff --git a/sympy/plotting/experimental_lambdify.py b/sympy/plotting/experimental_lambdify.py
+index f4c5938a13..e9a384fec5 100644
+--- a/sympy/plotting/experimental_lambdify.py
++++ b/sympy/plotting/experimental_lambdify.py
+@@ -161,6 +161,8 @@ class lambdify:
+     def __init__(self, args, expr):
+         self.args = args
+         self.expr = expr
++        if isinstance(expr, tuple) and len(expr) == 1:
++            expr = (expr,)
+         self.lambda_func_1 = experimental_lambdify(
+             args, expr, use_python_cmath=True, use_evalf=True)
+         self.lambda_func_2 = experimental_lambdify(

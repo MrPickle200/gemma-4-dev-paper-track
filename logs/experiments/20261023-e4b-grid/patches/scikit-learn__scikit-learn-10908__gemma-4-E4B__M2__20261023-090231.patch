@@ -1,0 +1,12 @@
+diff --git a/sklearn/feature_extraction/text.py b/sklearn/feature_extraction/text.py
+index 9b1ebd6320..08e54ace32 100644
+--- a/sklearn/feature_extraction/text.py
++++ b/sklearn/feature_extraction/text.py
+@@ -728,6 +728,7 @@ class CountVectorizer(BaseEstimator, VectorizerMixin):
+         if max_df < 0 or min_df < 0:
+             raise ValueError("negative value for max_df or min_df")
+         self.max_features = max_features
++        self.vocabulary_ = vocabulary
+         if max_features is not None:
+             if (not isinstance(max_features, numbers.Integral) or
+                     max_features <= 0):

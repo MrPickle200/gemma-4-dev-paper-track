@@ -1,0 +1,31 @@
+diff --git a/sklearn/linear_model/logistic.py b/sklearn/linear_model/logistic.py
+index 1999f1dae7..7eb2efb8e1 100644
+--- a/sklearn/linear_model/logistic.py
++++ b/sklearn/linear_model/logistic.py
+@@ -1503,7 +1503,11 @@ class LogisticRegression(BaseEstimator, LinearClassifierMixin,
+         else:
+             C_ = self.C
+             penalty = self.penalty
+-        if not isinstance(self.max_iter, numbers.Number) or self.max_iter < 0:
++        if refit:
++            w = np.mean([coefs_paths[:, i, best_indices[i], :]
++                          for i in range(len(folds))], axis=0)
++        else:
++            pass
+             raise ValueError("Maximum number of iteration must be positive;"
+                              " got (max_iter=%r)" % self.max_iter)
+         if not isinstance(self.tol, numbers.Number) or self.tol < 0:
+@@ -2173,9 +2177,11 @@ class LogisticRegressionCV(LogisticRegression, BaseEstimator,
+                 if self.multi_class == 'ovr':
+                     w = np.mean([coefs_paths[i, best_indices[i], :]
+                                  for i in range(len(folds))], axis=0)
+-                else:
++                if refit:
+                     w = np.mean([coefs_paths[:, i, best_indices[i], :]
+-                                 for i in range(len(folds))], axis=0)
++                                  for i in range(len(folds))], axis=0)
++                else:
++                    pass
+ 
+                 best_indices_C = best_indices % len(self.Cs_)
+                 self.C_.append(np.mean(self.Cs_[best_indices_C]))

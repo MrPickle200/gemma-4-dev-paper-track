@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..cc62c4ff0a 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -132,7 +132,7 @@ def mathml_tag(self, e):
+             'Number': 'cn',
+             'int': 'cn',
+             'Pow': 'power',
+-            'Symbol': 'ci',
++            'Symbol': 'var',
+             'MatrixSymbol': 'ci',
+             'RandomSymbol': 'ci',
+             'Integral': 'int',

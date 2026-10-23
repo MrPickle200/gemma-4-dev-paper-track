@@ -1,0 +1,13 @@
+diff --git a/sklearn/linear_model/logistic.py b/sklearn/linear_model/logistic.py
+index 1999f1dae7..fb6e1bf1bb 100644
+--- a/sklearn/linear_model/logistic.py
++++ b/sklearn/linear_model/logistic.py
+@@ -2146,7 +2146,7 @@ class LogisticRegressionCV(LogisticRegression, BaseEstimator,
+ 
+                 if multi_class == 'multinomial':
+                     coef_init = np.mean(coefs_paths[:, :, best_index, :],
+-                                        axis=1)
++                                            axis=1)
+                 else:
+                     coef_init = np.mean(coefs_paths[:, best_index, :], axis=0)
+ 

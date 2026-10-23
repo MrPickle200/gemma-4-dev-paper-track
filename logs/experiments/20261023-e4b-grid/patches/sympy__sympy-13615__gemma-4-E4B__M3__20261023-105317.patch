@@ -1,0 +1,20 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..63498f9f99 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -1725,11 +1725,10 @@ def reduce(A, B):
+         if isinstance(B, Union):
+             return Intersection(s.complement(A) for s in B.args)
+ 
+-        result = B._complement(A)
+-        if result != None:
+-            return result
+-        else:
+-            return Complement(A, B, evaluate=False)
++        # Symmetric difference: (A \ B) U (B \ A)
++        diff_a_b = A.difference(B)
++        diff_b_a = B.difference(A)
++        return diff_a_b.union(diff_b_a)
+ 
+     def _contains(self, other):
+         A = self.args[0]

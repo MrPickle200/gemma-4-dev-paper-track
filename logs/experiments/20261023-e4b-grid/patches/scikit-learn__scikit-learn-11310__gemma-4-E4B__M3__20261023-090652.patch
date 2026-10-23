@@ -1,0 +1,17 @@
+diff --git a/sklearn/model_selection/_search.py b/sklearn/model_selection/_search.py
+index 99d6096af7..046d8188ad 100644
+--- a/sklearn/model_selection/_search.py
++++ b/sklearn/model_selection/_search.py
+@@ -724,6 +724,12 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         # NOTE test_sample counts (weights) remain the same for all candidates
+         test_sample_counts = np.array(test_sample_counts[:n_splits],
+                                       dtype=np.int)
++        if self.refit is not False:
++            import time
++            start_time = time.perf_counter()
++            self.best_estimator_.fit(X, y, groups=groups, **fit_params)
++            end_time = time.perf_counter()
++            self.refit_time_ = end_time - start_time
+         iid = self.iid
+         if self.iid == 'warn':
+             if len(np.unique(test_sample_counts)) > 1:

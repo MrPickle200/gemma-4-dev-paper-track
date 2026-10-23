@@ -13,7 +13,12 @@ Research project: a **micro-model-native harness** for Gemma 4 E2B/E4B on SWE-be
    ```
 2. **Report at every step.** After each action, state what changed, what the output proved, and what is next.
 3. Keep changes minimal and consistent with existing scripts; do not add frameworks or abstractions.
-4. Never commit model weights, environments, or regenerable checkouts: `models/`, `.venv/`,
+4. **Organise every experiment under `logs/experiments/<tag>/`.** Use `run_batch.py --experiment <tag>`
+   (and `run_task.py --experiment <tag>` for single-cell follow-ups) so traces, patches, manifest,
+   results.csv and DIAGNOSTICS.md land in `logs/experiments/<tag>/{runs,patches}/` together. Never
+   drop experiment traces into the shared `logs/runs/` + `logs/patches/` — those hold only the
+   committed 50-task baseline grid. See `logs/experiments/README.md`.
+5. Never commit model weights, environments, or regenerable checkouts: `models/`, `.venv/`,
    `repos/`, `worktrees/`, `tools/downloads/`, and server/console logs (`logs/*.log`,
    `logs/*.log.*`, `logs/*.bak`). **Do commit the run evidence:** `logs/runs/*.jsonl` traces and
    `logs/patches/*.patch` diffs are the primary record behind every reported number, and the

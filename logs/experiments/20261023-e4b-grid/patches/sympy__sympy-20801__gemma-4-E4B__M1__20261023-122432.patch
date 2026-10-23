@@ -1,0 +1,10 @@
+diff --git a/sympy/assumptions/cnf.py b/sympy/assumptions/cnf.py
+index 7877d4f52f..6435da8202 100644
+--- a/sympy/assumptions/cnf.py
++++ b/sympy/assumptions/cnf.py
+@@ -375,4 +375,4 @@ def encode_arg(self, arg):
+             return value
+ 
+     def encode(self, clause):
+-        return {self.encode_arg(arg) if not arg.lit == S.false else 0 for arg in clause}
++        return {self.encode_arg(arg) if arg.lit is not S.false else 0 for arg in clause}

@@ -1,0 +1,19 @@
+diff --git a/sympy/core/add.py b/sympy/core/add.py
+index 83a5f2aedc..c30c4d5837 100644
+--- a/sympy/core/add.py
++++ b/sympy/core/add.py
+@@ -557,13 +557,7 @@ def _eval_is_zero(self):
+         if len(nz) == len(self.args):
+             return None
+         b = self.func(*nz)
+-        if b.is_zero:
+-            if not im_or_z and not im:
+-                return True
+-            if im and not im_or_z:
+-                return False
+-        if b.is_zero is False:
+-            return False
++        return b.is_zero
+ 
+     def _eval_is_odd(self):
+         l = [f for f in self.args if not (f.is_even is True)]

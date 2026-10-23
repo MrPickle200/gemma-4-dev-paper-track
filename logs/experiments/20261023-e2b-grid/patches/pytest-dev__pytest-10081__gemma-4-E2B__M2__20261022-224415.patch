@@ -1,0 +1,13 @@
+diff --git a/src/_pytest/unittest.py b/src/_pytest/unittest.py
+index 851e4943b..055886c32 100644
+--- a/src/_pytest/unittest.py
++++ b/src/_pytest/unittest.py
+@@ -204,7 +204,7 @@ class TestCaseFunction(Function):
+             self._request._fillfixtures()
+ 
+     def teardown(self) -> None:
+-        if self._explicit_tearDown is not None:
++        if self._explicit_tearDown is not None and self._testcase is not None:
+             self._explicit_tearDown()
+             self._explicit_tearDown = None
+         self._testcase = None

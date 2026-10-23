@@ -1,0 +1,13 @@
+diff --git a/sympy/physics/hep/gamma_matrices.py b/sympy/physics/hep/gamma_matrices.py
+index 23284e4a92..bf6459b7c5 100644
+--- a/sympy/physics/hep/gamma_matrices.py
++++ b/sympy/physics/hep/gamma_matrices.py
+@@ -625,7 +625,7 @@ def kahane_simplify(expression):
+         previous_pointer = pointer
+ 
+         if next_ones:
+-            pointer = next_ones[0]
++            pointer = next_ones[-1]
+         else:
+             break
+ 

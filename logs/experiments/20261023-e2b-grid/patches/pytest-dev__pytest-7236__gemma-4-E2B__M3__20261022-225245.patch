@@ -1,0 +1,20 @@
+diff --git a/src/_pytest/unittest.py b/src/_pytest/unittest.py
+index 773f545af..19a62f543 100644
+--- a/src/_pytest/unittest.py
++++ b/src/_pytest/unittest.py
+@@ -122,10 +122,11 @@ class TestCaseFunction(Function):
+ 
+     def teardown(self):
+         if self._explicit_tearDown is not None:
+-            self._explicit_tearDown()
+-            self._explicit_tearDown = None
+-        self._testcase = None
+-        self._obj = None
++            if not self._testcase.skipped:
++                self._explicit_tearDown()
++                self._explicit_tearDown = None
++            self._testcase = None
++            self._obj = None
+ 
+     def startTest(self, testcase):
+         pass

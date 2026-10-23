@@ -1,0 +1,25 @@
+diff --git a/requests/utils.py b/requests/utils.py
+index 132cd2b5..a6376cc4 100644
+--- a/requests/utils.py
++++ b/requests/utils.py
+@@ -691,15 +691,15 @@ def to_native_string(string, encoding='ascii'):
+     """
+     out = None
+ 
++    if isinstance(string, bytes):
++        return string
+     if isinstance(string, builtin_str):
+-        out = string
++        return string
+     else:
+         if is_py2:
+-            out = string.encode(encoding)
++            return string.encode(encoding)
+         else:
+-            out = string.decode(encoding)
+-
+-    return out
++            return string.decode(encoding)
+ 
+ 
+ def urldefragauth(url):

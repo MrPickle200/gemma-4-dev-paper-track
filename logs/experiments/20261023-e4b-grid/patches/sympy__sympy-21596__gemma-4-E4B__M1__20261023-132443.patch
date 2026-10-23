@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/handlers/intersection.py b/sympy/sets/handlers/intersection.py
+index c54dc8f72a..999c779c20 100644
+--- a/sympy/sets/handlers/intersection.py
++++ b/sympy/sets/handlers/intersection.py
+@@ -364,7 +364,7 @@ def intersection_sets(self, other): # noqa:F811
+                 range_set = base_set.intersect(new_interval)
+             else:
+                 if other.is_subset(S.Reals):
+-                    solutions = solveset(f, n, S.Reals)
++                    solutions = solveset(f.real if f.is_real else f.imag, n, S.Reals)
+                     if not isinstance(range_set, (ImageSet, ConditionSet)):
+                         range_set = solutions.intersect(other)
+                     else:

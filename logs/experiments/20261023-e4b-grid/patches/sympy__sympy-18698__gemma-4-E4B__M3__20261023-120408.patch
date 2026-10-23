@@ -1,0 +1,14 @@
+diff --git a/sympy/polys/sqfreetools.py b/sympy/polys/sqfreetools.py
+index 1783a7744a..acc4233a28 100644
+--- a/sympy/polys/sqfreetools.py
++++ b/sympy/polys/sqfreetools.py
+@@ -417,6 +417,9 @@ def dmp_sqf_list(f, u, K, all=False):
+ 
+         if all or dmp_degree(g, u) > 0:
+             result.append((g, i))
++        elif not all:
++            result.append((p, i))
++            break
+ 
+         i += 1
+ 

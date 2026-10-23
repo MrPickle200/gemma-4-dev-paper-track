@@ -1,0 +1,14 @@
+diff --git a/src/_pytest/unittest.py b/src/_pytest/unittest.py
+index 851e4943b..f5e5ff647 100644
+--- a/src/_pytest/unittest.py
++++ b/src/_pytest/unittest.py
+@@ -310,6 +310,9 @@ class TestCaseFunction(Function):
+             # Type ignored because self acts as the TestResult, but is not actually one.
+             self._testcase(result=self)  # type: ignore[arg-type]
+         else:
++            if _is_skipped(self.obj):
++                return
++
+             # When --pdb is given, we want to postpone calling tearDown() otherwise
+             # when entering the pdb prompt, tearDown() would have probably cleaned up
+             # instance variables, which makes it difficult to debug.

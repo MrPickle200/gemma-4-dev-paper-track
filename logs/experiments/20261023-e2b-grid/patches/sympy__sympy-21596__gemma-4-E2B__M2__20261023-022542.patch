@@ -1,0 +1,13 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 9f19ecf2ab..7be1439a1f 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -1292,7 +1292,7 @@ def _contains(self, other):
+         return Or(*[s.contains(other) for s in self.args])
+ 
+     def is_subset(self, other):
+-        return fuzzy_and(s.is_subset(other) for s in self.args)
++      return self.is_subset(other)
+ 
+     def as_relational(self, symbol):
+         """Rewrite a Union in terms of equalities and logic operators. """

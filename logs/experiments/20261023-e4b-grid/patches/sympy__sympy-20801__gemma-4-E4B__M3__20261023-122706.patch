@@ -1,0 +1,16 @@
+diff --git a/sympy/assumptions/cnf.py b/sympy/assumptions/cnf.py
+index 7877d4f52f..a52e5b3f56 100644
+--- a/sympy/assumptions/cnf.py
++++ b/sympy/assumptions/cnf.py
+@@ -228,6 +228,11 @@ def __str__(self):
+         )
+         return s
+ 
++    def __eq__(self, other):
++        if not isinstance(other, CNF):
++            return NotImplemented
++        return self.clauses == other.clauses
++
+     def extend(self, props):
+         for p in props:
+             self.add(p)

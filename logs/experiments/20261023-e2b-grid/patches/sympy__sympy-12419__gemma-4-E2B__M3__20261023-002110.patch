@@ -1,0 +1,13 @@
+diff --git a/sympy/concrete/summations.py b/sympy/concrete/summations.py
+index 372487664c..727ff7eb9b 100644
+--- a/sympy/concrete/summations.py
++++ b/sympy/concrete/summations.py
+@@ -175,7 +175,7 @@ def doit(self, **hints):
+             f = self.function
+ 
+         if self.function.is_Matrix:
+-            return self.expand().doit()
++            return Sum(self.function, (i, 0, n-1), (j, 0, n-1)).doit()
+ 
+         for n, limit in enumerate(self.limits):
+             i, a, b = limit

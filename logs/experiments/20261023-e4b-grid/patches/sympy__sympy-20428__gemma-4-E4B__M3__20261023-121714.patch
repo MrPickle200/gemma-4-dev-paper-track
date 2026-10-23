@@ -1,0 +1,14 @@
+diff --git a/sympy/polys/polytools.py b/sympy/polys/polytools.py
+index 70112de3b6..a4f37de7cb 100644
+--- a/sympy/polys/polytools.py
++++ b/sympy/polys/polytools.py
+@@ -2250,6 +2250,9 @@ def clear_denoms(self, convert=False):
+ 
+         coeff, f = dom.to_sympy(coeff), f.per(result)
+ 
++        if f.is_zero and f.rep.is_not_empty:
++            f = Poly(0, f.gens, domain=f.domain)
++
+         if not convert or not dom.has_assoc_Ring:
+             return coeff, f
+         else:

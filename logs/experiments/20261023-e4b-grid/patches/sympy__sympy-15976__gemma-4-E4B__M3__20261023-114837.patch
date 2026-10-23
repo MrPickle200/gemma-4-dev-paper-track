@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..ce65425ebb 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -158,6 +158,8 @@ def mathml_tag(self, e):
+             'StrictLessThan': 'lt',
+         }
+ 
++        if e.__class__.__name__ == 'Symbol':
++            return 'mi'
+         for cls in e.__class__.__mro__:
+             n = cls.__name__
+             if n in translate:

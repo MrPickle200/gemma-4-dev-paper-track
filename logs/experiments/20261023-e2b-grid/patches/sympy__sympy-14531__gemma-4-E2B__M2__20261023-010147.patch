@@ -1,0 +1,14 @@
+diff --git a/sympy/printing/str.py b/sympy/printing/str.py
+index cc1d19fcce..959a39e9bb 100644
+--- a/sympy/printing/str.py
++++ b/sympy/printing/str.py
+@@ -820,8 +820,7 @@ def sstr(expr, **settings):
+     'Eq(a + b, 0)'
+     """
+ 
+-    p = StrPrinter(settings)
+-    s = p.doprint(expr)
++    s = StrPrinter(settings).doprint(expr)
+ 
+     return s
+ 

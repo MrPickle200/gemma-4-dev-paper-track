@@ -1,0 +1,13 @@
+diff --git a/requests/adapters.py b/requests/adapters.py
+index fe22ff45..b483d11a 100644
+--- a/requests/adapters.py
++++ b/requests/adapters.py
+@@ -410,7 +410,7 @@ class HTTPAdapter(BaseAdapter):
+         """
+ 
+         try:
+-            conn = self.get_connection(request.url, proxies)
++            conn = self.get_connection(request.url, proxies=proxies)
+         except LocationValueError as e:
+             raise InvalidURL(e, request=request)
+ 

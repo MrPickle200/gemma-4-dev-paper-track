@@ -1,0 +1,14 @@
+diff --git a/sympy/core/exprtools.py b/sympy/core/exprtools.py
+index 039a2470c4..b48987e609 100644
+--- a/sympy/core/exprtools.py
++++ b/sympy/core/exprtools.py
+@@ -414,8 +414,7 @@ def is_zero(self):  # Factors
+         >>> Factors(0).is_zero
+         True
+         """
+-        f = self.factors
+-        return len(f) == 1 and S.Zero in f
++        return simplify(self).is_zero()
+ 
+     @property
+     def is_one(self):  # Factors
