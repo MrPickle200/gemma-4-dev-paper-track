@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-23413",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/matrices/expressions/special.py::ZeroMatrix.shape",
+      "signature": "def shape(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/expressions/special.py\nSymbol: sympy/matrices/expressions/special.py::ZeroMatrix.shape\nSignature: def shape(self):\nDocstring: \nBody Preview:         return (self.args[0], self.args[1])\n    def _eval_power(self, exp):\n        # exp = -1, 0, 1 are already handled at this stage\n        if (exp < 0) == True:\n            raise NonInvertibleMatrixError(\"Matrix det == 0; not invertible\")\n        return self\n    def _eval_transpose(self):\n        return ZeroMatrix(self.cols, self.rows)",
+      "score": 0.8689358234405518
+    },
+    {
+      "symbol_id": "sympy/matrices/eigen.py::_bidiagonal_decmp_hholder",
+      "signature": "def _bidiagonal_decmp_hholder(M):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/eigen.py\nSymbol: sympy/matrices/eigen.py::_bidiagonal_decmp_hholder\nSignature: def _bidiagonal_decmp_hholder(M):\nDocstring: \nBody Preview:     m = M.rows\n    n = M.cols\n    A = M.as_mutable()\n    U, V = A.eye(m), A.eye(n)\n    for i in range(min(m, n)):\n        v, bet = _householder_vector(A[i:, i])\n        hh_mat = A.eye(m - i) - bet * v * v.H\n        A[i:, i:] = hh_mat * A[i:, i:]\n        temp = A.eye(m)\n        temp[i:, i:] = hh_mat",
+      "score": 0.8619042634963989
+    },
+    {
+      "symbol_id": "sympy/tensor/array/ndim_array.py::NDimArray._eval_transpose",
+      "signature": "def _eval_transpose(self):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/ndim_array.py\nSymbol: sympy/tensor/array/ndim_array.py::NDimArray._eval_transpose\nSignature: def _eval_transpose(self):\nDocstring: \nBody Preview:         if self.rank() != 2:\n            raise ValueError(\"array rank not 2\")\n        from .arrayop import permutedims\n        return permutedims(self, (1, 0))\n    def transpose(self):\n        return self._eval_transpose()\n    def _eval_conjugate(self):\n        from sympy.tensor.array.arrayop import Flatten",
+      "score": 0.861572265625
+    },
+    {
+      "symbol_id": "sympy/tensor/array/expressions/conv_array_to_matrix.py::_a2m_transpose",
+      "signature": "def _a2m_transpose(arg):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/expressions/conv_array_to_matrix.py\nSymbol: sympy/tensor/array/expressions/conv_array_to_matrix.py::_a2m_transpose\nSignature: def _a2m_transpose(arg):\nDocstring: \nBody Preview:     if isinstance(arg, _CodegenArrayAbstract):\n        return _permute_dims(arg, [1, 0])\n    else:\n        from sympy.matrices.expressions.transpose import Transpose\n        return Transpose(arg).doit()\ndef identify_hadamard_products(expr: tUnion[ArrayContraction, ArrayDiagonal]):\n    editor: _EditArrayContraction = _EditArrayContraction(expr)",
+      "score": 0.860758364200592
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixBase.LDLdecomposition",
+      "signature": "def LDLdecomposition(self, hermitian=True):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixBase.LDLdecomposition\nSignature: def LDLdecomposition(self, hermitian=True):\nDocstring: \nBody Preview:         raise NotImplementedError('This function is implemented in DenseMatrix or SparseMatrix')\n    def LUdecomposition(self, iszerofunc=_iszero, simpfunc=None,\n            rankcheck=False):\n        return _LUdecomposition(self, iszerofunc=iszerofunc, simpfunc=simpfunc,\n                rankcheck=rankcheck)\n    def LUdecomposition_Simple(self, iszerofunc=_iszero, simpfunc=None,\n            rankcheck=False):\n        return _LUdecomposition_Simple(self, iszerofunc=iszerofunc,\n                simpfunc=simpfunc, rankcheck=rankcheck)",
+      "score": 0.8590965867042542
+    },
+    {
+      "symbol_id": "sympy/matrices/repmatrix.py::MutableRepMatrix._eval_row_del",
+      "signature": "def _eval_row_del(self, row):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/repmatrix.py\nSymbol: sympy/matrices/repmatrix.py::MutableRepMatrix._eval_row_del\nSignature: def _eval_row_del(self, row):\nDocstring: \nBody Preview:         self._rep = DomainMatrix.vstack(self._rep[:row,:], self._rep[row+1:, :])\n        self.rows -= 1\n    def _eval_col_insert(self, col, other):\n        other = self._new(other)\n        return self.hstack(self[:,:col], other, self[:,col:])\n    def _eval_row_insert(self, row, other):\n        other = self._new(other)\n        return self.vstack(self[:row,:], other, self[row:,:])",
+      "score": 0.8589861392974854
+    },
+    {
+      "symbol_id": "sympy/tensor/array/ndim_array.py::NDimArray.__ne__",
+      "signature": "def __ne__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/ndim_array.py\nSymbol: sympy/tensor/array/ndim_array.py::NDimArray.__ne__\nSignature: def __ne__(self, other):\nDocstring: \nBody Preview:         return not self == other\n    def _eval_transpose(self):\n        if self.rank() != 2:\n            raise ValueError(\"array rank not 2\")\n        from .arrayop import permutedims\n        return permutedims(self, (1, 0))\n    def transpose(self):\n        return self._eval_transpose()",
+      "score": 0.858399510383606
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixReductions.rank",
+      "signature": "def rank(self, iszerofunc=_iszero, simplify=False):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixReductions.rank\nSignature: def rank(self, iszerofunc=_iszero, simplify=False):\nDocstring: \nBody Preview:         return _rank(self, iszerofunc=iszerofunc, simplify=simplify)\n    def rref(self, iszerofunc=_iszero, simplify=False, pivots=True,\n            normalize_last=True):\n        return _rref(self, iszerofunc=iszerofunc, simplify=simplify,\n            pivots=pivots, normalize_last=normalize_last)\n    echelon_form.__doc__ = _echelon_form.__doc__\n    is_echelon.__doc__   = _is_echelon.__doc__\n    rank.__doc__         = _rank.__doc__\n    rref.__doc__         = _rref.__doc__",
+      "score": 0.8572693467140198
+    }
+  ]
+}

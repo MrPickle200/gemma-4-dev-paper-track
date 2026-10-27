@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-13551",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/functions/combinatorial/numbers.py::catalan._eval_rewrite_as_Product",
+      "signature": "def _eval_rewrite_as_Product(self, n):",
+      "summary": "",
+      "document_text": "File: sympy/functions/combinatorial/numbers.py\nSymbol: sympy/functions/combinatorial/numbers.py::catalan._eval_rewrite_as_Product\nSignature: def _eval_rewrite_as_Product(self, n):\nDocstring: \nBody Preview:         from sympy import Product\n        if not (n.is_integer and n.is_nonnegative):\n            return self\n        k = Dummy('k', integer=True, positive=True)\n        return Product((n + k) / k, (k, 2, n))\n    def _eval_evalf(self, prec):\n        from sympy import gamma\n        if self.args[0].is_number:\n            return self.rewrite(gamma)._eval_evalf(prec)",
+      "score": 0.9245240688323975
+    },
+    {
+      "symbol_id": "sympy/concrete/products.py::Product",
+      "signature": "class Product(ExprWithIntLimits):",
+      "summary": "",
+      "document_text": "File: sympy/concrete/products.py\nSymbol: sympy/concrete/products.py::Product\nSignature: class Product(ExprWithIntLimits):\nDocstring: \nBody Preview:     r\"\"\"Represents unevaluated products.\n    ``Product`` represents a finite or infinite product, with the first\n    argument being the general form of terms in the series, and the second\n    argument being ``(dummy_variable, start, end)``, with ``dummy_variable``\n    taking all integer values from ``start`` through ``end``. In accordance\n    with long-standing mathematical convention, the end term is included in\n    the product.\n    Finite products\n    ===============",
+      "score": 0.8859087824821472
+    },
+    {
+      "symbol_id": "sympy/concrete/products.py::Product._eval_product",
+      "signature": "def _eval_product(self, term, limits):",
+      "summary": "",
+      "document_text": "File: sympy/concrete/products.py\nSymbol: sympy/concrete/products.py::Product._eval_product\nSignature: def _eval_product(self, term, limits):\nDocstring: \nBody Preview:         from sympy.concrete.delta import deltaproduct, _has_simple_delta\n        from sympy.concrete.summations import summation\n        from sympy.functions import KroneckerDelta, RisingFactorial\n        (k, a, n) = limits\n        if k not in term.free_symbols:\n            if (term - 1).is_zero:\n                return S.One\n            return term**(n - a + 1)",
+      "score": 0.8856210708618164
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/utility_function.py::TogetherSimplify",
+      "signature": "def TogetherSimplify(u):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/utility_function.py\nSymbol: sympy/integrals/rubi/utility_function.py::TogetherSimplify\nSignature: def TogetherSimplify(u):\nDocstring: \nBody Preview:     v = Together(Simplify(Together(u)))\n    return FixSimplify(v)\ndef SmartSimplify(u):\n    v = Simplify(u)\n    w = factor(v)\n    if LeafCount(w) < LeafCount(v):\n        v = w\n    if Not(FalseQ(w == FractionalPowerOfSquareQ(v))) and FractionalPowerSubexpressionQ(u, w, Expand(w)):\n        v = SubstForExpn(v, w, Expand(w))\n    else:",
+      "score": 0.8756210803985596
+    },
+    {
+      "symbol_id": "sympy/functions/combinatorial/numbers.py::_product",
+      "signature": "def _product(a, b):",
+      "summary": "",
+      "document_text": "File: sympy/functions/combinatorial/numbers.py\nSymbol: sympy/functions/combinatorial/numbers.py::_product\nSignature: def _product(a, b):\nDocstring: \nBody Preview:     p = 1\n    for k in range(a, b + 1):\n        p *= k\n    return p\n# Dummy symbol used for computing polynomial sequences\n_sym = Symbol('x')\n_symbols = Function('x')",
+      "score": 0.8734560012817383
+    },
+    {
+      "symbol_id": "sympy/ntheory/factor_.py::udivisor_sigma.eval",
+      "signature": "def eval(cls, n, k=1):",
+      "summary": "",
+      "document_text": "File: sympy/ntheory/factor_.py\nSymbol: sympy/ntheory/factor_.py::udivisor_sigma.eval\nSignature: def eval(cls, n, k=1):\nDocstring: \nBody Preview:         n = sympify(n)\n        k = sympify(k)\n        if n.is_prime:\n            return 1 + n**k\n        if n.is_Integer:\n            if n <= 0:\n                raise ValueError(\"n must be a positive integer\")\n            else:\n                return Mul(*[1+p**(k*e) for p, e in factorint(n).items()])",
+      "score": 0.8730193376541138
+    },
+    {
+      "symbol_id": "sympy/ntheory/factor_.py::divisor_sigma.eval",
+      "signature": "def eval(cls, n, k=1):",
+      "summary": "",
+      "document_text": "File: sympy/ntheory/factor_.py\nSymbol: sympy/ntheory/factor_.py::divisor_sigma.eval\nSignature: def eval(cls, n, k=1):\nDocstring: \nBody Preview:         n = sympify(n)\n        k = sympify(k)\n        if n.is_prime:\n            return 1 + n**k\n        if n.is_Integer:\n            if n <= 0:\n                raise ValueError(\"n must be a positive integer\")\n            else:\n                return Mul(*[(p**(k*(e + 1)) - 1)/(p**k - 1) if k != 0\n                           else e + 1 for p, e in factorint(n).items()])",
+      "score": 0.8704301118850708
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/utility_function.py::ProductOfLinearPowersQ",
+      "signature": "def ProductOfLinearPowersQ(u, x):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/utility_function.py\nSymbol: sympy/integrals/rubi/utility_function.py::ProductOfLinearPowersQ\nSignature: def ProductOfLinearPowersQ(u, x):\nDocstring: \nBody Preview:     # ProductOfLinearPowersQ(u, x) returns True iff u is a product of factors of the form v^n where v is linear in x\n    v = Wild('v')\n    n = Wild('n', exclude=[x])\n    M = u.match(v**n)\n    return FreeQ(u, x) or M and LinearQ(M[v], x) or ProductQ(u) and ProductOfLinearPowersQ(First(u), x) and ProductOfLinearPowersQ(Rest(u), x)\ndef Rt(u, n):\n    return RtAux(TogetherSimplify(u), n)\ndef NthRoot(u, n):\n    return u**(1/n)",
+      "score": 0.8700256943702698
+    }
+  ]
+}

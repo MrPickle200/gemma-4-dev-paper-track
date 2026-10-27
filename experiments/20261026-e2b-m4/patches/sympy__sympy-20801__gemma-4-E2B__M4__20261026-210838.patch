@@ -1,0 +1,17 @@
+diff --git a/sympy/logic/boolalg.py b/sympy/logic/boolalg.py
+index fbcba1f8d4..7b46b1d077 100644
+--- a/sympy/logic/boolalg.py
++++ b/sympy/logic/boolalg.py
+@@ -390,8 +390,10 @@ class when they evaluate to false.
+     sympy.logic.boolalg.BooleanTrue
+ 
+     """
+-    def __bool__(self):
+-        return False
++    def __eq__(self, other):
++        if isinstance(other, (float, int)):
++            return self == 0 and other == 0.0
++        return super().__eq__(other)
+ 
+     def __hash__(self):
+         return hash(False)

@@ -1,0 +1,13 @@
+diff --git a/sympy/core/expr.py b/sympy/core/expr.py
+index 72728c44ef..4a67278b14 100644
+--- a/sympy/core/expr.py
++++ b/sympy/core/expr.py
+@@ -137,6 +137,8 @@ def __rsub__(self, other):
+     @_sympifyit('other', NotImplemented)
+     @call_highest_priority('__rmul__')
+     def __mul__(self, other):
++        if isinstance(other, Poly):
++            return other.__rmul__(self)
+         return Mul(self, other)
+ 
+     @_sympifyit('other', NotImplemented)

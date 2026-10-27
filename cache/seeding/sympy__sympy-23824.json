@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-23824",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/physics/hep/gamma_matrices.py::simplify_gamma_expression",
+      "signature": "def simplify_gamma_expression(expression):",
+      "summary": "",
+      "document_text": "File: sympy/physics/hep/gamma_matrices.py\nSymbol: sympy/physics/hep/gamma_matrices.py::simplify_gamma_expression\nSignature: def simplify_gamma_expression(expression):\nDocstring: \nBody Preview:     extracted_expr, residual_expr = extract_type_tens(expression, GammaMatrix)\n    res_expr = _simplify_single_line(extracted_expr)\n    return res_expr * residual_expr\ndef simplify_gpgp(ex, sort=True):\n    \"\"\"\n    simplify products ``G(i)*p(-i)*G(j)*p(-j) -> p(i)*p(-i)``\n    Examples\n    ========",
+      "score": 0.8954676389694214
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/cg.py::_check_varsh_sum_872_4",
+      "signature": "def _check_varsh_sum_872_4(e):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/cg.py\nSymbol: sympy/physics/quantum/cg.py::_check_varsh_sum_872_4\nSignature: def _check_varsh_sum_872_4(e):\nDocstring: \nBody Preview:     alpha = symbols('alpha')\n    beta = symbols('beta')\n    a = Wild('a')\n    b = Wild('b')\n    c = Wild('c')\n    cp = Wild('cp')\n    gamma = Wild('gamma')\n    gammap = Wild('gammap')\n    cg1 = CG(a, alpha, b, beta, c, gamma)\n    cg2 = CG(a, alpha, b, beta, cp, gammap)",
+      "score": 0.8865233063697815
+    },
+    {
+      "symbol_id": "sympy/functions/special/gamma_functions.py::trigamma._eval_rewrite_as_polygamma",
+      "signature": "def _eval_rewrite_as_polygamma(self, z, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/gamma_functions.py\nSymbol: sympy/functions/special/gamma_functions.py::trigamma._eval_rewrite_as_polygamma\nSignature: def _eval_rewrite_as_polygamma(self, z, **kwargs):\nDocstring: \nBody Preview:         return polygamma(1, z)\n    def _eval_rewrite_as_harmonic(self, z, **kwargs):\n        return -harmonic(z - 1, 2) + S.Pi**2 / 6\n    def _eval_as_leading_term(self, x, logx=None, cdir=0):\n        z = self.args[0]\n        return polygamma(1, z).as_leading_term(x)\n###############################################################################",
+      "score": 0.8794953227043152
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/rules/special_functions.py::replacement6838",
+      "signature": "def replacement6838(a, b, x):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/rules/special_functions.py\nSymbol: sympy/integrals/rubi/rules/special_functions.py::replacement6838\nSignature: def replacement6838(a, b, x):\nDocstring: \nBody Preview:     return -Simp(sinh(a + b*x)/b, x) + Simp((a + b*x)*CoshIntegral(a + b*x)/b, x)\ndef replacement6839(b, x):\n    return Simp(b*x*HypergeometricPFQ(List(S(1), S(1), S(1)), List(S(2), S(2), S(2)), -b*x)/S(2), x) + Simp(b*x*HypergeometricPFQ(List(S(1), S(1), S(1)), List(S(2), S(2), S(2)), b*x)/S(2), x)\ndef replacement6840(b, x):\n    return Simp(EulerGamma*log(x), x) - Simp(b*x*HypergeometricPFQ(List(S(1), S(1), S(1)), List(S(2), S(2), S(2)), -b*x)/S(2), x) + Simp(b*x*HypergeometricPFQ(List(S(1), S(1), S(1)), List(S(2), S(2), S(2)), b*x)/S(2), x) + Simp(log(b*x)**S(2)/S(2), x)",
+      "score": 0.8750559091567993
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/cg.py::_cg_simp_sum",
+      "signature": "def _cg_simp_sum(e):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/cg.py\nSymbol: sympy/physics/quantum/cg.py::_cg_simp_sum\nSignature: def _cg_simp_sum(e):\nDocstring: \nBody Preview:     e = _check_varsh_sum_871_1(e)\n    e = _check_varsh_sum_871_2(e)\n    e = _check_varsh_sum_872_4(e)\n    return e\ndef _check_varsh_sum_871_1(e):\n    a = Wild('a')\n    alpha = symbols('alpha')\n    b = Wild('b')\n    match = e.match(Sum(CG(a, alpha, b, 0, a, alpha), (alpha, -a, a)))",
+      "score": 0.8727349638938904
+    },
+    {
+      "symbol_id": "sympy/functions/special/gamma_functions.py::trigamma._eval_rewrite_as_harmonic",
+      "signature": "def _eval_rewrite_as_harmonic(self, z, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/gamma_functions.py\nSymbol: sympy/functions/special/gamma_functions.py::trigamma._eval_rewrite_as_harmonic\nSignature: def _eval_rewrite_as_harmonic(self, z, **kwargs):\nDocstring: \nBody Preview:         return -harmonic(z - 1, 2) + S.Pi**2 / 6\n    def _eval_as_leading_term(self, x, logx=None, cdir=0):\n        z = self.args[0]\n        return polygamma(1, z).as_leading_term(x)\n###############################################################################\n##################### COMPLETE MULTIVARIATE GAMMA FUNCTION ####################\n###############################################################################",
+      "score": 0.8717811703681946
+    },
+    {
+      "symbol_id": "sympy/physics/hep/gamma_matrices.py::simplify_gpgp",
+      "signature": "def simplify_gpgp(ex, sort=True):",
+      "summary": "",
+      "document_text": "File: sympy/physics/hep/gamma_matrices.py\nSymbol: sympy/physics/hep/gamma_matrices.py::simplify_gpgp\nSignature: def simplify_gpgp(ex, sort=True):\nDocstring: \nBody Preview:     \"\"\"\n    simplify products ``G(i)*p(-i)*G(j)*p(-j) -> p(i)*p(-i)``\n    Examples\n    ========\n    >>> from sympy.physics.hep.gamma_matrices import GammaMatrix as G, \\\n        LorentzIndex, simplify_gpgp\n    >>> from sympy.tensor.tensor import tensor_indices, tensor_heads\n    >>> p, q = tensor_heads('p, q', [LorentzIndex])\n    >>> i0,i1,i2,i3,i4,i5 = tensor_indices('i0:6', LorentzIndex)",
+      "score": 0.8700674772262573
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/rules/inverse_trig.py::replacement5294",
+      "signature": "def replacement5294(a, b, c, d, e, n, x):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/rules/inverse_trig.py\nSymbol: sympy/integrals/rubi/rules/inverse_trig.py::replacement5294\nSignature: def replacement5294(a, b, c, d, e, n, x):\nDocstring: \nBody Preview:     return Simp((a + b*ArcTan(c*x))**(n + S(1))/(b*c*d*(n + S(1))), x)\ndef replacement5295(a, b, c, d, e, n, x):\n    return -Simp((a + b*acot(c*x))**(n + S(1))/(b*c*d*(n + S(1))), x)\ndef replacement5296(a, b, c, d, e, x):\n    return Simp(I*b*PolyLog(S(2), -I*sqrt(I*c*x + S(1))/sqrt(-I*c*x + S(1)))/(c*sqrt(d)), x) - Simp(I*b*PolyLog(S(2), I*sqrt(I*c*x + S(1))/sqrt(-I*c*x + S(1)))/(c*sqrt(d)), x) + Simp(-S(2)*I*(a + b*ArcTan(c*x))*ArcTan(sqrt(I*c*x + S(1))/sqrt(-I*c*x + S(1)))/(c*sqrt(d)), x)",
+      "score": 0.8696489930152893
+    }
+  ]
+}

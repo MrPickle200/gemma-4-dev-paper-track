@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-13480",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::sech.taylor_term",
+      "signature": "def taylor_term(n, x, *previous_terms):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::sech.taylor_term\nSignature: def taylor_term(n, x, *previous_terms):\nDocstring: \nBody Preview:         from sympy.functions.combinatorial.numbers import euler\n        if n < 0 or n % 2 == 1:\n            return S.Zero\n        else:\n            x = sympify(x)\n            return euler(n) / factorial(n) * x**(n)\n    def _eval_rewrite_as_sinh(self, arg):\n        return S.ImaginaryUnit / sinh(arg + S.ImaginaryUnit * S.Pi /2)\n    def _sage_(self):",
+      "score": 0.8856102228164673
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::sinh._eval_rewrite_as_coth",
+      "signature": "def _eval_rewrite_as_coth(self, arg):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::sinh._eval_rewrite_as_coth\nSignature: def _eval_rewrite_as_coth(self, arg):\nDocstring: \nBody Preview:         coth_half = coth(S.Half*arg)\n        return 2*coth_half/(coth_half**2 - 1)\n    def _eval_as_leading_term(self, x):\n        from sympy import Order\n        arg = self.args[0].as_leading_term(x)\n        if x in arg.free_symbols and Order(1, x).contains(arg):\n            return arg\n        else:\n            return self.func(arg)",
+      "score": 0.8851674199104309
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/trigonometric.py::cot._eval_subs",
+      "signature": "def _eval_subs(self, old, new):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/trigonometric.py\nSymbol: sympy/functions/elementary/trigonometric.py::cot._eval_subs\nSignature: def _eval_subs(self, old, new):\nDocstring: \nBody Preview:         if self == old:\n            return new\n        arg = self.args[0]\n        argnew = arg.subs(old, new)\n        if arg != argnew and (argnew/S.Pi).is_integer:\n            return S.ComplexInfinity\n        return cot(argnew)\nclass ReciprocalTrigonometricFunction(TrigonometricFunction):\n    \"\"\"Base class for reciprocal functions of trigonometric functions. \"\"\"",
+      "score": 0.8786113262176514
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::coth",
+      "signature": "class coth(HyperbolicFunction):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::coth\nSignature: class coth(HyperbolicFunction):\nDocstring: \nBody Preview:     r\"\"\"\n    The hyperbolic cotangent function, `\\frac{\\cosh(x)}{\\sinh(x)}`.\n    * coth(x) -> Returns the hyperbolic cotangent of x\n    \"\"\"\n    def fdiff(self, argindex=1):\n        if argindex == 1:\n            return -1/sinh(self.args[0])**2\n        else:\n            raise ArgumentIndexError(self, argindex)",
+      "score": 0.8779103755950928
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::cosh",
+      "signature": "class cosh(HyperbolicFunction):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::cosh\nSignature: class cosh(HyperbolicFunction):\nDocstring: \nBody Preview:     r\"\"\"\n    The hyperbolic cosine function, `\\frac{e^x + e^{-x}}{2}`.\n    * cosh(x) -> Returns the hyperbolic cosine of x\n    See Also\n    ========\n    sinh, tanh, acosh\n    \"\"\"",
+      "score": 0.8754847645759583
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::cosh._eval_rewrite_as_coth",
+      "signature": "def _eval_rewrite_as_coth(self, arg):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::cosh._eval_rewrite_as_coth\nSignature: def _eval_rewrite_as_coth(self, arg):\nDocstring: \nBody Preview:         coth_half = coth(S.Half*arg)**2\n        return (coth_half + 1)/(coth_half - 1)\n    def _eval_as_leading_term(self, x):\n        from sympy import Order\n        arg = self.args[0].as_leading_term(x)\n        if x in arg.free_symbols and Order(1, x).contains(arg):\n            return S.One\n        else:\n            return self.func(arg)",
+      "score": 0.8739863634109497
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/trigonometric.py::atan._eval_rewrite_as_log",
+      "signature": "def _eval_rewrite_as_log(self, x):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/trigonometric.py\nSymbol: sympy/functions/elementary/trigonometric.py::atan._eval_rewrite_as_log\nSignature: def _eval_rewrite_as_log(self, x):\nDocstring: \nBody Preview:         return S.ImaginaryUnit/2 * (log(S(1) - S.ImaginaryUnit * x)\n            - log(S(1) + S.ImaginaryUnit * x))\n    def _eval_aseries(self, n, args0, x, logx):\n        if args0[0] == S.Infinity:\n            return (S.Pi/2 - atan(1/self.args[0]))._eval_nseries(x, n, logx)\n        elif args0[0] == S.NegativeInfinity:\n            return (-S.Pi/2 - atan(1/self.args[0]))._eval_nseries(x, n, logx)\n        else:\n            return super(atan, self)._eval_aseries(n, args0, x, logx)",
+      "score": 0.8739676475524902
+    },
+    {
+      "symbol_id": "sympy/functions/special/error_functions.py::Ci",
+      "signature": "class Ci(TrigonometricIntegral):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/error_functions.py\nSymbol: sympy/functions/special/error_functions.py::Ci\nSignature: class Ci(TrigonometricIntegral):\nDocstring: \nBody Preview:     r\"\"\"\n    Cosine integral.\n    This function is defined for positive `x` by\n    .. math:: \\operatorname{Ci}(x) = \\gamma + \\log{x}\n                         + \\int_0^x \\frac{\\cos{t} - 1}{t} \\mathrm{d}t\n           = -\\int_x^\\infty \\frac{\\cos{t}}{t} \\mathrm{d}t,\n    where `\\gamma` is the Euler-Mascheroni constant.",
+      "score": 0.8736259341239929
+    }
+  ]
+}

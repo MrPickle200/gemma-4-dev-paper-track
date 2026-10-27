@@ -1,0 +1,15 @@
+diff --git a/sympy/printing/rcode.py b/sympy/printing/rcode.py
+index 11a78a8be3..38d6cff9be 100644
+--- a/sympy/printing/rcode.py
++++ b/sympy/printing/rcode.py
+@@ -159,8 +159,8 @@ def _print_Rational(self, expr):
+         return '%d.0/%d.0' % (p, q)
+ 
+     def _print_Indexed(self, expr):
+-        inds = [ self._print(i) for i in expr.indices ]
+-        return "%s[%s]" % (self._print(expr.base.label), ", ".join(inds))
++        base, *index = expr.args
++        return "{}[{}]".format(str(base), ", ".join([self._print(ind) for ind in index]))
+ 
+     def _print_Idx(self, expr):
+         return self._print(expr.label)

@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-14531",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/str.py::StrReprPrinter",
+      "signature": "class StrReprPrinter(StrPrinter):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrReprPrinter\nSignature: class StrReprPrinter(StrPrinter):\nDocstring: \nBody Preview:     \"\"\"(internal) -- see sstrrepr\"\"\"\n    def _print_str(self, s):\n        return repr(s)\ndef sstrrepr(expr, **settings):\n    \"\"\"return expr in mixed str/repr form\n       i.e. strings are returned in repr form with quotes, and everything else\n       is returned in str form.",
+      "score": 0.9403800368309021
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_ImmutableDenseNDimArray",
+      "signature": "def _print_ImmutableDenseNDimArray(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_ImmutableDenseNDimArray\nSignature: def _print_ImmutableDenseNDimArray(self, expr):\nDocstring: \nBody Preview:         return str(expr)\n    def _print_ImmutableSparseNDimArray(self, expr):\n        return str(expr)\n    def _print_Integer(self, expr):\n        if self._settings.get(\"sympy_integers\", False):\n            return \"S(%s)\" % (expr)\n        return str(expr.p)\n    def _print_Integers(self, expr):",
+      "score": 0.9382468461990356
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_Uniform",
+      "signature": "def _print_Uniform(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_Uniform\nSignature: def _print_Uniform(self, expr):\nDocstring: \nBody Preview:         return \"Uniform(%s, %s)\" % (expr.a, expr.b)\n    def _print_Union(self, expr):\n        return 'Union(%s)' %(', '.join([self._print(a) for a in expr.args]))\n    def _print_Complement(self, expr):\n        return r' \\ '.join(self._print(set) for set in expr.args)\n    def _print_Quantity(self, expr):\n        if self._settings.get(\"abbrev\", False):\n            return \"%s\" % expr.abbrev",
+      "score": 0.9344571828842163
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_str",
+      "signature": "def _print_str(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_str\nSignature: def _print_str(self, expr):\nDocstring: \nBody Preview:         return expr\n    def _print_tuple(self, expr):\n        if len(expr) == 1:\n            return \"(%s,)\" % self._print(expr[0])\n        else:\n            return \"(%s)\" % self.stringify(expr, \", \")\n    def _print_Tuple(self, expr):\n        return self._print_tuple(expr)",
+      "score": 0.9329380393028259
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_Integer",
+      "signature": "def _print_Integer(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_Integer\nSignature: def _print_Integer(self, expr):\nDocstring: \nBody Preview:         if self._settings.get(\"sympy_integers\", False):\n            return \"S(%s)\" % (expr)\n        return str(expr.p)\n    def _print_Integers(self, expr):\n        return 'S.Integers'\n    def _print_Naturals(self, expr):\n        return 'S.Naturals'\n    def _print_Naturals0(self, expr):",
+      "score": 0.9316644668579102
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_int",
+      "signature": "def _print_int(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_int\nSignature: def _print_int(self, expr):\nDocstring: \nBody Preview:         return str(expr)\n    def _print_mpz(self, expr):\n        return str(expr)\n    def _print_Rational(self, expr):\n        if expr.q == 1:\n            return str(expr.p)\n        else:\n            if self._settings.get(\"sympy_integers\", False):\n                return \"S(%s)/%s\" % (expr.p, expr.q)",
+      "score": 0.9308803081512451
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrReprPrinter._print_str",
+      "signature": "def _print_str(self, s):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrReprPrinter._print_str\nSignature: def _print_str(self, s):\nDocstring: \nBody Preview:         return repr(s)\ndef sstrrepr(expr, **settings):\n    \"\"\"return expr in mixed str/repr form\n       i.e. strings are returned in repr form with quotes, and everything else\n       is returned in str form.\n       This function could be useful for hooking into sys.displayhook\n    \"\"\"",
+      "score": 0.9307533502578735
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_Dimension",
+      "signature": "def _print_Dimension(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_Dimension\nSignature: def _print_Dimension(self, expr):\nDocstring: \nBody Preview:         return str(expr)\n    def _print_Wild(self, expr):\n        return expr.name + '_'\n    def _print_WildFunction(self, expr):\n        return expr.name + '_'\n    def _print_Zero(self, expr):\n        if self._settings.get(\"sympy_integers\", False):\n            return \"S(0)\"",
+      "score": 0.9295178651809692
+    }
+  ]
+}

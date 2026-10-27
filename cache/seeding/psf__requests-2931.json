@@ -1,0 +1,61 @@
+{
+  "instance_id": "psf__requests-2931",
+  "top_symbols": [
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::b",
+      "signature": "def b(s):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::b\nSignature: def b(s):\nDocstring: \nBody Preview:         return s.encode(\"latin-1\")\n    def u(s):\n        return s\n    if sys.version_info[1] <= 1:\n        def int2byte(i):\n            return bytes((i,))\n    else:\n        # This is about 2x faster than the implementation above on 3.2+\n        int2byte = operator.methodcaller(\"to_bytes\", 1, \"big\")\n    import io",
+      "score": 0.904961347579956
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::u",
+      "signature": "def u(s):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::u\nSignature: def u(s):\nDocstring: \nBody Preview:         return unicode(s, \"unicode_escape\")\n    int2byte = chr\n    import StringIO\n    StringIO = BytesIO = StringIO.StringIO\n_add_doc(b, \"\"\"Byte literal\"\"\")\n_add_doc(u, \"\"\"Text literal\"\"\")\nif PY3:\n    import builtins\n    exec_ = getattr(builtins, \"exec\")",
+      "score": 0.8843173980712891
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::int2byte",
+      "signature": "def int2byte(i):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::int2byte\nSignature: def int2byte(i):\nDocstring: \nBody Preview:             return bytes((i,))\n    else:\n        # This is about 2x faster than the implementation above on 3.2+\n        int2byte = operator.methodcaller(\"to_bytes\", 1, \"big\")\n    import io\n    StringIO = io.StringIO\n    BytesIO = io.BytesIO\nelse:\n    def b(s):\n        return s",
+      "score": 0.8645609617233276
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::b",
+      "signature": "def b(s):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::b\nSignature: def b(s):\nDocstring: \nBody Preview:         return s\n    def u(s):\n        return unicode(s, \"unicode_escape\")\n    int2byte = chr\n    import StringIO\n    StringIO = BytesIO = StringIO.StringIO\n_add_doc(b, \"\"\"Byte literal\"\"\")\n_add_doc(u, \"\"\"Text literal\"\"\")\nif PY3:",
+      "score": 0.8624114990234375
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::u",
+      "signature": "def u(s):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::u\nSignature: def u(s):\nDocstring: \nBody Preview:         return s\n    if sys.version_info[1] <= 1:\n        def int2byte(i):\n            return bytes((i,))\n    else:\n        # This is about 2x faster than the implementation above on 3.2+\n        int2byte = operator.methodcaller(\"to_bytes\", 1, \"big\")\n    import io\n    StringIO = io.StringIO\n    BytesIO = io.BytesIO",
+      "score": 0.8603211641311646
+    },
+    {
+      "symbol_id": "requests/models.py::RequestEncodingMixin._encode_params",
+      "signature": "def _encode_params(data):",
+      "summary": "",
+      "document_text": "File: requests/models.py\nSymbol: requests/models.py::RequestEncodingMixin._encode_params\nSignature: def _encode_params(data):\nDocstring: \nBody Preview:         \"\"\"Encode parameters in a piece of data.\n        Will successfully encode parameters when passed as a dict or a list of\n        2-tuples. Order is retained if data is a list of 2-tuples but arbitrary\n        if parameters are supplied as a dict.\n        \"\"\"\n        if isinstance(data, (str, bytes)):\n            return to_native_string(data)\n        elif hasattr(data, 'read'):\n            return data",
+      "score": 0.859357476234436
+    },
+    {
+      "symbol_id": "requests/api.py::put",
+      "signature": "def put(url, data=None, **kwargs):",
+      "summary": "",
+      "document_text": "File: requests/api.py\nSymbol: requests/api.py::put\nSignature: def put(url, data=None, **kwargs):\nDocstring: \nBody Preview:     \"\"\"Sends a PUT request.\n    :param url: URL for the new :class:`Request` object.\n    :param data: (optional) Dictionary, bytes, or file-like object to send in the body of the :class:`Request`.\n    :param \\*\\*kwargs: Optional arguments that ``request`` takes.\n    :return: :class:`Response <Response>` object\n    :rtype: requests.Response\n    \"\"\"\n    return request('put', url, data=data, **kwargs)",
+      "score": 0.8467967510223389
+    },
+    {
+      "symbol_id": "requests/exceptions.py::FileModeWarning",
+      "signature": "class FileModeWarning(RequestsWarning, DeprecationWarning):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::FileModeWarning\nSignature: class FileModeWarning(RequestsWarning, DeprecationWarning):\nDocstring: \nBody Preview:     \"\"\"\n    A file was opened in text mode, but Requests determined its binary length.\n    \"\"\"\n    pass",
+      "score": 0.8433173894882202
+    }
+  ]
+}

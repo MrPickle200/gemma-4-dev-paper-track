@@ -1,0 +1,61 @@
+{
+  "instance_id": "psf__requests-1724",
+  "top_symbols": [
+    {
+      "symbol_id": "requests/packages/urllib3/request.py::RequestMethods.__init__",
+      "signature": "def __init__(self, headers=None):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/request.py\nSymbol: requests/packages/urllib3/request.py::RequestMethods.__init__\nSignature: def __init__(self, headers=None):\nDocstring: \nBody Preview:         self.headers = headers or {}\n    def urlopen(self, method, url, body=None, headers=None,\n                encode_multipart=True, multipart_boundary=None,\n                **kw): # Abstract\n        raise NotImplemented(\"Classes extending RequestMethods must implement \"\n                             \"their own ``urlopen`` method.\")\n    def request(self, method, url, fields=None, headers=None, **urlopen_kw):\n        \"\"\"\n        Make a request using :meth:`urlopen` with the appropriate encoding of",
+      "score": 0.8413271903991699
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::u",
+      "signature": "def u(s):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::u\nSignature: def u(s):\nDocstring: \nBody Preview:         return unicode(s, \"unicode_escape\")\n    int2byte = chr\n    import StringIO\n    StringIO = BytesIO = StringIO.StringIO\n_add_doc(b, \"\"\"Byte literal\"\"\")\n_add_doc(u, \"\"\"Text literal\"\"\")\nif PY3:\n    import builtins\n    exec_ = getattr(builtins, \"exec\")",
+      "score": 0.8339219689369202
+    },
+    {
+      "symbol_id": "requests/exceptions.py::ChunkedEncodingError",
+      "signature": "class ChunkedEncodingError(RequestException):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::ChunkedEncodingError\nSignature: class ChunkedEncodingError(RequestException):\nDocstring: \nBody Preview:     \"\"\"The server declared chunked encoding but sent an invalid chunk.\"\"\"",
+      "score": 0.8332970142364502
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/packages/six.py::b",
+      "signature": "def b(s):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/packages/six.py\nSymbol: requests/packages/urllib3/packages/six.py::b\nSignature: def b(s):\nDocstring: \nBody Preview:         return s.encode(\"latin-1\")\n    def u(s):\n        return s\n    if sys.version_info[1] <= 1:\n        def int2byte(i):\n            return bytes((i,))\n    else:\n        # This is about 2x faster than the implementation above on 3.2+\n        int2byte = operator.methodcaller(\"to_bytes\", 1, \"big\")\n    import io",
+      "score": 0.8298482894897461
+    },
+    {
+      "symbol_id": "requests/exceptions.py::RequestException",
+      "signature": "class RequestException(IOError):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::RequestException\nSignature: class RequestException(IOError):\nDocstring: \nBody Preview:     \"\"\"There was an ambiguous exception that occurred while handling your\n    request.\"\"\"\nclass HTTPError(RequestException):\n    \"\"\"An HTTP error occurred.\"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" Initializes HTTPError with optional `response` object. \"\"\"\n        self.response = kwargs.pop('response', None)\n        super(HTTPError, self).__init__(*args, **kwargs)",
+      "score": 0.8297110199928284
+    },
+    {
+      "symbol_id": "requests/exceptions.py::HTTPError",
+      "signature": "class HTTPError(RequestException):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::HTTPError\nSignature: class HTTPError(RequestException):\nDocstring: \nBody Preview:     \"\"\"An HTTP error occurred.\"\"\"\n    def __init__(self, *args, **kwargs):\n        \"\"\" Initializes HTTPError with optional `response` object. \"\"\"\n        self.response = kwargs.pop('response', None)\n        super(HTTPError, self).__init__(*args, **kwargs)\nclass ConnectionError(RequestException):\n    \"\"\"A Connection error occurred.\"\"\"",
+      "score": 0.8292829394340515
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/contrib/pyopenssl.py::inject_into_urllib3",
+      "signature": "def inject_into_urllib3():",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/contrib/pyopenssl.py\nSymbol: requests/packages/urllib3/contrib/pyopenssl.py::inject_into_urllib3\nSignature: def inject_into_urllib3():\nDocstring: \nBody Preview:     'Monkey-patch urllib3 with PyOpenSSL-backed SSL-support.'\n    connectionpool.ssl_wrap_socket = ssl_wrap_socket\n    util.HAS_SNI = HAS_SNI\ndef extract_from_urllib3():\n    'Undo monkey-patching by :func:`inject_into_urllib3`.'\n    connectionpool.ssl_wrap_socket = orig_connectionpool_ssl_wrap_socket\n    util.HAS_SNI = orig_util_HAS_SNI",
+      "score": 0.8223938345909119
+    },
+    {
+      "symbol_id": "requests/packages/urllib3/connection.py::BaseSSLError",
+      "signature": "class BaseSSLError(BaseException):",
+      "summary": "",
+      "document_text": "File: requests/packages/urllib3/connection.py\nSymbol: requests/packages/urllib3/connection.py::BaseSSLError\nSignature: class BaseSSLError(BaseException):\nDocstring: \nBody Preview:         pass\n    try: # Python 3\n        from http.client import HTTPSConnection\n    except ImportError:\n        from httplib import HTTPSConnection\n    import ssl\n    BaseSSLError = ssl.SSLError\nexcept (ImportError, AttributeError): # Platform-specific: No SSL.",
+      "score": 0.8222998380661011
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-20590",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/core/core.py::Registry.__delattr__",
+      "signature": "def __delattr__(self, name):",
+      "summary": "",
+      "document_text": "File: sympy/core/core.py\nSymbol: sympy/core/core.py::Registry.__delattr__\nSignature: def __delattr__(self, name):\nDocstring: \nBody Preview:         delattr(self.__class__, name)\n#A set containing all sympy class objects\nall_classes = set()\nclass BasicMeta(type):\n    def __init__(cls, *args, **kws):\n        all_classes.add(cls)\n        cls.__sympy__ = property(lambda self: True)",
+      "score": 0.9118437767028809
+    },
+    {
+      "symbol_id": "sympy/deprecated/class_registry.py::ClassRegistry.__setattr__",
+      "signature": "def __setattr__(self, name, cls):",
+      "summary": "",
+      "document_text": "File: sympy/deprecated/class_registry.py\nSymbol: sympy/deprecated/class_registry.py::ClassRegistry.__setattr__\nSignature: def __setattr__(self, name, cls):\nDocstring: \nBody Preview:         Registry.__setattr__(self, name, cls)\n        all_classes.add(cls)\n    def __delattr__(self, name):\n        cls = getattr(self, name)\n        Registry.__delattr__(self, name)\n        # The same class could have different names, so make sure\n        # it's really gone from C before removing it from all_classes.\n        if cls not in self.__class__.__dict__.itervalues():\n            all_classes.remove(cls)",
+      "score": 0.896923840045929
+    },
+    {
+      "symbol_id": "sympy/core/core.py::Registry",
+      "signature": "class Registry:",
+      "summary": "",
+      "document_text": "File: sympy/core/core.py\nSymbol: sympy/core/core.py::Registry\nSignature: class Registry:\nDocstring: \nBody Preview:     \"\"\"\n    Base class for registry objects.\n    Registries map a name to an object using attribute notation. Registry\n    classes behave singletonically: all their instances share the same state,\n    which is stored in the class object.\n    All subclasses should set `__slots__ = ()`.\n    \"\"\"\n    __slots__ = ()",
+      "score": 0.8961726427078247
+    },
+    {
+      "symbol_id": "sympy/deprecated/class_registry.py::ClassRegistry",
+      "signature": "class ClassRegistry(Registry):",
+      "summary": "",
+      "document_text": "File: sympy/deprecated/class_registry.py\nSymbol: sympy/deprecated/class_registry.py::ClassRegistry\nSignature: class ClassRegistry(Registry):\nDocstring: \nBody Preview:     \"\"\"\n    Namespace for SymPy classes\n    This is needed to avoid problems with cyclic imports.\n    To get a SymPy class, use `C.<class_name>` e.g. `C.Rational`, `C.Add`.\n    For performance reasons, this is coupled with a set `all_classes` holding\n    the classes, which should not be modified directly.\n    \"\"\"\n    __slots__ = ()",
+      "score": 0.8931605219841003
+    },
+    {
+      "symbol_id": "sympy/core/symbol.py::Symbol._sage_",
+      "signature": "def _sage_(self):",
+      "summary": "",
+      "document_text": "File: sympy/core/symbol.py\nSymbol: sympy/core/symbol.py::Symbol._sage_\nSignature: def _sage_(self):\nDocstring: \nBody Preview:         import sage.all as sage\n        return sage.var(self.name)\n    def is_constant(self, *wrt, **flags):\n        if not wrt:\n            return False\n        return not self in wrt\n    @property\n    def free_symbols(self):\n        return {self}",
+      "score": 0.8925043940544128
+    },
+    {
+      "symbol_id": "sympy/core/symbol.py::Symbol.__getstate__",
+      "signature": "def __getstate__(self):",
+      "summary": "",
+      "document_text": "File: sympy/core/symbol.py\nSymbol: sympy/core/symbol.py::Symbol.__getstate__\nSignature: def __getstate__(self):\nDocstring: \nBody Preview:         return {'_assumptions': self._assumptions}\n    def _hashable_content(self):\n        # Note: user-specified assumptions not hashed, just derived ones\n        return (self.name,) + tuple(sorted(self.assumptions0.items()))\n    def _eval_subs(self, old, new):\n        from sympy.core.power import Pow\n        if old.is_Pow:\n            return Pow(self, S.One, evaluate=False)._eval_subs(old, new)",
+      "score": 0.8899968862533569
+    },
+    {
+      "symbol_id": "sympy/core/symbol.py::Str.__new__",
+      "signature": "def __new__(cls, name, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/core/symbol.py\nSymbol: sympy/core/symbol.py::Str.__new__\nSignature: def __new__(cls, name, **kwargs):\nDocstring: \nBody Preview:         if not isinstance(name, str):\n            raise TypeError(\"name should be a string, not %s\" % repr(type(name)))\n        obj = Expr.__new__(cls, **kwargs)\n        obj.name = name\n        return obj\n    def __getnewargs__(self):\n        return (self.name,)\n    def _hashable_content(self):\n        return (self.name,)",
+      "score": 0.8852277398109436
+    },
+    {
+      "symbol_id": "sympy/polys/polyutils.py::PicklableWithSlots.__setstate__",
+      "signature": "def __setstate__(self, d):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyutils.py\nSymbol: sympy/polys/polyutils.py::PicklableWithSlots.__setstate__\nSignature: def __setstate__(self, d):\nDocstring: \nBody Preview:         # All values that were pickled are now assigned to a fresh instance\n        for name, value in d.items():\n            try:\n                setattr(self, name, value)\n            except AttributeError:    # This is needed in cases like Rational :> Half\n                pass",
+      "score": 0.8836085796356201
+    }
+  ]
+}

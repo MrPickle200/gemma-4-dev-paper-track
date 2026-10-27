@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-21379",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::sech.taylor_term",
+      "signature": "def taylor_term(n, x, *previous_terms):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::sech.taylor_term\nSignature: def taylor_term(n, x, *previous_terms):\nDocstring: \nBody Preview:         from sympy.functions.combinatorial.numbers import euler\n        if n < 0 or n % 2 == 1:\n            return S.Zero\n        else:\n            x = sympify(x)\n            return euler(n) / factorial(n) * x**(n)\n    def _eval_rewrite_as_sinh(self, arg, **kwargs):\n        return S.ImaginaryUnit / sinh(arg + S.ImaginaryUnit * S.Pi /2)\n    def _eval_is_positive(self):",
+      "score": 0.9204700589179993
+    },
+    {
+      "symbol_id": "sympy/polys/polyerrors.py::ComputationFailed",
+      "signature": "class ComputationFailed(BasePolynomialError):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyerrors.py\nSymbol: sympy/polys/polyerrors.py::ComputationFailed\nSignature: class ComputationFailed(BasePolynomialError):\nDocstring: \nBody Preview:     def __init__(self, func, nargs, exc):\n        self.func = func\n        self.nargs = nargs\n        self.exc = exc\n    def __str__(self):\n        return \"%s(%s) failed without generators\" % (self.func, ', '.join(map(str, self.exc.exprs[:self.nargs])))\n@public\nclass UnivariatePolynomialError(PolynomialError):",
+      "score": 0.9136444330215454
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/rules/special_functions.py::replacement6933",
+      "signature": "def replacement6933(u, x):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/rules/special_functions.py\nSymbol: sympy/integrals/rubi/rules/special_functions.py::replacement6933\nSignature: def replacement6933(u, x):\nDocstring: \nBody Preview:     return Subst(Int(SimplifyIntegrand((x + S(1))*SubstFor(ProductLog(x), u, x)*exp(x), x), x), x, ProductLog(x))",
+      "score": 0.9127171039581299
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/utility_function.py::SinhCoshQ",
+      "signature": "def SinhCoshQ(f):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/utility_function.py\nSymbol: sympy/integrals/rubi/utility_function.py::SinhCoshQ\nSignature: def SinhCoshQ(f):\nDocstring: \nBody Preview:     return MemberQ([sinh, cosh, sech, csch], Head(f))\ndef LeafCount(expr):\n    return len(list(postorder_traversal(expr)))\ndef Numerator(u):\n    u = Simplify(u)\n    if isinstance(u, Pow):\n        if isinstance(u.exp, Integer):\n            if u.exp > 0:\n                return Pow(Numerator(u.base), u.exp)",
+      "score": 0.9118845462799072
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/hyperbolic.py::atanh.taylor_term",
+      "signature": "def taylor_term(n, x, *previous_terms):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/hyperbolic.py\nSymbol: sympy/functions/elementary/hyperbolic.py::atanh.taylor_term\nSignature: def taylor_term(n, x, *previous_terms):\nDocstring: \nBody Preview:         if n < 0 or n % 2 == 0:\n            return S.Zero\n        else:\n            x = sympify(x)\n            return x**n / n\n    def _eval_as_leading_term(self, x, cdir=0):\n        from sympy import Order\n        arg = self.args[0].as_leading_term(x)\n        if x in arg.free_symbols and Order(1, x).contains(arg):",
+      "score": 0.9103133678436279
+    },
+    {
+      "symbol_id": "sympy/polys/polyerrors.py::ComputationFailed.__init__",
+      "signature": "def __init__(self, func, nargs, exc):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyerrors.py\nSymbol: sympy/polys/polyerrors.py::ComputationFailed.__init__\nSignature: def __init__(self, func, nargs, exc):\nDocstring: \nBody Preview:         self.func = func\n        self.nargs = nargs\n        self.exc = exc\n    def __str__(self):\n        return \"%s(%s) failed without generators\" % (self.func, ', '.join(map(str, self.exc.exprs[:self.nargs])))\n@public\nclass UnivariatePolynomialError(PolynomialError):\n    pass",
+      "score": 0.9095227122306824
+    },
+    {
+      "symbol_id": "sympy/integrals/manualintegrate.py::eval_constanttimes",
+      "signature": "def eval_constanttimes(constant, other, substep, integrand, symbol):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/manualintegrate.py\nSymbol: sympy/integrals/manualintegrate.py::eval_constanttimes\nSignature: def eval_constanttimes(constant, other, substep, integrand, symbol):\nDocstring: \nBody Preview:     return constant * _manualintegrate(substep)\n@evaluates(PowerRule)\ndef eval_power(base, exp, integrand, symbol):\n    return sympy.Piecewise(\n        ((base**(exp + 1))/(exp + 1), sympy.Ne(exp, -1)),\n        (sympy.log(base), True),\n        )\n@evaluates(ExpRule)\ndef eval_exp(base, exp, integrand, symbol):",
+      "score": 0.9089128375053406
+    },
+    {
+      "symbol_id": "sympy/integrals/rubi/rules/inverse_hyperbolic.py::replacement6092",
+      "signature": "def replacement6092(a, b, c, n, x):",
+      "summary": "",
+      "document_text": "File: sympy/integrals/rubi/rules/inverse_hyperbolic.py\nSymbol: sympy/integrals/rubi/rules/inverse_hyperbolic.py::replacement6092\nSignature: def replacement6092(a, b, c, n, x):\nDocstring: \nBody Preview:     return -Dist(S(1)/(b*c), Subst(Int(x**n*sinh(a/b - x/b), x), x, a + b*acosh(c*x)), x)\ndef replacement6093(a, b, c, n, x):\n    return Subst(Int((a + b*x)**n/tanh(x), x), x, asinh(c*x))\ndef replacement6094(a, b, c, n, x):\n    return Subst(Int((a + b*x)**n*tanh(x), x), x, acosh(c*x))",
+      "score": 0.9085578918457031
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14629",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/multioutput.py::MultiOutputClassifier.__init__",
+      "signature": "def __init__(self, estimator, n_jobs=None):",
+      "summary": "",
+      "document_text": "File: sklearn/multioutput.py\nSymbol: sklearn/multioutput.py::MultiOutputClassifier.__init__\nSignature: def __init__(self, estimator, n_jobs=None):\nDocstring: \nBody Preview:         super().__init__(estimator, n_jobs)\n    def predict_proba(self, X):\n        \"\"\"Probability estimates.\n        Returns prediction probabilities for each class of each output.\n        This method will raise a ``ValueError`` if any of the\n        estimators do not have ``predict_proba``.\n        Parameters\n        ----------",
+      "score": 0.8874412775039673
+    },
+    {
+      "symbol_id": "sklearn/ensemble/voting.py::VotingClassifier._collect_probas",
+      "signature": "def _collect_probas(self, X):",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/voting.py\nSymbol: sklearn/ensemble/voting.py::VotingClassifier._collect_probas\nSignature: def _collect_probas(self, X):\nDocstring: \nBody Preview:         \"\"\"Collect results from clf.predict calls. \"\"\"\n        return np.asarray([clf.predict_proba(X) for clf in self.estimators_])\n    def _predict_proba(self, X):\n        \"\"\"Predict class probabilities for X in 'soft' voting \"\"\"\n        check_is_fitted(self)\n        avg = np.average(self._collect_probas(X), axis=0,\n                         weights=self._weights_not_none)\n        return avg\n    @property",
+      "score": 0.8744235038757324
+    },
+    {
+      "symbol_id": "sklearn/linear_model/stochastic_gradient.py::SGDClassifier._check_proba",
+      "signature": "def _check_proba(self):",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/stochastic_gradient.py\nSymbol: sklearn/linear_model/stochastic_gradient.py::SGDClassifier._check_proba\nSignature: def _check_proba(self):\nDocstring: \nBody Preview:         if self.loss not in (\"log\", \"modified_huber\"):\n            raise AttributeError(\"probability estimates are not available for\"\n                                 \" loss=%r\" % self.loss)\n    @property\n    def predict_proba(self):\n        \"\"\"Probability estimates.\n        This method is only available for log loss and modified Huber loss.\n        Multiclass probability estimates are derived from binary (one-vs.-rest)",
+      "score": 0.8726794719696045
+    },
+    {
+      "symbol_id": "sklearn/multiclass.py::OneVsRestClassifier.n_classes_",
+      "signature": "def n_classes_(self):",
+      "summary": "",
+      "document_text": "File: sklearn/multiclass.py\nSymbol: sklearn/multiclass.py::OneVsRestClassifier.n_classes_\nSignature: def n_classes_(self):\nDocstring: \nBody Preview:         return len(self.classes_)\n    @property\n    def coef_(self):\n        check_is_fitted(self)\n        if not hasattr(self.estimators_[0], \"coef_\"):\n            raise AttributeError(\n                \"Base estimator doesn't have a coef_ attribute.\")\n        coefs = [e.coef_ for e in self.estimators_]\n        if sp.issparse(coefs[0]):\n            return sp.vstack(coefs)",
+      "score": 0.8678895235061646
+    },
+    {
+      "symbol_id": "sklearn/svm/base.py::BaseSVC._check_proba",
+      "signature": "def _check_proba(self):",
+      "summary": "",
+      "document_text": "File: sklearn/svm/base.py\nSymbol: sklearn/svm/base.py::BaseSVC._check_proba\nSignature: def _check_proba(self):\nDocstring: \nBody Preview:         if not self.probability:\n            raise AttributeError(\"predict_proba is not available when \"\n                                 \" probability=False\")\n        if self._impl not in ('c_svc', 'nu_svc'):\n            raise AttributeError(\"predict_proba only implemented for SVC\"\n                                 \" and NuSVC\")\n    @property\n    def predict_proba(self):\n        \"\"\"Compute probabilities of possible outcomes for samples in X.",
+      "score": 0.8664292097091675
+    },
+    {
+      "symbol_id": "sklearn/multiclass.py::OutputCodeClassifier",
+      "signature": "class OutputCodeClassifier(BaseEstimator, ClassifierMixin, MetaEstimatorMixin):",
+      "summary": "",
+      "document_text": "File: sklearn/multiclass.py\nSymbol: sklearn/multiclass.py::OutputCodeClassifier\nSignature: class OutputCodeClassifier(BaseEstimator, ClassifierMixin, MetaEstimatorMixin):\nDocstring: \nBody Preview:     \"\"\"(Error-Correcting) Output-Code multiclass strategy\n    Output-code based strategies consist in representing each class with a\n    binary code (an array of 0s and 1s). At fitting time, one binary\n    classifier per bit in the code book is fitted.  At prediction time, the\n    classifiers are used to project new points in the class space and the class\n    closest to the points is chosen. The main advantage of these strategies is\n    that the number of classifiers used can be controlled by the user, either\n    for compressing the model (0 < code_size < 1) or for making the model more\n    robust to errors (code_size > 1). See the documentation for more details.",
+      "score": 0.8656636476516724
+    },
+    {
+      "symbol_id": "sklearn/multioutput.py::MultiOutputClassifier.predict_proba",
+      "signature": "def predict_proba(self, X):",
+      "summary": "",
+      "document_text": "File: sklearn/multioutput.py\nSymbol: sklearn/multioutput.py::MultiOutputClassifier.predict_proba\nSignature: def predict_proba(self, X):\nDocstring: \nBody Preview:         \"\"\"Probability estimates.\n        Returns prediction probabilities for each class of each output.\n        This method will raise a ``ValueError`` if any of the\n        estimators do not have ``predict_proba``.\n        Parameters\n        ----------\n        X : array-like, shape (n_samples, n_features)\n            Data",
+      "score": 0.8637397289276123
+    },
+    {
+      "symbol_id": "sklearn/multiclass.py::OneVsOneClassifier.n_classes_",
+      "signature": "def n_classes_(self):",
+      "summary": "",
+      "document_text": "File: sklearn/multiclass.py\nSymbol: sklearn/multiclass.py::OneVsOneClassifier.n_classes_\nSignature: def n_classes_(self):\nDocstring: \nBody Preview:         return len(self.classes_)\n    @property\n    def _pairwise(self):\n        \"\"\"Indicate if wrapped estimator is using a precomputed Gram matrix\"\"\"\n        return getattr(self.estimator, \"_pairwise\", False)\nclass OutputCodeClassifier(BaseEstimator, ClassifierMixin, MetaEstimatorMixin):\n    \"\"\"(Error-Correcting) Output-Code multiclass strategy",
+      "score": 0.8635985851287842
+    }
+  ]
+}

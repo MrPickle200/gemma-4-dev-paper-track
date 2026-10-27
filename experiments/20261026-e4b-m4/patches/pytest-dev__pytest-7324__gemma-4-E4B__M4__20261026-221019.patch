@@ -1,0 +1,13 @@
+diff --git a/src/_pytest/pytester.py b/src/_pytest/pytester.py
+index 8df5992d6..e0993abe6 100644
+--- a/src/_pytest/pytester.py
++++ b/src/_pytest/pytester.py
+@@ -1270,7 +1270,7 @@ class Testdir:
+         Returns a :py:class:`RunResult`.
+ 
+         """
+-        return self.run(sys.executable, script)
++        return self.run([sys.executable, '-c', script])
+ 
+     def runpython_c(self, command):
+         """Run python -c "command", return a :py:class:`RunResult`."""

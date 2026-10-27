@@ -1,0 +1,33 @@
+diff --git a/sympy/sets/handlers/issubset.py b/sympy/sets/handlers/issubset.py
+index 1900f9b0c0..e415864677 100644
+--- a/sympy/sets/handlers/issubset.py
++++ b/sympy/sets/handlers/issubset.py
+@@ -97,7 +97,7 @@ def is_subset_sets(a_range, b_finiteset): # noqa:F811
+             if len(a_set) > b_remaining + cnt_candidate:
+                 return False
+             if len(a_set) == 0:
+-                return True
++                return all(x in b for x in a)
+         return None
+ 
+ @dispatch(Interval, Range)  # type: ignore # noqa:F811
+@@ -112,7 +112,9 @@ def is_subset_sets(a_interval, b_rationals): # noqa:F811
+ 
+ @dispatch(Range, Complexes)  # type: ignore # noqa:F811
+ def is_subset_sets(a, b): # noqa:F811
+-    return True
++    if isinstance(a, Range):
++        return all(x in b for x in a)
++    return False
+ 
+ @dispatch(Complexes, Interval)  # type: ignore # noqa:F811
+ def is_subset_sets(a, b): # noqa:F811
+@@ -128,7 +130,7 @@ def is_subset_sets(a, b): # noqa:F811
+ 
+ @dispatch(Rationals, Reals)  # type: ignore # noqa:F811
+ def is_subset_sets(a, b): # noqa:F811
+-    return True
++    return a.issubset(b)
+ 
+ @dispatch(Rationals, Range)  # type: ignore # noqa:F811
+ def is_subset_sets(a, b): # noqa:F811

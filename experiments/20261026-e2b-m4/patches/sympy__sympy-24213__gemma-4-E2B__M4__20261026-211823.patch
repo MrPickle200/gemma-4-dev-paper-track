@@ -1,0 +1,14 @@
+diff --git a/sympy/physics/units/quantities.py b/sympy/physics/units/quantities.py
+index 4f18d3656a..c779049203 100644
+--- a/sympy/physics/units/quantities.py
++++ b/sympy/physics/units/quantities.py
+@@ -207,8 +207,7 @@ def _collect_factor_and_dimension(expr, unit_system="SI"):
+             active_deprecations_target="deprecated-quantity-methods",
+         )
+         from sympy.physics.units import UnitSystem
+-        unit_system = UnitSystem.get_unit_system(unit_system)
+-        return unit_system._collect_factor_and_dimension(expr)
++        return UnitSystem.get_unit_system(unit_system)._collect_factor_and_dimension(expr)
+ 
+     def _latex(self, printer):
+         if self._latex_repr:

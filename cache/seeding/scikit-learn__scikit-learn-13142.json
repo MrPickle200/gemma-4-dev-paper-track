@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13142",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/mixture/gaussian_mixture.py::GaussianMixture.__init__",
+      "signature": "def __init__(self, n_components=1, covariance_type='full', tol=1e-3,",
+      "summary": "",
+      "document_text": "File: sklearn/mixture/gaussian_mixture.py\nSymbol: sklearn/mixture/gaussian_mixture.py::GaussianMixture.__init__\nSignature: def __init__(self, n_components=1, covariance_type='full', tol=1e-3,\nDocstring: \nBody Preview:                  reg_covar=1e-6, max_iter=100, n_init=1, init_params='kmeans',\n                 weights_init=None, means_init=None, precisions_init=None,\n                 random_state=None, warm_start=False,\n                 verbose=0, verbose_interval=10):\n        super().__init__(\n            n_components=n_components, tol=tol, reg_covar=reg_covar,\n            max_iter=max_iter, n_init=n_init, init_params=init_params,\n            random_state=random_state, warm_start=warm_start,\n            verbose=verbose, verbose_interval=verbose_interval)\n        self.covariance_type = covariance_type",
+      "score": 0.8917725086212158
+    },
+    {
+      "symbol_id": "sklearn/mixture/gaussian_mixture.py::GaussianMixture._check_parameters",
+      "signature": "def _check_parameters(self, X):",
+      "summary": "",
+      "document_text": "File: sklearn/mixture/gaussian_mixture.py\nSymbol: sklearn/mixture/gaussian_mixture.py::GaussianMixture._check_parameters\nSignature: def _check_parameters(self, X):\nDocstring: \nBody Preview:         \"\"\"Check the Gaussian mixture parameters are well defined.\"\"\"\n        _, n_features = X.shape\n        if self.covariance_type not in ['spherical', 'tied', 'diag', 'full']:\n            raise ValueError(\"Invalid value for 'covariance_type': %s \"\n                             \"'covariance_type' should be in \"\n                             \"['spherical', 'tied', 'diag', 'full']\"\n                             % self.covariance_type)\n        if self.weights_init is not None:\n            self.weights_init = _check_weights(self.weights_init,\n                                               self.n_components)",
+      "score": 0.8681410551071167
+    },
+    {
+      "symbol_id": "sklearn/mixture/bayesian_mixture.py::BayesianGaussianMixture.__init__",
+      "signature": "def __init__(self, n_components=1, covariance_type='full', tol=1e-3,",
+      "summary": "",
+      "document_text": "File: sklearn/mixture/bayesian_mixture.py\nSymbol: sklearn/mixture/bayesian_mixture.py::BayesianGaussianMixture.__init__\nSignature: def __init__(self, n_components=1, covariance_type='full', tol=1e-3,\nDocstring: \nBody Preview:                  reg_covar=1e-6, max_iter=100, n_init=1, init_params='kmeans',\n                 weight_concentration_prior_type='dirichlet_process',\n                 weight_concentration_prior=None,\n                 mean_precision_prior=None, mean_prior=None,\n                 degrees_of_freedom_prior=None, covariance_prior=None,\n                 random_state=None, warm_start=False, verbose=0,\n                 verbose_interval=10):\n        super().__init__(\n            n_components=n_components, tol=tol, reg_covar=reg_covar,\n            max_iter=max_iter, n_init=n_init, init_params=init_params,",
+      "score": 0.8674023151397705
+    },
+    {
+      "symbol_id": "sklearn/mixture/base.py::BaseMixture",
+      "signature": "class BaseMixture(DensityMixin, BaseEstimator, metaclass=ABCMeta):",
+      "summary": "",
+      "document_text": "File: sklearn/mixture/base.py\nSymbol: sklearn/mixture/base.py::BaseMixture\nSignature: class BaseMixture(DensityMixin, BaseEstimator, metaclass=ABCMeta):\nDocstring: \nBody Preview:     \"\"\"Base class for mixture models.\n    This abstract class specifies an interface for all mixture classes and\n    provides basic common methods for mixture models.\n    \"\"\"\n    def __init__(self, n_components, tol, reg_covar,\n                 max_iter, n_init, init_params, random_state, warm_start,\n                 verbose, verbose_interval):\n        self.n_components = n_components\n        self.tol = tol",
+      "score": 0.8610992431640625
+    },
+    {
+      "symbol_id": "sklearn/mixture/base.py::BaseMixture.__init__",
+      "signature": "def __init__(self, n_components, tol, reg_covar,",
+      "summary": "",
+      "document_text": "File: sklearn/mixture/base.py\nSymbol: sklearn/mixture/base.py::BaseMixture.__init__\nSignature: def __init__(self, n_components, tol, reg_covar,\nDocstring: \nBody Preview:                  max_iter, n_init, init_params, random_state, warm_start,\n                 verbose, verbose_interval):\n        self.n_components = n_components\n        self.tol = tol\n        self.reg_covar = reg_covar\n        self.max_iter = max_iter\n        self.n_init = n_init\n        self.init_params = init_params\n        self.random_state = random_state\n        self.warm_start = warm_start",
+      "score": 0.8544912338256836
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_outliers_fit_predict",
+      "signature": "def check_outliers_fit_predict(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_outliers_fit_predict\nSignature: def check_outliers_fit_predict(name, estimator_orig):\nDocstring: \nBody Preview:     # Check fit_predict for outlier detectors.\n    X, _ = make_blobs(n_samples=300, random_state=0)\n    X = shuffle(X, random_state=7)\n    n_samples, n_features = X.shape\n    estimator = clone(estimator_orig)\n    set_random_state(estimator)\n    y_pred = estimator.fit_predict(X)\n    assert y_pred.shape == (n_samples,)",
+      "score": 0.8527644276618958
+    },
+    {
+      "symbol_id": "sklearn/mixture/gaussian_mixture.py::GaussianMixture",
+      "signature": "class GaussianMixture(BaseMixture):",
+      "summary": "",
+      "document_text": "File: sklearn/mixture/gaussian_mixture.py\nSymbol: sklearn/mixture/gaussian_mixture.py::GaussianMixture\nSignature: class GaussianMixture(BaseMixture):\nDocstring: \nBody Preview:     \"\"\"Gaussian Mixture.\n    Representation of a Gaussian mixture model probability distribution.\n    This class allows to estimate the parameters of a Gaussian mixture\n    distribution.\n    Read more in the :ref:`User Guide <gmm>`.\n    .. versionadded:: 0.18\n    Parameters",
+      "score": 0.8525858521461487
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_regressors_no_decision_function",
+      "signature": "def check_regressors_no_decision_function(name, regressor_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_regressors_no_decision_function\nSignature: def check_regressors_no_decision_function(name, regressor_orig):\nDocstring: \nBody Preview:     # checks whether regressors have decision_function or predict_proba\n    rng = np.random.RandomState(0)\n    X = rng.normal(size=(10, 4))\n    regressor = clone(regressor_orig)\n    y = multioutput_estimator_convert_y_2d(regressor, X[:, 0])\n    if hasattr(regressor, \"n_components\"):\n        # FIXME CCA, PLS is not robust to rank 1 effects\n        regressor.n_components = 1\n    regressor.fit(X, y)",
+      "score": 0.8509113788604736
+    }
+  ]
+}

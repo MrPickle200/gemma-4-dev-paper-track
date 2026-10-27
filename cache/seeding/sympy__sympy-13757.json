@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-13757",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/polys/polymatrix.py::MutablePolyDenseMatrix._eval_scalar_mul",
+      "signature": "def _eval_scalar_mul(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polymatrix.py\nSymbol: sympy/polys/polymatrix.py::MutablePolyDenseMatrix._eval_scalar_mul\nSignature: def _eval_scalar_mul(self, other):\nDocstring: \nBody Preview:         mat = [Poly(a.as_expr()*other, *a.gens) if isinstance(a, Poly) else a*other for a in self._mat]\n        return self.__class__(self.rows, self.cols, mat, copy=False)\n    def _eval_scalar_rmul(self, other):\n        mat = [Poly(other*a.as_expr(), *a.gens) if isinstance(a, Poly) else other*a for a in self._mat]\n        return self.__class__(self.rows, self.cols, mat, copy=False)\nMutablePolyMatrix = PolyMatrix = MutablePolyDenseMatrix",
+      "score": 0.8858357667922974
+    },
+    {
+      "symbol_id": "sympy/core/expr.py::Expr.__mul__",
+      "signature": "def __mul__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/core/expr.py\nSymbol: sympy/core/expr.py::Expr.__mul__\nSignature: def __mul__(self, other):\nDocstring: \nBody Preview:         return Mul(self, other)\n    @_sympifyit('other', NotImplemented)\n    @call_highest_priority('__mul__')\n    def __rmul__(self, other):\n        return Mul(other, self)\n    @_sympifyit('other', NotImplemented)\n    @call_highest_priority('__rpow__')\n    def _pow(self, other):\n        return Pow(self, other)",
+      "score": 0.8743242621421814
+    },
+    {
+      "symbol_id": "sympy/polys/polymatrix.py::MutablePolyDenseMatrix._eval_scalar_rmul",
+      "signature": "def _eval_scalar_rmul(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polymatrix.py\nSymbol: sympy/polys/polymatrix.py::MutablePolyDenseMatrix._eval_scalar_rmul\nSignature: def _eval_scalar_rmul(self, other):\nDocstring: \nBody Preview:         mat = [Poly(other*a.as_expr(), *a.gens) if isinstance(a, Poly) else other*a for a in self._mat]\n        return self.__class__(self.rows, self.cols, mat, copy=False)\nMutablePolyMatrix = PolyMatrix = MutablePolyDenseMatrix",
+      "score": 0.8716416954994202
+    },
+    {
+      "symbol_id": "sympy/polys/domains/expressiondomain.py::ExpressionDomain.Expression.__mul__",
+      "signature": "def __mul__(f, g):",
+      "summary": "",
+      "document_text": "File: sympy/polys/domains/expressiondomain.py\nSymbol: sympy/polys/domains/expressiondomain.py::ExpressionDomain.Expression.__mul__\nSignature: def __mul__(f, g):\nDocstring: \nBody Preview:             g = f._to_ex(g)\n            if g is not None:\n                return f.simplify(f.ex*g.ex)\n            else:\n                return NotImplemented\n        def __rmul__(f, g):\n            return f.simplify(f.__class__(g).ex*f.ex)\n        def __pow__(f, n):",
+      "score": 0.8694939613342285
+    },
+    {
+      "symbol_id": "sympy/polys/polytools.py::Poly.__neg__",
+      "signature": "def __neg__(f):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polytools.py\nSymbol: sympy/polys/polytools.py::Poly.__neg__\nSignature: def __neg__(f):\nDocstring: \nBody Preview:         return f.neg()\n    @_sympifyit('g', NotImplemented)\n    def __add__(f, g):\n        if not g.is_Poly:\n            try:\n                g = f.__class__(g, *f.gens)\n            except PolynomialError:\n                return f.as_expr() + g\n        return f.add(g)",
+      "score": 0.8680998086929321
+    },
+    {
+      "symbol_id": "sympy/polys/polytools.py::Poly.__mul__",
+      "signature": "def __mul__(f, g):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polytools.py\nSymbol: sympy/polys/polytools.py::Poly.__mul__\nSignature: def __mul__(f, g):\nDocstring: \nBody Preview:         if not g.is_Poly:\n            try:\n                g = f.__class__(g, *f.gens)\n            except PolynomialError:\n                return f.as_expr()*g\n        return f.mul(g)\n    @_sympifyit('g', NotImplemented)\n    def __rmul__(f, g):\n        if not g.is_Poly:",
+      "score": 0.8678847551345825
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/pauli.py::SigmaPlus._eval_mul",
+      "signature": "def _eval_mul(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/pauli.py\nSymbol: sympy/physics/quantum/pauli.py::SigmaPlus._eval_mul\nSignature: def _eval_mul(self, other):\nDocstring: \nBody Preview:         return self * other\n    def _eval_power(self, e):\n        if e.is_Integer and e.is_positive:\n            return Integer(0)\n    def _print_contents_latex(self, printer, *args):\n        if self.use_name:\n            return r'{\\sigma_+^{(%s)}}' % str(self.name)\n        else:\n            return r'{\\sigma_+}'",
+      "score": 0.8678585886955261
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/hilbert.py::HilbertSpace.__mul__",
+      "signature": "def __mul__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/hilbert.py\nSymbol: sympy/physics/quantum/hilbert.py::HilbertSpace.__mul__\nSignature: def __mul__(self, other):\nDocstring: \nBody Preview:         return TensorProductHilbertSpace(self, other)\n    def __rmul__(self, other):\n        return TensorProductHilbertSpace(other, self)\n    def __pow__(self, other, mod=None):\n        if mod is not None:\n            raise ValueError('The third argument to __pow__ is not supported \\\n            for Hilbert spaces.')\n        return TensorPowerHilbertSpace(self, other)",
+      "score": 0.8619534373283386
+    }
+  ]
+}

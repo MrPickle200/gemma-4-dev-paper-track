@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-15875",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/matrices/matrices.py::_iszero",
+      "signature": "def _iszero(x):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::_iszero\nSignature: def _iszero(x):\nDocstring: \nBody Preview:     \"\"\"Returns True if x is zero.\"\"\"\n    try:\n        return x.is_zero\n    except AttributeError:\n        return None\ndef _is_zero_after_expand_mul(x):\n    \"\"\"Tests by expand_mul only, suitable for polynomials and rational\n    functions.\"\"\"\n    return expand_mul(x) == 0",
+      "score": 0.9008893966674805
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixReductions.is_echelon",
+      "signature": "def is_echelon(self, iszerofunc=_iszero):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixReductions.is_echelon\nSignature: def is_echelon(self, iszerofunc=_iszero):\nDocstring: \nBody Preview:         \"\"\"Returns `True` if the matrix is in echelon form.\n        That is, all rows of zeros are at the bottom, and below\n        each leading non-zero in a row are exclusively zeros.\"\"\"\n        return self._eval_is_echelon(iszerofunc)\n    def rank(self, iszerofunc=_iszero, simplify=False):\n        \"\"\"\n        Returns the rank of a matrix\n        >>> from sympy import Matrix",
+      "score": 0.895645260810852
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::Abs._eval_is_integer",
+      "signature": "def _eval_is_integer(self):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::Abs._eval_is_integer\nSignature: def _eval_is_integer(self):\nDocstring: \nBody Preview:         if self.args[0].is_real:\n            return self.args[0].is_integer\n    def _eval_is_nonzero(self):\n        return fuzzy_not(self._args[0].is_zero)\n    def _eval_is_zero(self):\n        return self._args[0].is_zero\n    def _eval_is_positive(self):\n        is_z = self.is_zero",
+      "score": 0.8955267667770386
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::Abs._eval_is_zero",
+      "signature": "def _eval_is_zero(self):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::Abs._eval_is_zero\nSignature: def _eval_is_zero(self):\nDocstring: \nBody Preview:         return self._args[0].is_zero\n    def _eval_is_positive(self):\n        is_z = self.is_zero\n        if is_z is not None:\n            return not is_z\n    def _eval_is_rational(self):\n        if self.args[0].is_real:\n            return self.args[0].is_rational",
+      "score": 0.893816351890564
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::im._eval_is_algebraic",
+      "signature": "def _eval_is_algebraic(self):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::im._eval_is_algebraic\nSignature: def _eval_is_algebraic(self):\nDocstring: \nBody Preview:         return self.args[0].is_algebraic\n    def _eval_is_zero(self):\n        return self.args[0].is_real\n###############################################################################\n############### SIGN, ABSOLUTE VALUE, ARGUMENT and CONJUGATION ################\n###############################################################################\nclass sign(Function):\n    \"\"\"",
+      "score": 0.8928132653236389
+    },
+    {
+      "symbol_id": "sympy/matrices/common.py::MatrixProperties._eval_is_zero",
+      "signature": "def _eval_is_zero(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/common.py\nSymbol: sympy/matrices/common.py::MatrixProperties._eval_is_zero\nSignature: def _eval_is_zero(self):\nDocstring: \nBody Preview:         if any(i.is_zero == False for i in self):\n            return False\n        if any(i.is_zero == None for i in self):\n            return None\n        return True\n    def _eval_is_upper_hessenberg(self):\n        return all(self[i, j].is_zero\n                   for i in range(2, self.rows)\n                   for j in range(min(self.cols, (i - 1))))",
+      "score": 0.8921298980712891
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::sign._eval_is_nonpositive",
+      "signature": "def _eval_is_nonpositive(self):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::sign._eval_is_nonpositive\nSignature: def _eval_is_nonpositive(self):\nDocstring: \nBody Preview:         if self.args[0].is_nonpositive:\n            return True\n    def _eval_is_imaginary(self):\n        return self.args[0].is_imaginary\n    def _eval_is_integer(self):\n        return self.args[0].is_real\n    def _eval_is_zero(self):\n        return self.args[0].is_zero",
+      "score": 0.8905918598175049
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::Abs._eval_is_positive",
+      "signature": "def _eval_is_positive(self):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::Abs._eval_is_positive\nSignature: def _eval_is_positive(self):\nDocstring: \nBody Preview:         is_z = self.is_zero\n        if is_z is not None:\n            return not is_z\n    def _eval_is_rational(self):\n        if self.args[0].is_real:\n            return self.args[0].is_rational\n    def _eval_is_even(self):\n        if self.args[0].is_real:\n            return self.args[0].is_even",
+      "score": 0.8901495933532715
+    }
+  ]
+}

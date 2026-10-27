@@ -1,0 +1,13 @@
+diff --git a/sympy/functions/elementary/piecewise.py b/sympy/functions/elementary/piecewise.py
+index 91bfceafaa..fe0a89d8c1 100644
+--- a/sympy/functions/elementary/piecewise.py
++++ b/sympy/functions/elementary/piecewise.py
+@@ -266,6 +266,8 @@ def eval(cls, *_args):
+                     nonredundant.append(c)
+                 cond = cond.func(*nonredundant)
+             elif isinstance(cond, Relational):
++                # Simplify the condition before checking current_cond
++                cond = cond.simplify()
+                 if cond.negated.canonical in current_cond:
+                     cond = S.true
+ 

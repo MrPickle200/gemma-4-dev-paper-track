@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-12419",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/polys/fglmtools.py::_identity_matrix",
+      "signature": "def _identity_matrix(n, domain):",
+      "summary": "",
+      "document_text": "File: sympy/polys/fglmtools.py\nSymbol: sympy/polys/fglmtools.py::_identity_matrix\nSignature: def _identity_matrix(n, domain):\nDocstring: \nBody Preview:     M = [[domain.zero]*n for _ in range(n)]\n    for i in range(n):\n        M[i][i] = domain.one\n    return M\ndef _matrix_mul(M, v):\n    return [sum([row[i] * v[i] for i in range(len(v))]) for row in M]",
+      "score": 0.9156052470207214
+    },
+    {
+      "symbol_id": "sympy/assumptions/handlers/matrices.py::AskIntegerElementsHandler.MatAdd",
+      "signature": "def MatAdd(expr, assumptions):",
+      "summary": "",
+      "document_text": "File: sympy/assumptions/handlers/matrices.py\nSymbol: sympy/assumptions/handlers/matrices.py::AskIntegerElementsHandler.MatAdd\nSignature: def MatAdd(expr, assumptions):\nDocstring: \nBody Preview:         return test_closed_group(expr, assumptions, Q.integer_elements)\n    HadamardProduct, Determinant, Trace, Transpose = [MatAdd]*4\n    ZeroMatrix, Identity = [staticmethod(CommonHandler.AlwaysTrue)]*2\n    MatMul = staticmethod(partial(MatMul_elements, Q.integer_elements,\n                                                   Q.integer))\n    MatrixSlice = staticmethod(partial(MS_elements, Q.integer_elements))\n    BlockMatrix = staticmethod(partial(BM_elements, Q.integer_elements))",
+      "score": 0.8995391726493835
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixProperties._eval_is_hermetian",
+      "signature": "def _eval_is_hermetian(self, simpfunc):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixProperties._eval_is_hermetian\nSignature: def _eval_is_hermetian(self, simpfunc):\nDocstring: \nBody Preview:         mat = self._new(self.rows, self.cols, lambda i, j: simpfunc(self[i, j] - self[j, i].conjugate()))\n        return mat.is_zero\n    def _eval_is_Identity(self):\n        def dirac(i, j):\n            if i == j:\n                return 1\n            return 0\n        return all(self[i, j] == dirac(i, j) for i in range(self.rows) for j in\n                   range(self.cols))",
+      "score": 0.8968462944030762
+    },
+    {
+      "symbol_id": "sympy/assumptions/handlers/matrices.py::AskDiagonalHandler.MatAdd",
+      "signature": "def MatAdd(expr, assumptions):",
+      "summary": "",
+      "document_text": "File: sympy/assumptions/handlers/matrices.py\nSymbol: sympy/assumptions/handlers/matrices.py::AskDiagonalHandler.MatAdd\nSignature: def MatAdd(expr, assumptions):\nDocstring: \nBody Preview:         if all(ask(Q.diagonal(arg), assumptions) for arg in expr.args):\n            return True\n    @staticmethod\n    def MatrixSymbol(expr, assumptions):\n        if AskDiagonalHandler._is_empty_or_1x1(expr):\n            return True\n        if Q.diagonal(expr) in conjuncts(assumptions):\n            return True\n    Identity, ZeroMatrix = [staticmethod(CommonHandler.AlwaysTrue)]*2",
+      "score": 0.8962600231170654
+    },
+    {
+      "symbol_id": "sympy/matrices/expressions/matexpr.py::ZeroMatrix._eval_determinant",
+      "signature": "def _eval_determinant(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/expressions/matexpr.py\nSymbol: sympy/matrices/expressions/matexpr.py::ZeroMatrix._eval_determinant\nSignature: def _eval_determinant(self):\nDocstring: \nBody Preview:         return S.Zero\n    def conjugate(self):\n        return self\n    def _entry(self, i, j):\n        return S.Zero\n    def __nonzero__(self):\n        return False",
+      "score": 0.89568030834198
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixProperties._eval_is_diagonal",
+      "signature": "def _eval_is_diagonal(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixProperties._eval_is_diagonal\nSignature: def _eval_is_diagonal(self):\nDocstring: \nBody Preview:         for i in range(self.rows):\n            for j in range(self.cols):\n                if i != j and self[i, j]:\n                    return False\n        return True\n    def _eval_is_hermetian(self, simpfunc):\n        mat = self._new(self.rows, self.cols, lambda i, j: simpfunc(self[i, j] - self[j, i].conjugate()))\n        return mat.is_zero\n    def _eval_is_Identity(self):",
+      "score": 0.8953151702880859
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixProperties._eval_is_Identity",
+      "signature": "def _eval_is_Identity(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixProperties._eval_is_Identity\nSignature: def _eval_is_Identity(self):\nDocstring: \nBody Preview:         def dirac(i, j):\n            if i == j:\n                return 1\n            return 0\n        return all(self[i, j] == dirac(i, j) for i in range(self.rows) for j in\n                   range(self.cols))\n    def _eval_is_lower_hessenberg(self):\n        return all(self[i, j].is_zero\n                   for i in range(self.rows)",
+      "score": 0.8948394656181335
+    },
+    {
+      "symbol_id": "sympy/matrices/matrices.py::MatrixProperties._eval_is_symbolic",
+      "signature": "def _eval_is_symbolic(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/matrices.py\nSymbol: sympy/matrices/matrices.py::MatrixProperties._eval_is_symbolic\nSignature: def _eval_is_symbolic(self):\nDocstring: \nBody Preview:         return self.has(Symbol)\n    def _eval_is_symmetric(self, simpfunc):\n        mat = self._new(self.rows, self.cols, lambda i, j: simpfunc(self[i, j] - self[j, i]))\n        return mat.is_zero\n    def _eval_is_zero(self):\n        if any(i.is_zero == False for i in self):\n            return False\n        if any(i.is_zero == None for i in self):\n            return None",
+      "score": 0.8919578194618225
+    }
+  ]
+}

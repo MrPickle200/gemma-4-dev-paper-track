@@ -1,0 +1,13 @@
+diff --git a/src/_pytest/debugging.py b/src/_pytest/debugging.py
+index b99c3fe2d..6afcdc377 100644
+--- a/src/_pytest/debugging.py
++++ b/src/_pytest/debugging.py
+@@ -381,6 +381,8 @@ def _postmortem_traceback(excinfo: ExceptionInfo[BaseException]) -> types.Traceb
+ 
+ 
+ def post_mortem(t: types.TracebackType) -> None:
++    if t.test_item and t.test_item.skipped:
++        return
+     p = pytestPDB._init_pdb("post_mortem")
+     p.reset()
+     p.interaction(None, t)

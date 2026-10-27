@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-13798",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter._print_Subs",
+      "signature": "def _print_Subs(self, subs):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter._print_Subs\nSignature: def _print_Subs(self, subs):\nDocstring: \nBody Preview:         expr, old, new = subs.args\n        latex_expr = self._print(expr)\n        latex_old = (self._print(e) for e in old)\n        latex_new = (self._print(e) for e in new)\n        latex_subs = r'\\\\ '.join(\n            e[0] + '=' + e[1] for e in zip(latex_old, latex_new))\n        return r'\\left. %s \\right|_{\\substack{ %s }}' % (latex_expr, latex_subs)\n    def _print_Integral(self, expr):\n        tex, symbols = \"\", []",
+      "score": 0.9234482049942017
+    },
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter",
+      "signature": "class LatexPrinter(Printer):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter\nSignature: class LatexPrinter(Printer):\nDocstring: \nBody Preview:     printmethod = \"_latex\"\n    _default_settings = {\n        \"order\": None,\n        \"mode\": \"plain\",\n        \"itex\": False,\n        \"fold_frac_powers\": False,\n        \"fold_func_brackets\": False,\n        \"fold_short_frac\": None,\n        \"long_frac_ratio\": 2,\n        \"mul_symbol\": None,",
+      "score": 0.9223443865776062
+    },
+    {
+      "symbol_id": "sympy/printing/mathematica.py::MCodePrinter._print_Mul",
+      "signature": "def _print_Mul(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathematica.py\nSymbol: sympy/printing/mathematica.py::MCodePrinter._print_Mul\nSignature: def _print_Mul(self, expr):\nDocstring: \nBody Preview:         PREC = precedence(expr)\n        c, nc = expr.args_cnc()\n        res = super(MCodePrinter, self)._print_Mul(expr.func(*c))\n        if nc:\n            res += '*'\n            res += '**'.join(self.parenthesize(a, PREC) for a in nc)\n        return res\n    def _print_Pi(self, expr):\n        return 'Pi'",
+      "score": 0.9204038381576538
+    },
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter._mul_is_clean",
+      "signature": "def _mul_is_clean(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter._mul_is_clean\nSignature: def _mul_is_clean(self, expr):\nDocstring: \nBody Preview:         for arg in expr.args:\n            if arg.is_Function:\n                return False\n        return True\n    def _pow_is_clean(self, expr):\n        return not self._needs_brackets(expr.base)\n    def _do_exponent(self, expr, exp):\n        if exp is not None:\n            return r\"\\left(%s\\right)^{%s}\" % (expr, exp)",
+      "score": 0.9197316765785217
+    },
+    {
+      "symbol_id": "sympy/printing/repr.py::ReprPrinter._print_Mul",
+      "signature": "def _print_Mul(self, expr, order=None):",
+      "summary": "",
+      "document_text": "File: sympy/printing/repr.py\nSymbol: sympy/printing/repr.py::ReprPrinter._print_Mul\nSignature: def _print_Mul(self, expr, order=None):\nDocstring: \nBody Preview:         terms = expr.args\n        if self.order != 'old':\n            args = expr._new_rawargs(*terms).as_ordered_factors()\n        else:\n            args = terms\n        args = map(self._print, args)\n        return \"Mul(%s)\" % \", \".join(args)\n    def _print_Rational(self, expr):\n        return 'Rational(%s, %s)' % (self._print(expr.p), self._print(expr.q))",
+      "score": 0.9190999865531921
+    },
+    {
+      "symbol_id": "sympy/printing/fcode.py::FCodePrinter._print_ImaginaryUnit",
+      "signature": "def _print_ImaginaryUnit(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/fcode.py\nSymbol: sympy/printing/fcode.py::FCodePrinter._print_ImaginaryUnit\nSignature: def _print_ImaginaryUnit(self, expr):\nDocstring: \nBody Preview:         # purpose: print complex numbers nicely in Fortran.\n        return \"cmplx(0,1)\"\n    def _print_int(self, expr):\n        return str(expr)\n    def _print_Mul(self, expr):\n        # purpose: print complex numbers nicely in Fortran.\n        if expr.is_number and expr.is_imaginary:\n            return \"cmplx(0,%s)\" % (\n                self._print(-S.ImaginaryUnit*expr)",
+      "score": 0.9137821793556213
+    },
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter._print_catalan",
+      "signature": "def _print_catalan(self, expr, exp=None):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter._print_catalan\nSignature: def _print_catalan(self, expr, exp=None):\nDocstring: \nBody Preview:         tex = r\"C_{%s}\" % self._print(expr.args[0])\n        if exp is not None:\n            tex = r\"%s^{%s}\" % (tex, self._print(exp))\n        return tex\n    def _print_MellinTransform(self, expr):\n        return r\"\\mathcal{M}_{%s}\\left[%s\\right]\\left(%s\\right)\" % (self._print(expr.args[1]), self._print(expr.args[0]), self._print(expr.args[2]))\n    def _print_InverseMellinTransform(self, expr):\n        return r\"\\mathcal{M}^{-1}_{%s}\\left[%s\\right]\\left(%s\\right)\" % (self._print(expr.args[1]), self._print(expr.args[0]), self._print(expr.args[2]))",
+      "score": 0.9110538959503174
+    },
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter._print_Cross",
+      "signature": "def _print_Cross(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter._print_Cross\nSignature: def _print_Cross(self, expr):\nDocstring: \nBody Preview:         vec1 = expr._expr1\n        vec2 = expr._expr2\n        return r\"%s \\times %s\" % (self.parenthesize(vec1, PRECEDENCE['Mul']),\n                                  self.parenthesize(vec2, PRECEDENCE['Mul']))\n    def _print_Curl(self, expr):\n        vec = expr._expr\n        return r\"\\nabla\\times %s\" % self.parenthesize(vec, PRECEDENCE['Mul'])\n    def _print_Divergence(self, expr):\n        vec = expr._expr",
+      "score": 0.9099229574203491
+    }
+  ]
+}

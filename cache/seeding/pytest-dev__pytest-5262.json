@@ -1,0 +1,61 @@
+{
+  "instance_id": "pytest-dev__pytest-5262",
+  "top_symbols": [
+    {
+      "symbol_id": "src/_pytest/capture.py::EncodedFile",
+      "signature": "class EncodedFile(object):",
+      "summary": "",
+      "document_text": "File: src/_pytest/capture.py\nSymbol: src/_pytest/capture.py::EncodedFile\nSignature: class EncodedFile(object):\nDocstring: \nBody Preview:     errors = \"strict\"  # possibly needed by py3 code (issue555)\n    def __init__(self, buffer, encoding):\n        self.buffer = buffer\n        self.encoding = encoding\n    def write(self, obj):\n        if isinstance(obj, six.text_type):\n            obj = obj.encode(self.encoding, \"replace\")\n        elif _PY3:\n            raise TypeError(",
+      "score": 0.8890024423599243
+    },
+    {
+      "symbol_id": "src/_pytest/capture.py::EncodedFile.write",
+      "signature": "def write(self, obj):",
+      "summary": "",
+      "document_text": "File: src/_pytest/capture.py\nSymbol: src/_pytest/capture.py::EncodedFile.write\nSignature: def write(self, obj):\nDocstring: \nBody Preview:         if isinstance(obj, six.text_type):\n            obj = obj.encode(self.encoding, \"replace\")\n        elif _PY3:\n            raise TypeError(\n                \"write() argument must be str, not {}\".format(type(obj).__name__)\n            )\n        self.buffer.write(obj)\n    def writelines(self, linelist):\n        data = \"\".join(linelist)\n        self.write(data)",
+      "score": 0.881104588508606
+    },
+    {
+      "symbol_id": "src/_pytest/capture.py::capsysbinary",
+      "signature": "def capsysbinary(request):",
+      "summary": "",
+      "document_text": "File: src/_pytest/capture.py\nSymbol: src/_pytest/capture.py::capsysbinary\nSignature: def capsysbinary(request):\nDocstring: \nBody Preview:     \"\"\"Enable bytes capturing of writes to ``sys.stdout`` and ``sys.stderr``.\n    The captured output is made available via ``capsysbinary.readouterr()``\n    method calls, which return a ``(out, err)`` namedtuple.\n    ``out`` and ``err`` will be ``bytes`` objects.\n    \"\"\"\n    _ensure_only_one_capture_fixture(request, \"capsysbinary\")\n    # Currently, the implementation uses the python3 specific `.buffer`\n    # property of CaptureIO.\n    if sys.version_info < (3,):\n        raise request.raiseerror(\"capsysbinary is only supported on Python 3\")",
+      "score": 0.874448299407959
+    },
+    {
+      "symbol_id": "src/_pytest/capture.py::EncodedFile.__init__",
+      "signature": "def __init__(self, buffer, encoding):",
+      "summary": "",
+      "document_text": "File: src/_pytest/capture.py\nSymbol: src/_pytest/capture.py::EncodedFile.__init__\nSignature: def __init__(self, buffer, encoding):\nDocstring: \nBody Preview:         self.buffer = buffer\n        self.encoding = encoding\n    def write(self, obj):\n        if isinstance(obj, six.text_type):\n            obj = obj.encode(self.encoding, \"replace\")\n        elif _PY3:\n            raise TypeError(\n                \"write() argument must be str, not {}\".format(type(obj).__name__)\n            )\n        self.buffer.write(obj)",
+      "score": 0.8740096092224121
+    },
+    {
+      "symbol_id": "src/_pytest/compat.py::CaptureIO.encoding",
+      "signature": "def encoding(self):",
+      "summary": "",
+      "document_text": "File: src/_pytest/compat.py\nSymbol: src/_pytest/compat.py::CaptureIO.encoding\nSignature: def encoding(self):\nDocstring: \nBody Preview:             return getattr(self, \"_encoding\", \"UTF-8\")\nelse:\n    import io\n    class CaptureIO(io.TextIOWrapper):\n        def __init__(self):\n            super(CaptureIO, self).__init__(\n                io.BytesIO(), encoding=\"UTF-8\", newline=\"\", write_through=True\n            )",
+      "score": 0.868709921836853
+    },
+    {
+      "symbol_id": "src/_pytest/capture.py::CaptureManager.pytest_internalerror",
+      "signature": "def pytest_internalerror(self, excinfo):",
+      "summary": "",
+      "document_text": "File: src/_pytest/capture.py\nSymbol: src/_pytest/capture.py::CaptureManager.pytest_internalerror\nSignature: def pytest_internalerror(self, excinfo):\nDocstring: \nBody Preview:         self.stop_global_capturing()\ncapture_fixtures = {\"capfd\", \"capfdbinary\", \"capsys\", \"capsysbinary\"}\ndef _ensure_only_one_capture_fixture(request, name):\n    fixtures = set(request.fixturenames) & capture_fixtures - {name}\n    if fixtures:\n        fixtures = sorted(fixtures)\n        fixtures = fixtures[0] if len(fixtures) == 1 else fixtures",
+      "score": 0.8670049905776978
+    },
+    {
+      "symbol_id": "src/_pytest/capture.py::FDCapture.snap",
+      "signature": "def snap(self):",
+      "summary": "",
+      "document_text": "File: src/_pytest/capture.py\nSymbol: src/_pytest/capture.py::FDCapture.snap\nSignature: def snap(self):\nDocstring: \nBody Preview:         res = super(FDCapture, self).snap()\n        enc = getattr(self.tmpfile, \"encoding\", None)\n        if enc and isinstance(res, bytes):\n            res = six.text_type(res, enc, \"replace\")\n        return res\nclass SysCapture(object):\n    EMPTY_BUFFER = str()\n    _state = None",
+      "score": 0.8658829927444458
+    },
+    {
+      "symbol_id": "testing/python/setup_only.py::test_capturing",
+      "signature": "def test_capturing(testdir):",
+      "summary": "",
+      "document_text": "File: testing/python/setup_only.py\nSymbol: testing/python/setup_only.py::test_capturing\nSignature: def test_capturing(testdir):\nDocstring: \nBody Preview:     p = testdir.makepyfile(\n        \"\"\"\n        import pytest, sys\n        @pytest.fixture()\n        def one():\n            sys.stdout.write('this should be captured')\n            sys.stderr.write('this should also be captured')\n        @pytest.fixture()\n        def two(one):\n            assert 0",
+      "score": 0.8600753545761108
+    }
+  ]
+}

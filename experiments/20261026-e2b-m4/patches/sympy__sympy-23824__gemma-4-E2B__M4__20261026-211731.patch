@@ -1,0 +1,16 @@
+diff --git a/sympy/physics/hep/gamma_matrices.py b/sympy/physics/hep/gamma_matrices.py
+index 23284e4a92..4942c06330 100644
+--- a/sympy/physics/hep/gamma_matrices.py
++++ b/sympy/physics/hep/gamma_matrices.py
+@@ -502,6 +502,11 @@ def kahane_simplify(expression):
+     # free indices (rearranged according to the algorithm).
+     resulting_indices = [[]]
+ 
++    # Add leading free indices (before first dummy index)
++    for i in range(first_dum_pos):
++        if index_is_free[i]:
++            resulting_indices[0].append(i)
++
+     # start to count the `connected_components`, which together with the number
+     # of contractions, determines a -1 or +1 factor to be multiplied.
+     connected_components = 1

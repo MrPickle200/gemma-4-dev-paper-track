@@ -1,0 +1,19 @@
+diff --git a/sklearn/utils/_show_versions.py b/sklearn/utils/_show_versions.py
+index e5d3141bf0..73ee7dd38a 100644
+--- a/sklearn/utils/_show_versions.py
++++ b/sklearn/utils/_show_versions.py
+@@ -50,6 +50,14 @@ def _get_deps_info():
+         "matplotlib",
+     ]
+ 
++    # Check sklearn version and conditionally add joblib
++    try:
++        sklearn_version = importlib.import_module('sklearn').__version__
++        if sklearn_version > '0.20':
++            deps.append('joblib')
++    except ImportError:
++        pass
++
+     def get_version(module):
+         return module.__version__
+ 

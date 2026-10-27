@@ -1,0 +1,61 @@
+{
+  "instance_id": "pytest-dev__pytest-5631",
+  "top_symbols": [
+    {
+      "symbol_id": "src/_pytest/compat.py::num_mock_patch_args",
+      "signature": "def num_mock_patch_args(function):",
+      "summary": "",
+      "document_text": "File: src/_pytest/compat.py\nSymbol: src/_pytest/compat.py::num_mock_patch_args\nSignature: def num_mock_patch_args(function):\nDocstring: \nBody Preview:     \"\"\" return number of arguments used up by mock arguments (if any) \"\"\"\n    patchings = getattr(function, \"patchings\", None)\n    if not patchings:\n        return 0\n    mock_modules = [sys.modules.get(\"mock\"), sys.modules.get(\"unittest.mock\")]\n    if any(mock_modules):\n        sentinels = [m.DEFAULT for m in mock_modules if m is not None]\n        return len(\n            [p for p in patchings if not p.attribute_name and p.new in sentinels]\n        )",
+      "score": 0.845960259437561
+    },
+    {
+      "symbol_id": "src/_pytest/python.py::Class.collect",
+      "signature": "def collect(self):",
+      "summary": "",
+      "document_text": "File: src/_pytest/python.py\nSymbol: src/_pytest/python.py::Class.collect\nSignature: def collect(self):\nDocstring: \nBody Preview:         if not safe_getattr(self.obj, \"__test__\", True):\n            return []\n        if hasinit(self.obj):\n            self.warn(\n                PytestCollectionWarning(\n                    \"cannot collect test class %r because it has a \"\n                    \"__init__ constructor (from: %s)\"\n                    % (self.obj.__name__, self.parent.nodeid)\n                )\n            )",
+      "score": 0.8447736501693726
+    },
+    {
+      "symbol_id": "src/_pytest/runner.py::collect_one_node",
+      "signature": "def collect_one_node(collector):",
+      "summary": "",
+      "document_text": "File: src/_pytest/runner.py\nSymbol: src/_pytest/runner.py::collect_one_node\nSignature: def collect_one_node(collector):\nDocstring: \nBody Preview:     ihook = collector.ihook\n    ihook.pytest_collectstart(collector=collector)\n    rep = ihook.pytest_make_collect_report(collector=collector)\n    call = rep.__dict__.pop(\"call\", None)\n    if call and check_interactive_exception(call, rep):\n        ihook.pytest_exception_interact(node=collector, call=call, report=rep)\n    return rep",
+      "score": 0.8423864245414734
+    },
+    {
+      "symbol_id": "src/_pytest/python.py::hasnew",
+      "signature": "def hasnew(obj):",
+      "summary": "",
+      "document_text": "File: src/_pytest/python.py\nSymbol: src/_pytest/python.py::hasnew\nSignature: def hasnew(obj):\nDocstring: \nBody Preview:     new = getattr(obj, \"__new__\", None)\n    if new:\n        return new != object.__new__\nclass CallSpec2:\n    def __init__(self, metafunc):\n        self.metafunc = metafunc\n        self.funcargs = {}\n        self._idlist = []\n        self.params = {}",
+      "score": 0.8420004844665527
+    },
+    {
+      "symbol_id": "testing/example_scripts/issue88_initial_file_multinodes/conftest.py::MyFile.collect",
+      "signature": "def collect(self):",
+      "summary": "",
+      "document_text": "File: testing/example_scripts/issue88_initial_file_multinodes/conftest.py\nSymbol: testing/example_scripts/issue88_initial_file_multinodes/conftest.py::MyFile.collect\nSignature: def collect(self):\nDocstring: \nBody Preview:         return [MyItem(\"hello\", parent=self)]\ndef pytest_collect_file(path, parent):\n    return MyFile(path, parent)\nclass MyItem(pytest.Item):\n    pass",
+      "score": 0.8410918712615967
+    },
+    {
+      "symbol_id": "src/_pytest/warnings.py::pytest_runtest_protocol",
+      "signature": "def pytest_runtest_protocol(item):",
+      "summary": "",
+      "document_text": "File: src/_pytest/warnings.py\nSymbol: src/_pytest/warnings.py::pytest_runtest_protocol\nSignature: def pytest_runtest_protocol(item):\nDocstring: \nBody Preview:     with catch_warnings_for_item(\n        config=item.config, ihook=item.ihook, when=\"runtest\", item=item\n    ):\n        yield\n@pytest.hookimpl(hookwrapper=True, tryfirst=True)\ndef pytest_collection(session):\n    config = session.config\n    with catch_warnings_for_item(\n        config=config, ihook=config.hook, when=\"collect\", item=None",
+      "score": 0.8408808708190918
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestFunction.test_issue213_parametrize_value_no_equal",
+      "signature": "def test_issue213_parametrize_value_no_equal(self, testdir):",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestFunction.test_issue213_parametrize_value_no_equal\nSignature: def test_issue213_parametrize_value_no_equal(self, testdir):\nDocstring: \nBody Preview:         testdir.makepyfile(\n            \"\"\"\n            import pytest\n            class A(object):\n                def __eq__(self, other):\n                    raise ValueError(\"not possible\")\n            @pytest.mark.parametrize('arg', [A()])\n            def test_function(arg):\n                assert arg.__class__.__name__ == \"A\"\n        \"\"\"",
+      "score": 0.8379490375518799
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestFunction.test_issue751_multiple_parametrize_with_ids",
+      "signature": "def test_issue751_multiple_parametrize_with_ids(self, testdir):",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestFunction.test_issue751_multiple_parametrize_with_ids\nSignature: def test_issue751_multiple_parametrize_with_ids(self, testdir):\nDocstring: \nBody Preview:         modcol = testdir.getmodulecol(\n            \"\"\"\n            import pytest\n            @pytest.mark.parametrize('x', [0], ids=['c'])\n            @pytest.mark.parametrize('y', [0, 1], ids=['a', 'b'])\n            class Test(object):\n                def test1(self, x, y):\n                    pass\n                def test2(self, x, y):\n                    pass",
+      "score": 0.8370350003242493
+    }
+  ]
+}

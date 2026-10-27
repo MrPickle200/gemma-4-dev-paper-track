@@ -1,0 +1,524 @@
+{
+  "psf__requests-1724": {
+    "files": [
+      "requests/sessions.py"
+    ],
+    "symbols": [
+      "requests/sessions.py::Session",
+      "requests/sessions.py::Session.request"
+    ]
+  },
+  "psf__requests-2931": {
+    "files": [
+      "requests/models.py"
+    ],
+    "symbols": [
+      "requests/models.py::PreparedRequest",
+      "requests/models.py::PreparedRequest.prepare_url",
+      "requests/models.py::RequestEncodingMixin",
+      "requests/models.py::RequestEncodingMixin._encode_params"
+    ]
+  },
+  "psf__requests-6028": {
+    "files": [
+      "requests/utils.py"
+    ],
+    "symbols": [
+      "requests/utils.py::prepend_scheme_if_needed"
+    ]
+  },
+  "pytest-dev__pytest-10081": {
+    "files": [
+      "src/_pytest/unittest.py"
+    ],
+    "symbols": [
+      "src/_pytest/unittest.py::TestCaseFunction",
+      "src/_pytest/unittest.py::TestCaseFunction.runtest"
+    ]
+  },
+  "pytest-dev__pytest-5262": {
+    "files": [
+      "src/_pytest/capture.py"
+    ],
+    "symbols": [
+      "src/_pytest/capture.py::EncodedFile",
+      "src/_pytest/capture.py::EncodedFile.__getattr__",
+      "src/_pytest/capture.py::EncodedFile.name"
+    ]
+  },
+  "pytest-dev__pytest-5631": {
+    "files": [
+      "src/_pytest/compat.py"
+    ],
+    "symbols": [
+      "src/_pytest/compat.py::getfuncargnames",
+      "src/_pytest/compat.py::num_mock_patch_args"
+    ]
+  },
+  "pytest-dev__pytest-7236": {
+    "files": [
+      "src/_pytest/unittest.py"
+    ],
+    "symbols": [
+      "src/_pytest/unittest.py::TestCaseFunction",
+      "src/_pytest/unittest.py::TestCaseFunction.runtest",
+      "src/_pytest/unittest.py::UnitTestCase",
+      "src/_pytest/unittest.py::UnitTestCase.collect",
+      "src/_pytest/unittest.py::_make_xunit_fixture",
+      "src/_pytest/unittest.py::_make_xunit_fixture.fixture",
+      "src/_pytest/unittest.py::check_testcase_implements_trial_reporter"
+    ]
+  },
+  "pytest-dev__pytest-7324": {
+    "files": [
+      "src/_pytest/mark/expression.py"
+    ],
+    "symbols": [
+      "src/_pytest/mark/expression.py::MatcherAdapter",
+      "src/_pytest/mark/expression.py::MatcherAdapter.__getitem__",
+      "src/_pytest/mark/expression.py::MatcherAdapter.__init__",
+      "src/_pytest/mark/expression.py::MatcherAdapter.__iter__",
+      "src/_pytest/mark/expression.py::Scanner",
+      "src/_pytest/mark/expression.py::Scanner.reject",
+      "src/_pytest/mark/expression.py::expression",
+      "src/_pytest/mark/expression.py::not_expr"
+    ]
+  },
+  "scikit-learn__scikit-learn-10908": {
+    "files": [
+      "sklearn/feature_extraction/text.py"
+    ],
+    "symbols": [
+      "sklearn/feature_extraction/text.py::CountVectorizer",
+      "sklearn/feature_extraction/text.py::CountVectorizer.inverse_transform"
+    ]
+  },
+  "scikit-learn__scikit-learn-11310": {
+    "files": [
+      "sklearn/model_selection/_search.py"
+    ],
+    "symbols": [
+      "sklearn/model_selection/_search.py::BaseSearchCV",
+      "sklearn/model_selection/_search.py::BaseSearchCV.fit",
+      "sklearn/model_selection/_search.py::GridSearchCV",
+      "sklearn/model_selection/_search.py::RandomizedSearchCV"
+    ]
+  },
+  "scikit-learn__scikit-learn-13135": {
+    "files": [
+      "sklearn/preprocessing/_discretization.py"
+    ],
+    "symbols": [
+      "sklearn/preprocessing/_discretization.py::KBinsDiscretizer",
+      "sklearn/preprocessing/_discretization.py::KBinsDiscretizer.fit"
+    ]
+  },
+  "scikit-learn__scikit-learn-13142": {
+    "files": [
+      "sklearn/mixture/base.py"
+    ],
+    "symbols": [
+      "sklearn/mixture/base.py::BaseMixture",
+      "sklearn/mixture/base.py::BaseMixture._e_step",
+      "sklearn/mixture/base.py::BaseMixture.fit_predict"
+    ]
+  },
+  "scikit-learn__scikit-learn-13496": {
+    "files": [
+      "sklearn/ensemble/iforest.py"
+    ],
+    "symbols": [
+      "sklearn/ensemble/iforest.py::IsolationForest",
+      "sklearn/ensemble/iforest.py::IsolationForest.__init__"
+    ]
+  },
+  "scikit-learn__scikit-learn-14053": {
+    "files": [
+      "sklearn/tree/export.py"
+    ],
+    "symbols": [
+      "sklearn/tree/export.py::export_text"
+    ]
+  },
+  "scikit-learn__scikit-learn-14087": {
+    "files": [
+      "sklearn/linear_model/logistic.py"
+    ],
+    "symbols": [
+      "sklearn/linear_model/logistic.py::LogisticRegressionCV",
+      "sklearn/linear_model/logistic.py::LogisticRegressionCV.fit"
+    ]
+  },
+  "scikit-learn__scikit-learn-14141": {
+    "files": [
+      "sklearn/utils/_show_versions.py"
+    ],
+    "symbols": [
+      "sklearn/utils/_show_versions.py::_get_deps_info",
+      "sklearn/utils/_show_versions.py::_get_deps_info.get_version"
+    ]
+  },
+  "scikit-learn__scikit-learn-14629": {
+    "files": [
+      "sklearn/multioutput.py"
+    ],
+    "symbols": [
+      "sklearn/multioutput.py::MultiOutputClassifier",
+      "sklearn/multioutput.py::MultiOutputClassifier.__init__",
+      "sklearn/multioutput.py::MultiOutputClassifier.predict_proba",
+      "sklearn/multioutput.py::_BaseChain",
+      "sklearn/multioutput.py::_BaseChain.fit"
+    ]
+  },
+  "scikit-learn__scikit-learn-14983": {
+    "files": [
+      "sklearn/model_selection/_split.py"
+    ],
+    "symbols": [
+      "sklearn/model_selection/_split.py::RepeatedKFold",
+      "sklearn/model_selection/_split.py::_RepeatedSplits",
+      "sklearn/model_selection/_split.py::_RepeatedSplits.get_n_splits",
+      "sklearn/model_selection/_split.py::_build_repr"
+    ]
+  },
+  "scikit-learn__scikit-learn-25931": {
+    "files": [
+      "sklearn/ensemble/_iforest.py"
+    ],
+    "symbols": [
+      "sklearn/ensemble/_iforest.py::IsolationForest",
+      "sklearn/ensemble/_iforest.py::IsolationForest._compute_chunked_score_samples",
+      "sklearn/ensemble/_iforest.py::IsolationForest.fit",
+      "sklearn/ensemble/_iforest.py::IsolationForest.score_samples"
+    ]
+  },
+  "scikit-learn__scikit-learn-26194": {
+    "files": [
+      "sklearn/metrics/_ranking.py"
+    ],
+    "symbols": [
+      "sklearn/metrics/_ranking.py::roc_curve"
+    ]
+  },
+  "scikit-learn__scikit-learn-9288": {
+    "files": [
+      "sklearn/cluster/k_means_.py"
+    ],
+    "symbols": [
+      "sklearn/cluster/k_means_.py::k_means"
+    ]
+  },
+  "sympy__sympy-12096": {
+    "files": [
+      "sympy/core/function.py"
+    ],
+    "symbols": [
+      "sympy/core/function.py::Function",
+      "sympy/core/function.py::Function._eval_evalf"
+    ]
+  },
+  "sympy__sympy-12419": {
+    "files": [
+      "sympy/matrices/expressions/matexpr.py"
+    ],
+    "symbols": [
+      "sympy/matrices/expressions/matexpr.py::Identity",
+      "sympy/matrices/expressions/matexpr.py::Identity._entry",
+      "sympy/matrices/expressions/matexpr.py::Identity._eval_determinant",
+      "sympy/matrices/expressions/matexpr.py::Identity.conjugate",
+      "sympy/matrices/expressions/matexpr.py::MatrixElement",
+      "sympy/matrices/expressions/matexpr.py::MatrixElement._eval_derivative"
+    ]
+  },
+  "sympy__sympy-13480": {
+    "files": [
+      "sympy/functions/elementary/hyperbolic.py"
+    ],
+    "symbols": [
+      "sympy/functions/elementary/hyperbolic.py::coth",
+      "sympy/functions/elementary/hyperbolic.py::coth.eval"
+    ]
+  },
+  "sympy__sympy-13551": {
+    "files": [
+      "sympy/concrete/products.py"
+    ],
+    "symbols": [
+      "sympy/concrete/products.py::Product",
+      "sympy/concrete/products.py::Product._eval_product"
+    ]
+  },
+  "sympy__sympy-13615": {
+    "files": [
+      "sympy/sets/sets.py"
+    ],
+    "symbols": [
+      "sympy/sets/sets.py::Set",
+      "sympy/sets/sets.py::Set._complement",
+      "sympy/sets/sets.py::Set.symmetric_difference"
+    ]
+  },
+  "sympy__sympy-13757": {
+    "files": [
+      "sympy/polys/polytools.py"
+    ],
+    "symbols": [
+      "sympy/polys/polytools.py::Poly",
+      "sympy/polys/polytools.py::Poly.__new__"
+    ]
+  },
+  "sympy__sympy-13798": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "symbols": [
+      "sympy/printing/latex.py::LatexPrinter",
+      "sympy/printing/latex.py::LatexPrinter.__init__"
+    ]
+  },
+  "sympy__sympy-13852": {
+    "files": [
+      "sympy/functions/special/zeta_functions.py"
+    ],
+    "symbols": [
+      "sympy/functions/special/zeta_functions.py::polylog",
+      "sympy/functions/special/zeta_functions.py::polylog._eval_expand_func",
+      "sympy/functions/special/zeta_functions.py::polylog.eval",
+      "sympy/functions/special/zeta_functions.py::polylog.fdiff"
+    ]
+  },
+  "sympy__sympy-14531": {
+    "files": [
+      "sympy/printing/str.py"
+    ],
+    "symbols": [
+      "sympy/printing/str.py::StrPrinter",
+      "sympy/printing/str.py::StrPrinter._print_AppliedPredicate",
+      "sympy/printing/str.py::StrPrinter._print_Basic",
+      "sympy/printing/str.py::StrPrinter._print_Exp1",
+      "sympy/printing/str.py::StrPrinter._print_ExprCondPair",
+      "sympy/printing/str.py::StrPrinter._print_FiniteSet",
+      "sympy/printing/str.py::StrPrinter._print_FracField",
+      "sympy/printing/str.py::StrPrinter._print_FreeGroupElement",
+      "sympy/printing/str.py::StrPrinter._print_Lambda",
+      "sympy/printing/str.py::StrPrinter._print_LatticeOp",
+      "sympy/printing/str.py::StrPrinter._print_Limit",
+      "sympy/printing/str.py::StrPrinter._print_MatrixElement",
+      "sympy/printing/str.py::StrPrinter._print_MatrixSlice",
+      "sympy/printing/str.py::StrPrinter._print_MatrixSlice.strslice",
+      "sympy/printing/str.py::StrPrinter._print_NegativeInfinity",
+      "sympy/printing/str.py::StrPrinter._print_Normal",
+      "sympy/printing/str.py::StrPrinter._print_Or",
+      "sympy/printing/str.py::StrPrinter._print_Order",
+      "sympy/printing/str.py::StrPrinter._print_PDF",
+      "sympy/printing/str.py::StrPrinter._print_Permutation",
+      "sympy/printing/str.py::StrPrinter._print_PermutationGroup",
+      "sympy/printing/str.py::StrPrinter._print_PolyRing",
+      "sympy/printing/str.py::StrPrinter._print_Relational",
+      "sympy/printing/str.py::StrPrinter._print_TensAdd",
+      "sympy/printing/str.py::StrPrinter._print_Transpose",
+      "sympy/printing/str.py::StrPrinter._print_Uniform",
+      "sympy/printing/str.py::StrPrinter._print_Union",
+      "sympy/printing/str.py::StrPrinter._print_list"
+    ]
+  },
+  "sympy__sympy-14976": {
+    "files": [
+      "sympy/printing/pycode.py"
+    ],
+    "symbols": [
+      "sympy/printing/pycode.py::MpmathPrinter",
+      "sympy/printing/pycode.py::MpmathPrinter._print_Float",
+      "sympy/printing/pycode.py::MpmathPrinter._print_uppergamma"
+    ]
+  },
+  "sympy__sympy-15017": {
+    "files": [
+      "sympy/tensor/array/dense_ndim_array.py"
+    ],
+    "symbols": [
+      "sympy/tensor/array/dense_ndim_array.py::ImmutableDenseNDimArray",
+      "sympy/tensor/array/dense_ndim_array.py::ImmutableDenseNDimArray.__setitem__",
+      "sympy/tensor/array/dense_ndim_array.py::ImmutableDenseNDimArray._new"
+    ]
+  },
+  "sympy__sympy-15599": {
+    "files": [
+      "sympy/core/mod.py"
+    ],
+    "symbols": [
+      "sympy/core/mod.py::Mod",
+      "sympy/core/mod.py::Mod.eval",
+      "sympy/core/mod.py::Mod.eval.doit"
+    ]
+  },
+  "sympy__sympy-15875": {
+    "files": [
+      "sympy/core/add.py"
+    ],
+    "symbols": [
+      "sympy/core/add.py::Add",
+      "sympy/core/add.py::Add._eval_is_zero"
+    ]
+  },
+  "sympy__sympy-15976": {
+    "files": [
+      "sympy/printing/mathml.py"
+    ],
+    "symbols": [
+      "sympy/printing/mathml.py::MathMLPresentationPrinter",
+      "sympy/printing/mathml.py::MathMLPresentationPrinter._print_MatrixSymbol",
+      "sympy/printing/mathml.py::MathMLPresentationPrinter._print_Sum",
+      "sympy/printing/mathml.py::MathMLPresentationPrinter._print_Symbol",
+      "sympy/printing/mathml.py::MathMLPresentationPrinter._print_Symbol.join"
+    ]
+  },
+  "sympy__sympy-16450": {
+    "files": [
+      "sympy/simplify/simplify.py"
+    ],
+    "symbols": [
+      "sympy/simplify/simplify.py::posify"
+    ]
+  },
+  "sympy__sympy-16766": {
+    "files": [
+      "sympy/printing/pycode.py"
+    ],
+    "symbols": [
+      "sympy/printing/pycode.py::PythonCodePrinter",
+      "sympy/printing/pycode.py::PythonCodePrinter._print_Not"
+    ]
+  },
+  "sympy__sympy-18698": {
+    "files": [
+      "sympy/polys/polytools.py"
+    ],
+    "symbols": [
+      "sympy/polys/polytools.py::_symbolic_factor_list"
+    ]
+  },
+  "sympy__sympy-19346": {
+    "files": [
+      "sympy/printing/repr.py"
+    ],
+    "symbols": [
+      "sympy/printing/repr.py::ReprPrinter",
+      "sympy/printing/repr.py::ReprPrinter._print_MatrixBase",
+      "sympy/printing/repr.py::ReprPrinter._print_list"
+    ]
+  },
+  "sympy__sympy-20428": {
+    "files": [
+      "sympy/polys/domains/expressiondomain.py"
+    ],
+    "symbols": [
+      "sympy/polys/domains/expressiondomain.py::ExpressionDomain",
+      "sympy/polys/domains/expressiondomain.py::ExpressionDomain.Expression",
+      "sympy/polys/domains/expressiondomain.py::ExpressionDomain.Expression.__bool__",
+      "sympy/polys/domains/expressiondomain.py::ExpressionDomain.Expression.__ne__",
+      "sympy/polys/domains/expressiondomain.py::ExpressionDomain.Expression.gcd"
+    ]
+  },
+  "sympy__sympy-20590": {
+    "files": [
+      "sympy/core/_print_helpers.py"
+    ],
+    "symbols": [
+      "sympy/core/_print_helpers.py::Printable",
+      "sympy/core/_print_helpers.py::Printable.__str__"
+    ]
+  },
+  "sympy__sympy-20801": {
+    "files": [
+      "sympy/core/numbers.py"
+    ],
+    "symbols": [
+      "sympy/core/numbers.py::Float",
+      "sympy/core/numbers.py::Float.__eq__",
+      "sympy/core/numbers.py::Float.__ne__"
+    ]
+  },
+  "sympy__sympy-21379": {
+    "files": [
+      "sympy/core/mod.py"
+    ],
+    "symbols": [
+      "sympy/core/mod.py::Mod",
+      "sympy/core/mod.py::Mod.eval",
+      "sympy/core/mod.py::Mod.eval.doit"
+    ]
+  },
+  "sympy__sympy-21596": {
+    "files": [
+      "sympy/sets/handlers/intersection.py"
+    ],
+    "symbols": [
+      "sympy/sets/handlers/intersection.py::intersection_sets"
+    ]
+  },
+  "sympy__sympy-21930": {
+    "files": [
+      "sympy/physics/secondquant.py"
+    ],
+    "symbols": [
+      "sympy/physics/secondquant.py::AntiSymmetricTensor",
+      "sympy/physics/secondquant.py::AntiSymmetricTensor._latex",
+      "sympy/physics/secondquant.py::AntiSymmetricTensor._sortkey",
+      "sympy/physics/secondquant.py::CreateBoson",
+      "sympy/physics/secondquant.py::CreateBoson.__repr__",
+      "sympy/physics/secondquant.py::CreateBoson._latex",
+      "sympy/physics/secondquant.py::CreateFermion",
+      "sympy/physics/secondquant.py::CreateFermion.__repr__",
+      "sympy/physics/secondquant.py::CreateFermion._latex"
+    ]
+  },
+  "sympy__sympy-22456": {
+    "files": [
+      "sympy/codegen/ast.py"
+    ],
+    "symbols": [
+      "sympy/codegen/ast.py::BreakToken",
+      "sympy/codegen/ast.py::For",
+      "sympy/codegen/ast.py::For._construct_iterable",
+      "sympy/codegen/ast.py::QuotedString",
+      "sympy/codegen/ast.py::String",
+      "sympy/codegen/ast.py::String._sympystr",
+      "sympy/codegen/ast.py::Token",
+      "sympy/codegen/ast.py::Token.kwargs"
+    ]
+  },
+  "sympy__sympy-23262": {
+    "files": [
+      "sympy/utilities/lambdify.py"
+    ],
+    "symbols": [
+      "sympy/utilities/lambdify.py::_recursive_to_string"
+    ]
+  },
+  "sympy__sympy-23413": {
+    "files": [
+      "sympy/polys/matrices/normalforms.py"
+    ],
+    "symbols": [
+      "sympy/polys/matrices/normalforms.py::_hermite_normal_form"
+    ]
+  },
+  "sympy__sympy-23824": {
+    "files": [
+      "sympy/physics/hep/gamma_matrices.py"
+    ],
+    "symbols": [
+      "sympy/physics/hep/gamma_matrices.py::kahane_simplify"
+    ]
+  },
+  "sympy__sympy-24213": {
+    "files": [
+      "sympy/physics/units/unitsystem.py"
+    ],
+    "symbols": [
+      "sympy/physics/units/unitsystem.py::UnitSystem",
+      "sympy/physics/units/unitsystem.py::UnitSystem._collect_factor_and_dimension"
+    ]
+  }
+}

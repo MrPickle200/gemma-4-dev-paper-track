@@ -1,0 +1,67 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..739bed6800 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -777,28 +777,56 @@ def translate(s):
+         supers = [translate(sup) for sup in supers]
+         subs = [translate(sub) for sub in subs]
+ 
+-        mname = self.dom.createElement('mi')
+-        mname.appendChild(self.dom.createTextNode(name))
++        if name:
++            mname = self.dom.createElement('mi')
++            mname.appendChild(self.dom.createTextNode(name))
++        else:
++            mname = None
++
+         if len(supers) == 0:
+             if len(subs) == 0:
+-                x.appendChild(self.dom.createTextNode(name))
+-            else:
++                if name:
++                    x.appendChild(self.dom.createTextNode(name))
++            elif mname:
+                 msub = self.dom.createElement('msub')
+                 msub.appendChild(mname)
+                 msub.appendChild(join(subs))
+                 x.appendChild(msub)
+-        else:
+-            if len(subs) == 0:
++            else:
++                x.appendChild(join(subs))
++        elif len(subs) == 0:
++            if mname:
+                 msup = self.dom.createElement('msup')
+                 msup.appendChild(mname)
+                 msup.appendChild(join(supers))
+                 x.appendChild(msup)
+             else:
++                x.appendChild(join(supers))
++        else:
++            if mname:
+                 msubsup = self.dom.createElement('msubsup')
+                 msubsup.appendChild(mname)
+                 msubsup.appendChild(join(subs))
+                 msubsup.appendChild(join(supers))
+                 x.appendChild(msubsup)
++            else:
++                # If name is empty, we create an implicit base element for subs and supers
++                # This is a simplification, but should allow rendering.
++                # We use an empty mi tag as a placeholder for the base.
++                base = self.dom.createElement('mi')
++                x.appendChild(base)
++                
++                # Re-evaluate structure with base
++                if len(subs) > 0:
++                    msub = self.dom.createElement('msub')
++                    msub.appendChild(base)
++                    msub.appendChild(join(subs))
++                    x.appendChild(msub)
++                if len(supers) > 0:
++                    msup = self.dom.createElement('msup')
++                    msup.appendChild(base)
++                    msup.appendChild(join(supers))
++                    x.appendChild(msup)
+         return x
+ 
+     def _print_MatrixSymbol(self, sym):

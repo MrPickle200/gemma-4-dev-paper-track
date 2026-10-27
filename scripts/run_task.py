@@ -31,7 +31,7 @@ def main() -> int:
     ap.add_argument("--repo", help="restrict to one repo, e.g. psf/requests")
     ap.add_argument("--limit", type=int, help="max tasks to run")
     ap.add_argument("--model", default="gemma-4-E2B", help="label recorded in the log")
-    ap.add_argument("--variant", default="B0", choices=["B0", "M1", "M2", "M3"])
+    ap.add_argument("--variant", default="B0", choices=["B0", "M1", "M2", "M3", "M4"])
     ap.add_argument("--thinking", default="off", choices=["auto", "on", "off"])
     ap.add_argument("--line-numbers", action="store_true",
                     help="print line numbers in read_file (OFF by default: B0 is `cat` fidelity)")

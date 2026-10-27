@@ -1,0 +1,28 @@
+diff --git a/sympy/physics/hep/gamma_matrices.py b/sympy/physics/hep/gamma_matrices.py
+index 23284e4a92..88b31bc38e 100644
+--- a/sympy/physics/hep/gamma_matrices.py
++++ b/sympy/physics/hep/gamma_matrices.py
+@@ -613,6 +613,7 @@ def kahane_simplify(expression):
+     # completely ignores dummy indices and virtual indices.
+     pointer = first_dum_pos
+     previous_pointer = 0
++    component_free_indices = []
+     while True:
+         if pointer in links:
+             next_ones = links.pop(pointer)
+@@ -632,8 +633,13 @@ def kahane_simplify(expression):
+         if pointer == previous_pointer:
+             break
+         if pointer >=0 and free_pos[pointer] is not None:
+-            for ri in resulting_indices:
+-                ri.append(free_pos[pointer])
++            component_free_indices.append(free_pos[pointer])
++
++    # After traversing the component, append the collected free indices in order of appearance.
++    component_free_indices.sort(key=lambda idx: free_pos[idx])
++    for ri in resulting_indices:
++        for idx in component_free_indices:
++            ri.append(idx)
+ 
+     # The following loop removes the remaining connected components in `links`.
+     # If there are free indices inside a connected component, it gives a

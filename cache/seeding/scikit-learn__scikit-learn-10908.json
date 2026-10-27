@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-10908",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/feature_extraction/text.py::CountVectorizer.get_feature_names",
+      "signature": "def get_feature_names(self):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_extraction/text.py\nSymbol: sklearn/feature_extraction/text.py::CountVectorizer.get_feature_names\nSignature: def get_feature_names(self):\nDocstring: \nBody Preview:         \"\"\"Array mapping from feature integer indices to feature name\"\"\"\n        self._check_vocabulary()\n        return [t for t, i in sorted(six.iteritems(self.vocabulary_),\n                                     key=itemgetter(1))]\ndef _make_int_array():\n    \"\"\"Construct an array.array of a type suitable for scipy.sparse indices.\"\"\"\n    return array.array(str(\"i\"))",
+      "score": 0.8711146116256714
+    },
+    {
+      "symbol_id": "sklearn/feature_extraction/text.py::HashingVectorizer.partial_fit",
+      "signature": "def partial_fit(self, X, y=None):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_extraction/text.py\nSymbol: sklearn/feature_extraction/text.py::HashingVectorizer.partial_fit\nSignature: def partial_fit(self, X, y=None):\nDocstring: \nBody Preview:         \"\"\"Does nothing: this transformer is stateless.\n        This method is just there to mark the fact that this transformer\n        can work in a streaming setup.\n        \"\"\"\n        return self\n    def fit(self, X, y=None):\n        \"\"\"Does nothing: this transformer is stateless.\"\"\"\n        # triggers a parameter validation",
+      "score": 0.8583089113235474
+    },
+    {
+      "symbol_id": "sklearn/feature_extraction/text.py::HashingVectorizer.fit",
+      "signature": "def fit(self, X, y=None):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_extraction/text.py\nSymbol: sklearn/feature_extraction/text.py::HashingVectorizer.fit\nSignature: def fit(self, X, y=None):\nDocstring: \nBody Preview:         \"\"\"Does nothing: this transformer is stateless.\"\"\"\n        # triggers a parameter validation\n        if isinstance(X, six.string_types):\n            raise ValueError(\n                \"Iterable over raw text documents expected, \"\n                \"string object received.\")\n        self._validate_params()\n        self._get_hasher().fit(X, y=y)\n        return self",
+      "score": 0.847902774810791
+    },
+    {
+      "symbol_id": "sklearn/exceptions.py::NotFittedError",
+      "signature": "class NotFittedError(ValueError, AttributeError):",
+      "summary": "",
+      "document_text": "File: sklearn/exceptions.py\nSymbol: sklearn/exceptions.py::NotFittedError\nSignature: class NotFittedError(ValueError, AttributeError):\nDocstring: \nBody Preview:     \"\"\"Exception class to raise if estimator is used before fitting.\n    This class inherits from both ValueError and AttributeError to help with\n    exception handling and backward compatibility.\n    Examples\n    --------\n    >>> from sklearn.svm import LinearSVC\n    >>> from sklearn.exceptions import NotFittedError\n    >>> try:\n    ...     LinearSVC().predict([[1, 2], [2, 3], [3, 4]])",
+      "score": 0.8428248763084412
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_transformers_unfitted",
+      "signature": "def check_transformers_unfitted(name, transformer):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_transformers_unfitted\nSignature: def check_transformers_unfitted(name, transformer):\nDocstring: \nBody Preview:     X, y = _boston_subset()\n    transformer = clone(transformer)\n    with assert_raises((AttributeError, ValueError), msg=\"The unfitted \"\n                       \"transformer {} does not raise an error when \"\n                       \"transform is called. Perhaps use \"\n                       \"check_is_fitted in transform.\".format(name)):\n        transformer.transform(X)\ndef _check_transformer(name, transformer_orig, X, y):",
+      "score": 0.8414468765258789
+    },
+    {
+      "symbol_id": "sklearn/feature_extraction/text.py::VectorizerMixin._validate_params",
+      "signature": "def _validate_params(self):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_extraction/text.py\nSymbol: sklearn/feature_extraction/text.py::VectorizerMixin._validate_params\nSignature: def _validate_params(self):\nDocstring: \nBody Preview:         \"\"\"Check validity of ngram_range parameter\"\"\"\n        min_n, max_m = self.ngram_range\n        if min_n > max_m:\n            raise ValueError(\n                \"Invalid value for ngram_range=%s \"\n                \"lower boundary larger than the upper boundary.\"\n                % str(self.ngram_range))\nclass HashingVectorizer(BaseEstimator, VectorizerMixin, TransformerMixin):\n    \"\"\"Convert a collection of text documents to a matrix of token occurrences",
+      "score": 0.8396651148796082
+    },
+    {
+      "symbol_id": "sklearn/feature_extraction/text.py::CountVectorizer.transform",
+      "signature": "def transform(self, raw_documents):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_extraction/text.py\nSymbol: sklearn/feature_extraction/text.py::CountVectorizer.transform\nSignature: def transform(self, raw_documents):\nDocstring: \nBody Preview:         \"\"\"Transform documents to document-term matrix.\n        Extract token counts out of raw text documents using the vocabulary\n        fitted with fit or the one provided to the constructor.\n        Parameters\n        ----------\n        raw_documents : iterable\n            An iterable which yields either str, unicode or file objects.\n        Returns",
+      "score": 0.8365175724029541
+    },
+    {
+      "symbol_id": "sklearn/feature_extraction/text.py::CountVectorizer.__init__",
+      "signature": "def __init__(self, input='content', encoding='utf-8',",
+      "summary": "",
+      "document_text": "File: sklearn/feature_extraction/text.py\nSymbol: sklearn/feature_extraction/text.py::CountVectorizer.__init__\nSignature: def __init__(self, input='content', encoding='utf-8',\nDocstring: \nBody Preview:                  decode_error='strict', strip_accents=None,\n                 lowercase=True, preprocessor=None, tokenizer=None,\n                 stop_words=None, token_pattern=r\"(?u)\\b\\w\\w+\\b\",\n                 ngram_range=(1, 1), analyzer='word',\n                 max_df=1.0, min_df=1, max_features=None,\n                 vocabulary=None, binary=False, dtype=np.int64):\n        self.input = input\n        self.encoding = encoding\n        self.decode_error = decode_error\n        self.strip_accents = strip_accents",
+      "score": 0.8358550667762756
+    }
+  ]
+}

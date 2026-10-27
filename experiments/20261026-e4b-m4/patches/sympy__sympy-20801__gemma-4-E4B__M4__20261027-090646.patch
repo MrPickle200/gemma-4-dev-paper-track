@@ -1,0 +1,18 @@
+diff --git a/sympy/logic/boolalg.py b/sympy/logic/boolalg.py
+index fbcba1f8d4..1811556d3b 100644
+--- a/sympy/logic/boolalg.py
++++ b/sympy/logic/boolalg.py
+@@ -396,6 +396,13 @@ def __bool__(self):
+     def __hash__(self):
+         return hash(False)
+ 
++    def __eq__(self, other):
++        if isinstance(other, BooleanFalse):
++            return True
++        if isinstance(other, (int, float)):
++            return other == 0
++        return NotImplemented
++
+     @property
+     def negated(self):
+         return S.true

@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14983",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::RepeatedKFold.__init__",
+      "signature": "def __init__(self, n_splits=5, n_repeats=10, random_state=None):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::RepeatedKFold.__init__\nSignature: def __init__(self, n_splits=5, n_repeats=10, random_state=None):\nDocstring: \nBody Preview:         super().__init__(\n            KFold, n_repeats, random_state, n_splits=n_splits)\nclass RepeatedStratifiedKFold(_RepeatedSplits):\n    \"\"\"Repeated Stratified K-Fold cross validator.\n    Repeats Stratified K-Fold n times with different randomization in each\n    repetition.\n    Read more in the :ref:`User Guide <cross_validation>`.",
+      "score": 0.9046220779418945
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::RepeatedStratifiedKFold.__init__",
+      "signature": "def __init__(self, n_splits=5, n_repeats=10, random_state=None):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::RepeatedStratifiedKFold.__init__\nSignature: def __init__(self, n_splits=5, n_repeats=10, random_state=None):\nDocstring: \nBody Preview:         super().__init__(\n            StratifiedKFold, n_repeats, random_state, n_splits=n_splits)\nclass BaseShuffleSplit(metaclass=ABCMeta):\n    \"\"\"Base class for ShuffleSplit and StratifiedShuffleSplit\"\"\"\n    def __init__(self, n_splits=10, test_size=None, train_size=None,\n                 random_state=None):\n        self.n_splits = n_splits\n        self.test_size = test_size",
+      "score": 0.8878759145736694
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::StratifiedKFold.__init__",
+      "signature": "def __init__(self, n_splits=5, shuffle=False, random_state=None):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::StratifiedKFold.__init__\nSignature: def __init__(self, n_splits=5, shuffle=False, random_state=None):\nDocstring: \nBody Preview:         super().__init__(n_splits, shuffle, random_state)\n    def _make_test_folds(self, X, y=None):\n        rng = check_random_state(self.random_state)\n        y = np.asarray(y)\n        type_of_target_y = type_of_target(y)\n        allowed_target_types = ('binary', 'multiclass')\n        if type_of_target_y not in allowed_target_types:\n            raise ValueError(\n                'Supported target types are: {}. Got {!r} instead.'.format(\n                    allowed_target_types, type_of_target_y))",
+      "score": 0.8696565628051758
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::RepeatedStratifiedKFold",
+      "signature": "class RepeatedStratifiedKFold(_RepeatedSplits):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::RepeatedStratifiedKFold\nSignature: class RepeatedStratifiedKFold(_RepeatedSplits):\nDocstring: \nBody Preview:     \"\"\"Repeated Stratified K-Fold cross validator.\n    Repeats Stratified K-Fold n times with different randomization in each\n    repetition.\n    Read more in the :ref:`User Guide <cross_validation>`.\n    Parameters\n    ----------\n    n_splits : int, default=5\n        Number of folds. Must be at least 2.",
+      "score": 0.8536388874053955
+    },
+    {
+      "symbol_id": "sklearn/externals/_arff.py::BadObject.__init__",
+      "signature": "def __init__(self, msg='Invalid object.'):",
+      "summary": "",
+      "document_text": "File: sklearn/externals/_arff.py\nSymbol: sklearn/externals/_arff.py::BadObject.__init__\nSignature: def __init__(self, msg='Invalid object.'):\nDocstring: \nBody Preview:         self.msg = msg\n    def __str__(self):\n        return '%s' % self.msg\n# =============================================================================\n# INTERNAL ====================================================================\ndef _unescape_sub_callback(match):\n    return _UNESCAPE_SUB_MAP[match.group()]",
+      "score": 0.8440445065498352
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::RepeatedKFold",
+      "signature": "class RepeatedKFold(_RepeatedSplits):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::RepeatedKFold\nSignature: class RepeatedKFold(_RepeatedSplits):\nDocstring: \nBody Preview:     \"\"\"Repeated K-Fold cross validator.\n    Repeats K-Fold n times with different randomization in each repetition.\n    Read more in the :ref:`User Guide <cross_validation>`.\n    Parameters\n    ----------\n    n_splits : int, default=5\n        Number of folds. Must be at least 2.",
+      "score": 0.8418225049972534
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::_RepeatedSplits.__init__",
+      "signature": "def __init__(self, cv, n_repeats=10, random_state=None, **cvargs):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::_RepeatedSplits.__init__\nSignature: def __init__(self, cv, n_repeats=10, random_state=None, **cvargs):\nDocstring: \nBody Preview:         if not isinstance(n_repeats, numbers.Integral):\n            raise ValueError(\"Number of repetitions must be of Integral type.\")\n        if n_repeats <= 0:\n            raise ValueError(\"Number of repetitions must be greater than 0.\")\n        if any(key in cvargs for key in ('random_state', 'shuffle')):\n            raise ValueError(\n                \"cvargs must not contain random_state or shuffle.\")\n        self.cv = cv",
+      "score": 0.8397529125213623
+    },
+    {
+      "symbol_id": "sklearn/tree/_reingold_tilford.py::DrawTree.__str__",
+      "signature": "def __str__(self):",
+      "summary": "",
+      "document_text": "File: sklearn/tree/_reingold_tilford.py\nSymbol: sklearn/tree/_reingold_tilford.py::DrawTree.__str__\nSignature: def __str__(self):\nDocstring: \nBody Preview:         return \"%s: x=%s mod=%s\" % (self.tree, self.x, self.mod)\n    def __repr__(self):\n        return self.__str__()\n    def max_extents(self):\n        extents = [c.max_extents() for c in self. children]\n        extents.append((self.x, self.y))\n        return np.max(extents, axis=0)",
+      "score": 0.8396387100219727
+    }
+  ]
+}

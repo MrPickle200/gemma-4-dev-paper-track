@@ -1,0 +1,13 @@
+diff --git a/sklearn/feature_extraction/text.py b/sklearn/feature_extraction/text.py
+index 9b1ebd6320..a585f67790 100644
+--- a/sklearn/feature_extraction/text.py
++++ b/sklearn/feature_extraction/text.py
+@@ -993,6 +993,8 @@ class CountVectorizer(BaseEstimator, VectorizerMixin):
+ 
+     def get_feature_names(self):
+         """Array mapping from feature integer indices to feature name"""
++        if self.vocabulary_ is None:
++            return []
+         self._check_vocabulary()
+ 
+         return [t for t, i in sorted(six.iteritems(self.vocabulary_),

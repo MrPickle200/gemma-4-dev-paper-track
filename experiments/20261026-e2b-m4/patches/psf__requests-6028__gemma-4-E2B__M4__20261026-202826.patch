@@ -1,0 +1,29 @@
+diff --git a/requests/utils.py b/requests/utils.py
+index 1c2ae4e0..5e5ebea5 100644
+--- a/requests/utils.py
++++ b/requests/utils.py
+@@ -819,17 +819,13 @@ def select_proxy(url, proxies):
+     if urlparts.hostname is None:
+         return proxies.get(urlparts.scheme, proxies.get('all'))
+ 
+-    proxy_keys = [
+-        urlparts.scheme + '://' + urlparts.hostname,
+-        urlparts.scheme,
+-        'all://' + urlparts.hostname,
+-        'all',
+-    ]
+-    proxy = None
+-    for proxy_key in proxy_keys:
+-        if proxy_key in proxies:
+-            proxy = proxies[proxy_key]
+-            break
++    proxy = proxies.get(urlparts.scheme)
++    if proxy is None:
++        proxy = proxies.get('all')
++    if proxy is None:
++        proxy = proxies.get('all://' + urlparts.hostname)
++    if proxy is None:
++        proxy = proxies.get(urlparts.scheme + '://' + urlparts.hostname)
+ 
+     return proxy
+ 

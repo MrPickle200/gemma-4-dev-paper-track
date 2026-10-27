@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-16450",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/julia.py::JuliaCodePrinter._print_Infinity",
+      "signature": "def _print_Infinity(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/julia.py\nSymbol: sympy/printing/julia.py::JuliaCodePrinter._print_Infinity\nSignature: def _print_Infinity(self, expr):\nDocstring: \nBody Preview:         return 'Inf'\n    def _print_NegativeInfinity(self, expr):\n        return '-Inf'\n    def _print_NaN(self, expr):\n        return 'NaN'",
+      "score": 0.8849626183509827
+    },
+    {
+      "symbol_id": "sympy/stats/rv.py::RandomSymbol._eval_is_positive",
+      "signature": "def _eval_is_positive(self):",
+      "summary": "",
+      "document_text": "File: sympy/stats/rv.py\nSymbol: sympy/stats/rv.py::RandomSymbol._eval_is_positive\nSignature: def _eval_is_positive(self):\nDocstring: \nBody Preview:         return self.symbol.is_positive\n    def _eval_is_integer(self):\n        return self.symbol.is_integer\n    def _eval_is_real(self):\n        return self.symbol.is_real or self.pspace.is_real\n    @property\n    def is_commutative(self):\n        return self.symbol.is_commutative",
+      "score": 0.8840978145599365
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Float._eval_is_finite",
+      "signature": "def _eval_is_finite(self):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Float._eval_is_finite\nSignature: def _eval_is_finite(self):\nDocstring: \nBody Preview:         if self._mpf_ in (_mpf_inf, _mpf_ninf):\n            return False\n        return True\n    def _eval_is_infinite(self):\n        if self._mpf_ in (_mpf_inf, _mpf_ninf):\n            return True\n        return False\n    def _eval_is_integer(self):\n        return self._mpf_ == _mpf_zero",
+      "score": 0.8779516220092773
+    },
+    {
+      "symbol_id": "sympy/assumptions/ask.py::get_known_facts",
+      "signature": "def get_known_facts():",
+      "summary": "",
+      "document_text": "File: sympy/assumptions/ask.py\nSymbol: sympy/assumptions/ask.py::get_known_facts\nSignature: def get_known_facts():\nDocstring: \nBody Preview:     return And(\n        Implies(Q.infinite, ~Q.finite),\n        Implies(Q.real, Q.complex),\n        Implies(Q.real, Q.hermitian),\n        Equivalent(Q.extended_real, Q.real | Q.infinite),\n        Equivalent(Q.even | Q.odd, Q.integer),\n        Implies(Q.even, ~Q.odd),\n        Equivalent(Q.prime, Q.integer & Q.positive & ~Q.composite),\n        Implies(Q.integer, Q.rational),\n        Implies(Q.rational, Q.algebraic),",
+      "score": 0.8778170347213745
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Number._eval_is_finite",
+      "signature": "def _eval_is_finite(self):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Number._eval_is_finite\nSignature: def _eval_is_finite(self):\nDocstring: \nBody Preview:         return True\n    @classmethod\n    def class_key(cls):\n        return 1, 0, 'Number'\n    @cacheit\n    def sort_key(self, order=None):\n        return self.class_key(), (0, ()), (), self\n    @_sympifyit('other', NotImplemented)",
+      "score": 0.8773593902587891
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/trigonometric.py::cot._eval_is_finite",
+      "signature": "def _eval_is_finite(self):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/trigonometric.py\nSymbol: sympy/functions/elementary/trigonometric.py::cot._eval_is_finite\nSignature: def _eval_is_finite(self):\nDocstring: \nBody Preview:         arg = self.args[0]\n        if arg.is_imaginary:\n            return True\n    def _eval_subs(self, old, new):\n        if self == old:\n            return new\n        arg = self.args[0]\n        argnew = arg.subs(old, new)\n        if arg != argnew and (argnew/S.Pi).is_integer:\n            return S.ComplexInfinity",
+      "score": 0.8765511512756348
+    },
+    {
+      "symbol_id": "sympy/printing/mathematica.py::MCodePrinter._print_Infinity",
+      "signature": "def _print_Infinity(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathematica.py\nSymbol: sympy/printing/mathematica.py::MCodePrinter._print_Infinity\nSignature: def _print_Infinity(self, expr):\nDocstring: \nBody Preview:         return 'Infinity'\n    def _print_NegativeInfinity(self, expr):\n        return '-Infinity'\n    def _print_ComplexInfinity(self, expr):\n        return 'ComplexInfinity'\n    def _print_NaN(self, expr):\n        return 'Indeterminate'",
+      "score": 0.8750327825546265
+    },
+    {
+      "symbol_id": "sympy/stats/rv.py::RandomSymbol._eval_is_integer",
+      "signature": "def _eval_is_integer(self):",
+      "summary": "",
+      "document_text": "File: sympy/stats/rv.py\nSymbol: sympy/stats/rv.py::RandomSymbol._eval_is_integer\nSignature: def _eval_is_integer(self):\nDocstring: \nBody Preview:         return self.symbol.is_integer\n    def _eval_is_real(self):\n        return self.symbol.is_real or self.pspace.is_real\n    @property\n    def is_commutative(self):\n        return self.symbol.is_commutative\n    def _hashable_content(self):\n        return self.pspace, self.symbol",
+      "score": 0.8736338019371033
+    }
+  ]
+}

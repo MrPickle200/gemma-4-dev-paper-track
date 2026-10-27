@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-20428",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/polys/polyerrors.py::PolynomialDivisionFailed",
+      "signature": "class PolynomialDivisionFailed(BasePolynomialError):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyerrors.py\nSymbol: sympy/polys/polyerrors.py::PolynomialDivisionFailed\nSignature: class PolynomialDivisionFailed(BasePolynomialError):\nDocstring: \nBody Preview:     def __init__(self, f, g, domain):\n        self.f = f\n        self.g = g\n        self.domain = domain\n    def __str__(self):\n        if self.domain.is_EX:\n            msg = \"You may want to use a different simplification algorithm. Note \" \\\n                  \"that in general it's not possible to guarantee to detect zero \"  \\\n                  \"in this domain.\"",
+      "score": 0.9064658880233765
+    },
+    {
+      "symbol_id": "sympy/polys/polyclasses.py::DMP.zero",
+      "signature": "def zero(cls, lev, dom, ring=None):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyclasses.py\nSymbol: sympy/polys/polyclasses.py::DMP.zero\nSignature: def zero(cls, lev, dom, ring=None):\nDocstring: \nBody Preview:         return DMP(0, dom, lev, ring)\n    @classmethod\n    def one(cls, lev, dom, ring=None):\n        return DMP(1, dom, lev, ring)\n    @classmethod\n    def from_list(cls, rep, lev, dom):\n        \"\"\"Create an instance of ``cls`` given a list of native coefficients. \"\"\"\n        return cls(dmp_convert(rep, lev, None, dom), dom, lev)",
+      "score": 0.9056686162948608
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_Zero",
+      "signature": "def _print_Zero(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_Zero\nSignature: def _print_Zero(self, expr):\nDocstring: \nBody Preview:         if self._settings.get(\"sympy_integers\", False):\n            return \"S(0)\"\n        return \"0\"\n    def _print_DMP(self, p):\n        from sympy.core.sympify import SympifyError\n        try:\n            if p.ring is not None:\n                # TODO incorporate order\n                return self._print(p.ring.to_sympy(p))\n        except SympifyError:",
+      "score": 0.8973174095153809
+    },
+    {
+      "symbol_id": "sympy/polys/rings.py::PolyRing.__getstate__",
+      "signature": "def __getstate__(self):",
+      "summary": "",
+      "document_text": "File: sympy/polys/rings.py\nSymbol: sympy/polys/rings.py::PolyRing.__getstate__\nSignature: def __getstate__(self):\nDocstring: \nBody Preview:         state = self.__dict__.copy()\n        del state[\"leading_expv\"]\n        for key, value in state.items():\n            if key.startswith(\"monomial_\"):\n                del state[key]\n        return state\n    def __hash__(self):\n        return self._hash",
+      "score": 0.8914075493812561
+    },
+    {
+      "symbol_id": "sympy/polys/modulargcd.py::_minpoly_from_dense",
+      "signature": "def _minpoly_from_dense(minpoly, ring):",
+      "summary": "",
+      "document_text": "File: sympy/polys/modulargcd.py\nSymbol: sympy/polys/modulargcd.py::_minpoly_from_dense\nSignature: def _minpoly_from_dense(minpoly, ring):\nDocstring: \nBody Preview:     r\"\"\"\n    Change representation of the minimal polynomial from ``DMP`` to\n    ``PolyElement`` for a given ring.\n    \"\"\"\n    minpoly_ = ring.zero\n    for monom, coeff in minpoly.terms():\n        minpoly_[monom] = ring.domain(coeff)\n    return minpoly_",
+      "score": 0.8904718160629272
+    },
+    {
+      "symbol_id": "sympy/polys/polyerrors.py::OperationNotSupported",
+      "signature": "class OperationNotSupported(BasePolynomialError):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyerrors.py\nSymbol: sympy/polys/polyerrors.py::OperationNotSupported\nSignature: class OperationNotSupported(BasePolynomialError):\nDocstring: \nBody Preview:     def __init__(self, poly, func):\n        self.poly = poly\n        self.func = func\n    def __str__(self):  # pragma: no cover\n        return \"`%s` operation not supported by %s representation\" % (self.func, self.poly.rep.__class__.__name__)\n@public\nclass HeuristicGCDFailed(BasePolynomialError):\n    pass",
+      "score": 0.8889956474304199
+    },
+    {
+      "symbol_id": "sympy/polys/polyroots.py::preprocess_roots",
+      "signature": "def preprocess_roots(poly):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyroots.py\nSymbol: sympy/polys/polyroots.py::preprocess_roots\nSignature: def preprocess_roots(poly):\nDocstring: \nBody Preview:     \"\"\"Try to get rid of symbolic coefficients from ``poly``. \"\"\"\n    coeff = S.One\n    poly_func = poly.func\n    try:\n        _, poly = poly.clear_denoms(convert=True)\n    except DomainError:\n        return coeff, poly\n    poly = poly.primitive()[1]\n    poly = poly.retract()",
+      "score": 0.8839197158813477
+    },
+    {
+      "symbol_id": "sympy/polys/polyerrors.py::ExactQuotientFailed",
+      "signature": "class ExactQuotientFailed(BasePolynomialError):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polyerrors.py\nSymbol: sympy/polys/polyerrors.py::ExactQuotientFailed\nSignature: class ExactQuotientFailed(BasePolynomialError):\nDocstring: \nBody Preview:     def __init__(self, f, g, dom=None):\n        self.f, self.g, self.dom = f, g, dom\n    def __str__(self):  # pragma: no cover\n        from sympy.printing.str import sstr\n        if self.dom is None:\n            return \"%s does not divide %s\" % (sstr(self.g), sstr(self.f))\n        else:\n            return \"%s does not divide %s in %s\" % (sstr(self.g), sstr(self.f), sstr(self.dom))",
+      "score": 0.8835417032241821
+    }
+  ]
+}

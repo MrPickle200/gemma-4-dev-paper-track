@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-22456",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/codeprinter.py::CodePrinter._print_String",
+      "signature": "def _print_String(self, string):",
+      "summary": "",
+      "document_text": "File: sympy/printing/codeprinter.py\nSymbol: sympy/printing/codeprinter.py::CodePrinter._print_String\nSignature: def _print_String(self, string):\nDocstring: \nBody Preview:         return str(string)\n    def _print_QuotedString(self, arg):\n        return '\"%s\"' % arg.text\n    def _print_Comment(self, string):\n        return self._get_comment(str(string))\n    def _print_Assignment(self, expr):\n        from sympy.codegen.ast import Assignment\n        from sympy.functions.elementary.piecewise import Piecewise",
+      "score": 0.8680107593536377
+    },
+    {
+      "symbol_id": "sympy/codegen/ast.py::String._construct_text",
+      "signature": "def _construct_text(cls, text):",
+      "summary": "",
+      "document_text": "File: sympy/codegen/ast.py\nSymbol: sympy/codegen/ast.py::String._construct_text\nSignature: def _construct_text(cls, text):\nDocstring: \nBody Preview:         if not isinstance(text, str):\n            raise TypeError(\"Argument text is not a string type.\")\n        return text\n    def _sympystr(self, printer, *args, **kwargs):\n        return self.text\nclass QuotedString(String):\n    \"\"\" Represents a string which should be printed with quotes. \"\"\"",
+      "score": 0.8636698722839355
+    },
+    {
+      "symbol_id": "sympy/codegen/ast.py::QuotedString",
+      "signature": "class QuotedString(String):",
+      "summary": "",
+      "document_text": "File: sympy/codegen/ast.py\nSymbol: sympy/codegen/ast.py::QuotedString\nSignature: class QuotedString(String):\nDocstring: \nBody Preview:     \"\"\" Represents a string which should be printed with quotes. \"\"\"\nclass Comment(String):\n    \"\"\" Represents a comment. \"\"\"\nclass Node(Token):\n    \"\"\" Subclass of Token, carrying the attribute 'attrs' (Tuple)\n    Examples\n    ========",
+      "score": 0.8583922982215881
+    },
+    {
+      "symbol_id": "sympy/printing/theanocode.py::TheanoPrinter._print_Symbol",
+      "signature": "def _print_Symbol(self, s, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/printing/theanocode.py\nSymbol: sympy/printing/theanocode.py::TheanoPrinter._print_Symbol\nSignature: def _print_Symbol(self, s, **kwargs):\nDocstring: \nBody Preview:         dtype = kwargs.get('dtypes', {}).get(s)\n        bc = kwargs.get('broadcastables', {}).get(s)\n        return self._get_or_create(s, dtype=dtype, broadcastable=bc)\n    def _print_AppliedUndef(self, s, **kwargs):\n        name = str(type(s)) + '_' + str(s.args[0])\n        dtype = kwargs.get('dtypes', {}).get(s)\n        bc = kwargs.get('broadcastables', {}).get(s)\n        return self._get_or_create(s, name=name, dtype=dtype, broadcastable=bc)\n    def _print_Basic(self, expr, **kwargs):",
+      "score": 0.8559311628341675
+    },
+    {
+      "symbol_id": "sympy/utilities/codegen.py::InOutArgument",
+      "signature": "class InOutArgument(Argument, ResultBase):",
+      "summary": "",
+      "document_text": "File: sympy/utilities/codegen.py\nSymbol: sympy/utilities/codegen.py::InOutArgument\nSignature: class InOutArgument(Argument, ResultBase):\nDocstring: \nBody Preview:     \"\"\"InOutArgument are never initialized in the routine.\"\"\"\n    def __init__(self, name, result_var, expr, datatype=None, dimensions=None, precision=None):\n        if not datatype:\n            datatype = get_default_datatype(expr)\n        Argument.__init__(self, name, datatype, dimensions, precision)\n        ResultBase.__init__(self, expr, result_var)\n    __init__.__doc__ = OutputArgument.__init__.__doc__\n    def __str__(self):",
+      "score": 0.8549966812133789
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter.stringify",
+      "signature": "def stringify(self, args, sep, level=0):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter.stringify\nSignature: def stringify(self, args, sep, level=0):\nDocstring: \nBody Preview:         return sep.join([self.parenthesize(item, level) for item in args])\n    def emptyPrinter(self, expr):\n        if isinstance(expr, str):\n            return expr\n        elif isinstance(expr, Basic):\n            return repr(expr)\n        else:\n            return str(expr)\n    def _print_Add(self, expr, order=None):",
+      "score": 0.8532370328903198
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter.parenthesize",
+      "signature": "def parenthesize(self, item, level, strict=False):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter.parenthesize\nSignature: def parenthesize(self, item, level, strict=False):\nDocstring: \nBody Preview:         if (precedence(item) < level) or ((not strict) and precedence(item) <= level):\n            return \"(%s)\" % self._print(item)\n        else:\n            return self._print(item)\n    def stringify(self, args, sep, level=0):\n        return sep.join([self.parenthesize(item, level) for item in args])\n    def emptyPrinter(self, expr):\n        if isinstance(expr, str):\n            return expr",
+      "score": 0.8516288995742798
+    },
+    {
+      "symbol_id": "sympy/printing/theanocode.py::TheanoPrinter._print_AppliedUndef",
+      "signature": "def _print_AppliedUndef(self, s, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/printing/theanocode.py\nSymbol: sympy/printing/theanocode.py::TheanoPrinter._print_AppliedUndef\nSignature: def _print_AppliedUndef(self, s, **kwargs):\nDocstring: \nBody Preview:         name = str(type(s)) + '_' + str(s.args[0])\n        dtype = kwargs.get('dtypes', {}).get(s)\n        bc = kwargs.get('broadcastables', {}).get(s)\n        return self._get_or_create(s, name=name, dtype=dtype, broadcastable=bc)\n    def _print_Basic(self, expr, **kwargs):\n        op = mapping[type(expr)]\n        children = [self._print(arg, **kwargs) for arg in expr.args]\n        return op(*children)\n    def _print_Number(self, n, **kwargs):",
+      "score": 0.8497937917709351
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+diff --git a/sympy/core/function.py b/sympy/core/function.py
+index 1b8005e1d2..bba2c461a9 100644
+--- a/sympy/core/function.py
++++ b/sympy/core/function.py
+@@ -509,7 +509,7 @@ def _eval_evalf(self, prec):
+             try:
+                 return Float(self._imp_(*self.args), prec)
+             except (AttributeError, TypeError, ValueError):
+-                return
++                return self._eval_evalf(prec)
+ 
+         # Convert all args to mpf or mpc
+         # Convert the arguments to *higher* precision than requested for the

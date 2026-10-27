@@ -1,0 +1,24 @@
+diff --git a/sympy/polys/polytools.py b/sympy/polys/polytools.py
+index c9e77a901f..28bd7cad28 100644
+--- a/sympy/polys/polytools.py
++++ b/sympy/polys/polytools.py
+@@ -3234,7 +3234,18 @@ def sqf_list(f, all=False):
+         else:  # pragma: no cover
+             raise OperationNotSupported(f, 'sqf_list')
+ 
+-        return f.rep.dom.to_sympy(coeff), [(f.per(g), k) for g, k in factors]
++        factor_map = {}
++        for g, k in factors:
++            if k not in factor_map:
++                factor_map[k] = []
++            factor_map[k].append(g)
++        
++        result_factors = []
++        for k in sorted(factor_map.keys()):
++            for g in factor_map[k]:
++                result_factors.append((g, k))
++        
++        return f.rep.dom.to_sympy(coeff), result_factors
+ 
+     def sqf_list_include(f, all=False):
+         """

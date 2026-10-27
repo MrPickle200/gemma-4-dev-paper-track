@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-13615",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/sets/sets.py::UniversalSet._complement",
+      "signature": "def _complement(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::UniversalSet._complement\nSignature: def _complement(self, other):\nDocstring: \nBody Preview:         return S.EmptySet\n    def _symmetric_difference(self, other):\n        return other\n    @property\n    def _measure(self):\n        return S.Infinity\n    def _contains(self, other):\n        return true",
+      "score": 0.9137122631072998
+    },
+    {
+      "symbol_id": "sympy/sets/sets.py::Complement",
+      "signature": "class Complement(Set, EvalfMixin):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::Complement\nSignature: class Complement(Set, EvalfMixin):\nDocstring: \nBody Preview:     r\"\"\"Represents the set difference or relative complement of a set with\n    another set.\n    `A - B = \\{x \\in A| x \\\\notin B\\}`\n    Examples\n    ========\n    >>> from sympy import Complement, FiniteSet\n    >>> Complement(FiniteSet(0, 1, 2), FiniteSet(1))",
+      "score": 0.9132223129272461
+    },
+    {
+      "symbol_id": "sympy/sets/sets.py::Interval._complement",
+      "signature": "def _complement(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::Interval._complement\nSignature: def _complement(self, other):\nDocstring: \nBody Preview:         if other == S.Reals:\n            a = Interval(S.NegativeInfinity, self.start,\n                         True, not self.left_open)\n            b = Interval(self.end, S.Infinity, not self.right_open, True)\n            return Union(a, b)\n        if isinstance(other, FiniteSet):\n            nums = [m for m in other.args if m.is_number]\n            if nums == []:\n                return None",
+      "score": 0.9103655815124512
+    },
+    {
+      "symbol_id": "sympy/sets/sets.py::FiniteSet._complement",
+      "signature": "def _complement(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::FiniteSet._complement\nSignature: def _complement(self, other):\nDocstring: \nBody Preview:         if isinstance(other, Interval):\n            nums = sorted(m for m in self.args if m.is_number)\n            if other == S.Reals and nums != []:\n                syms = [m for m in self.args if m.is_Symbol]\n                # Reals cannot contain elements other than numbers and symbols.\n                intervals = []  # Build up a list of intervals between the elements\n                intervals += [Interval(S.NegativeInfinity, nums[0], True, True)]\n                for a, b in zip(nums[:-1], nums[1:]):\n                    intervals.append(Interval(a, b, True, True))  # both open\n                intervals.append(Interval(nums[-1], S.Infinity, True, True))",
+      "score": 0.8982142806053162
+    },
+    {
+      "symbol_id": "sympy/sets/sets.py::Union._complement",
+      "signature": "def _complement(self, universe):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::Union._complement\nSignature: def _complement(self, universe):\nDocstring: \nBody Preview:         # DeMorgan's Law\n        return Intersection(s.complement(universe) for s in self.args)\n    @property\n    def _inf(self):\n        # We use Min so that sup is meaningful in combination with symbolic\n        # interval end points.\n        from sympy.functions.elementary.miscellaneous import Min\n        return Min(*[set.inf for set in self.args])\n    @property",
+      "score": 0.8956984281539917
+    },
+    {
+      "symbol_id": "sympy/sets/sets.py::Interval._boundary",
+      "signature": "def _boundary(self):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::Interval._boundary\nSignature: def _boundary(self):\nDocstring: \nBody Preview:         finite_points = [p for p in (self.start, self.end)\n                         if abs(p) != S.Infinity]\n        return FiniteSet(*finite_points)\n    def _contains(self, other):\n        if not isinstance(other, Expr) or (\n                other is S.Infinity or\n                other is S.NegativeInfinity or\n                other is S.NaN or\n                other is S.ComplexInfinity) or other.is_real is False:\n            return false",
+      "score": 0.8900079727172852
+    },
+    {
+      "symbol_id": "sympy/sets/sets.py::Complement.__new__",
+      "signature": "def __new__(cls, a, b, evaluate=True):",
+      "summary": "",
+      "document_text": "File: sympy/sets/sets.py\nSymbol: sympy/sets/sets.py::Complement.__new__\nSignature: def __new__(cls, a, b, evaluate=True):\nDocstring: \nBody Preview:         if evaluate:\n            return Complement.reduce(a, b)\n        return Basic.__new__(cls, a, b)\n    @staticmethod\n    def reduce(A, B):\n        \"\"\"\n        Simplify a :class:`Complement`.\n        \"\"\"",
+      "score": 0.8840046525001526
+    },
+    {
+      "symbol_id": "sympy/plotting/intervalmath/interval_arithmetic.py::interval.__neg__",
+      "signature": "def __neg__(self):",
+      "summary": "",
+      "document_text": "File: sympy/plotting/intervalmath/interval_arithmetic.py\nSymbol: sympy/plotting/intervalmath/interval_arithmetic.py::interval.__neg__\nSignature: def __neg__(self):\nDocstring: \nBody Preview:         if self.is_valid:\n            return interval(-self.end, -self.start)\n        else:\n            return interval(-self.end, -self.start, is_valid=self.is_valid)\n    def __mul__(self, other):\n        if isinstance(other, interval):\n            if self.is_valid is False or other.is_valid is False:\n                return interval(-float('inf'), float('inf'), is_valid=False)\n            elif self.is_valid is None or other.is_valid is None:\n                return interval(-float('inf'), float('inf'), is_valid=None)",
+      "score": 0.8785368204116821
+    }
+  ]
+}

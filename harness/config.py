@@ -20,7 +20,7 @@ REPOS = ROOT / "repos"
 # Set through `set_experiment()` (scripts expose it as --experiment) so one batch = one directory.
 EXPERIMENT: str | None = None
 
-VARIANTS = ("B0", "M1", "M2", "M3")
+VARIANTS = ("B0", "M1", "M2", "M3", "M4")
 
 
 def set_experiment(tag: str | None) -> Path:

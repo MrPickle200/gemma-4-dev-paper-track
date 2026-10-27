@@ -1,0 +1,29 @@
+diff --git a/sklearn/grid_search.py b/sklearn/grid_search.py
+index 6ba673d2fb..8e5e3907c2 100644
+--- a/sklearn/grid_search.py
++++ b/sklearn/grid_search.py
+@@ -397,6 +397,7 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         self.verbose = verbose
+         self.pre_dispatch = pre_dispatch
+         self.error_score = error_score
++        self.refit_time_ = None
+ 
+     @property
+     def _estimator_type(self):
+@@ -612,6 +613,7 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+         self.best_score_ = best.mean_validation_score
+ 
+         if self.refit:
++            start_time = time.time()
+             # fit the best estimator using the entire dataset
+             # clone first to work around broken estimators
+             best_estimator = clone(base_estimator).set_params(
+@@ -621,6 +623,8 @@ class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,
+             else:
+                 best_estimator.fit(X, **self.fit_params)
+             self.best_estimator_ = best_estimator
++            end_time = time.time()
++            self.refit_time_ = end_time - start_time
+         return self
+ 
+ 

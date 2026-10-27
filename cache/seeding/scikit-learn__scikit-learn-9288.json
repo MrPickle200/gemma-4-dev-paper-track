@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-9288",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/cluster/bicluster.py::BaseSpectral._k_means",
+      "signature": "def _k_means(self, data, n_clusters):",
+      "summary": "",
+      "document_text": "File: sklearn/cluster/bicluster.py\nSymbol: sklearn/cluster/bicluster.py::BaseSpectral._k_means\nSignature: def _k_means(self, data, n_clusters):\nDocstring: \nBody Preview:         if self.mini_batch:\n            model = MiniBatchKMeans(n_clusters,\n                                    init=self.init,\n                                    n_init=self.n_init,\n                                    random_state=self.random_state)\n        else:\n            model = KMeans(n_clusters, init=self.init,\n                           n_init=self.n_init, n_jobs=self.n_jobs,\n                           random_state=self.random_state)\n        model.fit(data)",
+      "score": 0.8728867769241333
+    },
+    {
+      "symbol_id": "sklearn/cluster/k_means_.py::KMeans.__init__",
+      "signature": "def __init__(self, n_clusters=8, init='k-means++', n_init=10,",
+      "summary": "",
+      "document_text": "File: sklearn/cluster/k_means_.py\nSymbol: sklearn/cluster/k_means_.py::KMeans.__init__\nSignature: def __init__(self, n_clusters=8, init='k-means++', n_init=10,\nDocstring: \nBody Preview:                  max_iter=300, tol=1e-4, precompute_distances='auto',\n                 verbose=0, random_state=None, copy_x=True,\n                 n_jobs=None, algorithm='auto'):\n        self.n_clusters = n_clusters\n        self.init = init\n        self.max_iter = max_iter\n        self.tol = tol\n        self.precompute_distances = precompute_distances\n        self.n_init = n_init\n        self.verbose = verbose",
+      "score": 0.8695006370544434
+    },
+    {
+      "symbol_id": "benchmarks/bench_plot_parallel_pairwise.py::rbf_kernels",
+      "signature": "def rbf_kernels(X, n_jobs):",
+      "summary": "",
+      "document_text": "File: benchmarks/bench_plot_parallel_pairwise.py\nSymbol: benchmarks/bench_plot_parallel_pairwise.py::rbf_kernels\nSignature: def rbf_kernels(X, n_jobs):\nDocstring: \nBody Preview:     return pairwise_kernels(X, metric=\"rbf\", n_jobs=n_jobs, gamma=0.1)\nplot(euclidean_distances)\nplot(rbf_kernels)\nplt.show()",
+      "score": 0.8527736663818359
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_clusterer_compute_labels_predict",
+      "signature": "def check_clusterer_compute_labels_predict(name, clusterer_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_clusterer_compute_labels_predict\nSignature: def check_clusterer_compute_labels_predict(name, clusterer_orig):\nDocstring: \nBody Preview:     \"\"\"Check that predict is invariant of compute_labels\"\"\"\n    X, y = make_blobs(n_samples=20, random_state=0)\n    clusterer = clone(clusterer_orig)\n    set_random_state(clusterer)\n    if hasattr(clusterer, \"compute_labels\"):\n        # MiniBatchKMeans\n        X_pred1 = clusterer.fit(X).predict(X)\n        clusterer.set_params(compute_labels=False)\n        X_pred2 = clusterer.fit(X).predict(X)\n        assert_array_equal(X_pred1, X_pred2)",
+      "score": 0.8510849475860596
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_clustering",
+      "signature": "def check_clustering(name, clusterer_orig, readonly_memmap=False):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_clustering\nSignature: def check_clustering(name, clusterer_orig, readonly_memmap=False):\nDocstring: \nBody Preview:     clusterer = clone(clusterer_orig)\n    X, y = make_blobs(n_samples=50, random_state=1)\n    X, y = shuffle(X, y, random_state=7)\n    X = StandardScaler().fit_transform(X)\n    rng = np.random.RandomState(7)\n    X_noise = np.concatenate([X, rng.uniform(low=-3, high=3, size=(5, 2))])\n    if readonly_memmap:\n        X, y, X_noise = create_memmap_backed_data([X, y, X_noise])\n    n_samples, n_features = X.shape",
+      "score": 0.850355863571167
+    },
+    {
+      "symbol_id": "examples/cluster/plot_kmeans_digits.py::bench_k_means",
+      "signature": "def bench_k_means(estimator, name, data):",
+      "summary": "",
+      "document_text": "File: examples/cluster/plot_kmeans_digits.py\nSymbol: examples/cluster/plot_kmeans_digits.py::bench_k_means\nSignature: def bench_k_means(estimator, name, data):\nDocstring: \nBody Preview:     t0 = time()\n    estimator.fit(data)\n    print('%-9s\\t%.2fs\\t%i\\t%.3f\\t%.3f\\t%.3f\\t%.3f\\t%.3f\\t%.3f'\n          % (name, (time() - t0), estimator.inertia_,\n             metrics.homogeneity_score(labels, estimator.labels_),\n             metrics.completeness_score(labels, estimator.labels_),\n             metrics.v_measure_score(labels, estimator.labels_),\n             metrics.adjusted_rand_score(labels, estimator.labels_),\n             metrics.adjusted_mutual_info_score(labels,  estimator.labels_),\n             metrics.silhouette_score(data, estimator.labels_,",
+      "score": 0.8488375544548035
+    },
+    {
+      "symbol_id": "sklearn/cluster/bicluster.py::SpectralCoclustering.__init__",
+      "signature": "def __init__(self, n_clusters=3, svd_method='randomized',",
+      "summary": "",
+      "document_text": "File: sklearn/cluster/bicluster.py\nSymbol: sklearn/cluster/bicluster.py::SpectralCoclustering.__init__\nSignature: def __init__(self, n_clusters=3, svd_method='randomized',\nDocstring: \nBody Preview:                  n_svd_vecs=None, mini_batch=False, init='k-means++',\n                 n_init=10, n_jobs=None, random_state=None):\n        super().__init__(n_clusters,\n                         svd_method,\n                         n_svd_vecs,\n                         mini_batch,\n                         init,\n                         n_init,\n                         n_jobs,\n                         random_state)",
+      "score": 0.8444982767105103
+    },
+    {
+      "symbol_id": "benchmarks/bench_plot_parallel_pairwise.py::euclidean_distances",
+      "signature": "def euclidean_distances(X, n_jobs):",
+      "summary": "",
+      "document_text": "File: benchmarks/bench_plot_parallel_pairwise.py\nSymbol: benchmarks/bench_plot_parallel_pairwise.py::euclidean_distances\nSignature: def euclidean_distances(X, n_jobs):\nDocstring: \nBody Preview:     return pairwise_distances(X, metric=\"euclidean\", n_jobs=n_jobs)\ndef rbf_kernels(X, n_jobs):\n    return pairwise_kernels(X, metric=\"rbf\", n_jobs=n_jobs, gamma=0.1)\nplot(euclidean_distances)\nplot(rbf_kernels)\nplt.show()",
+      "score": 0.8440554141998291
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/mathml.py b/sympy/printing/mathml.py
+index 3f8b8d49e0..3ffa78090b 100644
+--- a/sympy/printing/mathml.py
++++ b/sympy/printing/mathml.py
+@@ -414,7 +414,7 @@ def _print_Pow(self, e):
+ 
+     def _print_Number(self, e):
+         x = self.dom.createElement(self.mathml_tag(e))
+-        x.appendChild(self.dom.createTextNode(str(e)))
++        x.appendChild(self.dom.createTextNode(str(e.as_text())))
+         return x
+ 
+     def _print_Derivative(self, e):

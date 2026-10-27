@@ -1,0 +1,12 @@
+diff --git a/src/_pytest/debugging.py b/src/_pytest/debugging.py
+index 17915db73..3a7d06bb3 100644
+--- a/src/_pytest/debugging.py
++++ b/src/_pytest/debugging.py
+@@ -346,5 +346,6 @@ def post_mortem(t):
+     p = pytestPDB._init_pdb("post_mortem")
+     p.reset()
+     p.interaction(None, t)
+-    if p.quitting:
++    if t.skipped:
++        return
+         outcomes.exit("Quitting debugger")

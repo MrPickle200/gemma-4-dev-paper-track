@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-15599",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/polys/domains/modularinteger.py::ModularInteger.__nonzero__",
+      "signature": "def __nonzero__(self):",
+      "summary": "",
+      "document_text": "File: sympy/polys/domains/modularinteger.py\nSymbol: sympy/polys/domains/modularinteger.py::ModularInteger.__nonzero__\nSignature: def __nonzero__(self):\nDocstring: \nBody Preview:         return bool(self.val)\n    __bool__ = __nonzero__\n    @classmethod\n    def _invert(cls, value):\n        return cls.dom.invert(value, cls.mod)\n    def invert(self):\n        return self.__class__(self._invert(self.val))",
+      "score": 0.8839176893234253
+    },
+    {
+      "symbol_id": "sympy/core/exprtools.py::Factors.__mod__",
+      "signature": "def __mod__(self, other):  # Factors",
+      "summary": "",
+      "document_text": "File: sympy/core/exprtools.py\nSymbol: sympy/core/exprtools.py::Factors.__mod__\nSignature: def __mod__(self, other):  # Factors\nDocstring: \nBody Preview:         return self.rem(other)\n    def __pow__(self, other):  # Factors\n        return self.pow(other)\n    def __eq__(self, other):  # Factors\n        if not isinstance(other, Factors):\n            other = Factors(other)\n        return self.factors == other.factors\n    def __ne__(self, other):  # Factors",
+      "score": 0.8769515752792358
+    },
+    {
+      "symbol_id": "sympy/printing/pycode.py::AbstractPythonCodePrinter._print_Mod",
+      "signature": "def _print_Mod(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/pycode.py\nSymbol: sympy/printing/pycode.py::AbstractPythonCodePrinter._print_Mod\nSignature: def _print_Mod(self, expr):\nDocstring: \nBody Preview:         PREC = precedence(expr)\n        return ('{0} % {1}'.format(*map(lambda x: self.parenthesize(x, PREC), expr.args)))\n    def _print_Piecewise(self, expr):\n        result = []\n        i = 0\n        for arg in expr.args:\n            e = arg.expr\n            c = arg.cond\n            if i == 0:\n                result.append('(')",
+      "score": 0.8730796575546265
+    },
+    {
+      "symbol_id": "sympy/ntheory/residue_ntheory.py::_nthroot_mod2",
+      "signature": "def _nthroot_mod2(s, q, p):",
+      "summary": "",
+      "document_text": "File: sympy/ntheory/residue_ntheory.py\nSymbol: sympy/ntheory/residue_ntheory.py::_nthroot_mod2\nSignature: def _nthroot_mod2(s, q, p):\nDocstring: \nBody Preview:     f = factorint(q)\n    v = []\n    for b, e in f.items():\n        v.extend([b]*e)\n    for qx in v:\n        s = _nthroot_mod1(s, qx, p, False)\n    return s\ndef _nthroot_mod1(s, q, p, all_roots):\n    \"\"\"",
+      "score": 0.8701738119125366
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Float.__mod__",
+      "signature": "def __mod__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Float.__mod__\nSignature: def __mod__(self, other):\nDocstring: \nBody Preview:         if isinstance(other, Rational) and other.q != 1 and global_evaluate[0]:\n            # calculate mod with Rationals, *then* round the result\n            return Float(Rational.__mod__(Rational(self), other),\n                         precision=self._prec)\n        if isinstance(other, Float) and global_evaluate[0]:\n            r = self/other\n            if r == int(r):\n                return Float(0, precision=max(self._prec, other._prec))\n        if isinstance(other, Number) and global_evaluate[0]:\n            rhs, prec = other._as_mpf_op(self._prec)",
+      "score": 0.8699012994766235
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Rational.__mod__",
+      "signature": "def __mod__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Rational.__mod__\nSignature: def __mod__(self, other):\nDocstring: \nBody Preview:         if global_evaluate[0]:\n            if isinstance(other, Rational):\n                n = (self.p*other.q) // (other.p*self.q)\n                return Rational(self.p*other.q - n*other.p*self.q, self.q*other.q)\n            if isinstance(other, Float):\n                # calculate mod with Rationals, *then* round the answer\n                return Float(self.__mod__(Rational(other)),\n                             precision=other._prec)\n            return Number.__mod__(self, other)\n        return Number.__mod__(self, other)",
+      "score": 0.8698482513427734
+    },
+    {
+      "symbol_id": "sympy/core/expr.py::Expr.__mod__",
+      "signature": "def __mod__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/core/expr.py\nSymbol: sympy/core/expr.py::Expr.__mod__\nSignature: def __mod__(self, other):\nDocstring: \nBody Preview:         return Mod(self, other)\n    @_sympifyit('other', NotImplemented)\n    @call_highest_priority('__mod__')\n    def __rmod__(self, other):\n        return Mod(other, self)\n    @_sympifyit('other', NotImplemented)\n    @call_highest_priority('__rfloordiv__')\n    def __floordiv__(self, other):\n        from sympy.functions.elementary.integers import floor",
+      "score": 0.8695927858352661
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Rational.__rmod__",
+      "signature": "def __rmod__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Rational.__rmod__\nSignature: def __rmod__(self, other):\nDocstring: \nBody Preview:         if isinstance(other, Rational):\n            return Rational.__mod__(other, self)\n        return Number.__rmod__(self, other)\n    def _eval_power(self, expt):\n        if isinstance(expt, Number):\n            if isinstance(expt, Float):\n                return self._eval_evalf(expt._prec)**expt\n            if expt.is_negative:\n                # (3/4)**-2 -> (4/3)**2\n                ne = -expt",
+      "score": 0.8680530786514282
+    }
+  ]
+}

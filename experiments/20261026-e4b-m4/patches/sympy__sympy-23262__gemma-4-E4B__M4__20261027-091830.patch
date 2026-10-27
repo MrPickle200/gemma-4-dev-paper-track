@@ -1,0 +1,18 @@
+diff --git a/sympy/printing/str.py b/sympy/printing/str.py
+index e4ac7cba8a..7fd04cd6ab 100644
+--- a/sympy/printing/str.py
++++ b/sympy/printing/str.py
+@@ -866,10 +866,11 @@ def _print_str(self, expr):
+         return str(expr)
+ 
+     def _print_tuple(self, expr):
++        elements = self.stringify(expr, ", ")
+         if len(expr) == 1:
+-            return "(%s,)" % self._print(expr[0])
++            return f"({elements},)"
+         else:
+-            return "(%s)" % self.stringify(expr, ", ")
++            return f"({elements})"
+ 
+     def _print_Tuple(self, expr):
+         return self._print_tuple(expr)

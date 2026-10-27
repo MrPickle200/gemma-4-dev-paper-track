@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-11310",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/grid_search.py::BaseSearchCV",
+      "signature": "class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,",
+      "summary": "",
+      "document_text": "File: sklearn/grid_search.py\nSymbol: sklearn/grid_search.py::BaseSearchCV\nSignature: class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,\nDocstring: \nBody Preview:                                       MetaEstimatorMixin)):\n    \"\"\"Base class for hyper parameter search with cross-validation.\"\"\"\n    @abstractmethod\n    def __init__(self, estimator, scoring=None,\n                 fit_params=None, n_jobs=1, iid=True,\n                 refit=True, cv=None, verbose=0, pre_dispatch='2*n_jobs',\n                 error_score='raise'):\n        self.scoring = scoring\n        self.estimator = estimator",
+      "score": 0.8881219625473022
+    },
+    {
+      "symbol_id": "benchmarks/bench_plot_incremental_pca.py::benchmark",
+      "signature": "def benchmark(estimator, data):",
+      "summary": "",
+      "document_text": "File: benchmarks/bench_plot_incremental_pca.py\nSymbol: benchmarks/bench_plot_incremental_pca.py::benchmark\nSignature: def benchmark(estimator, data):\nDocstring: \nBody Preview:     gc.collect()\n    print(\"Benching %s\" % estimator)\n    t0 = time()\n    estimator.fit(data)\n    training_time = time() - t0\n    data_t = estimator.transform(data)\n    data_r = estimator.inverse_transform(data_t)\n    reconstruction_error = np.mean(np.abs(data - data_r))\n    return {'time': training_time, 'error': reconstruction_error}",
+      "score": 0.8842958807945251
+    },
+    {
+      "symbol_id": "benchmarks/bench_random_projections.py::bench_scikit_transformer",
+      "signature": "def bench_scikit_transformer(X, transfomer):",
+      "summary": "",
+      "document_text": "File: benchmarks/bench_random_projections.py\nSymbol: benchmarks/bench_random_projections.py::bench_scikit_transformer\nSignature: def bench_scikit_transformer(X, transfomer):\nDocstring: \nBody Preview:     gc.collect()\n    clf = clone(transfomer)\n    # start time\n    t_start = datetime.now()\n    clf.fit(X)\n    delta = (datetime.now() - t_start)\n    # stop time\n    time_to_fit = compute_time(t_start, delta)",
+      "score": 0.8818273544311523
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_search.py::BaseSearchCV.__init__",
+      "signature": "def __init__(self, estimator, scoring=None,",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_search.py\nSymbol: sklearn/model_selection/_search.py::BaseSearchCV.__init__\nSignature: def __init__(self, estimator, scoring=None,\nDocstring: \nBody Preview:                  fit_params=None, n_jobs=1, iid='warn',\n                 refit=True, cv=None, verbose=0, pre_dispatch='2*n_jobs',\n                 error_score='raise-deprecating', return_train_score=True):\n        self.scoring = scoring\n        self.estimator = estimator\n        self.n_jobs = n_jobs\n        self.fit_params = fit_params\n        self.iid = iid\n        self.refit = refit\n        self.cv = cv",
+      "score": 0.8799322843551636
+    },
+    {
+      "symbol_id": "sklearn/grid_search.py::_CVScoreTuple.__repr__",
+      "signature": "def __repr__(self):",
+      "summary": "",
+      "document_text": "File: sklearn/grid_search.py\nSymbol: sklearn/grid_search.py::_CVScoreTuple.__repr__\nSignature: def __repr__(self):\nDocstring: \nBody Preview:         \"\"\"Simple custom repr to summarize the main info\"\"\"\n        return \"mean: {0:.5f}, std: {1:.5f}, params: {2}\".format(\n            self.mean_validation_score,\n            np.std(self.cv_validation_scores),\n            self.parameters)\nclass BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,\n                                      MetaEstimatorMixin)):\n    \"\"\"Base class for hyper parameter search with cross-validation.\"\"\"",
+      "score": 0.8746523857116699
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_search.py::BaseSearchCV",
+      "signature": "class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_search.py\nSymbol: sklearn/model_selection/_search.py::BaseSearchCV\nSignature: class BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,\nDocstring: \nBody Preview:                                       MetaEstimatorMixin)):\n    \"\"\"Base class for hyper parameter search with cross-validation.\"\"\"\n    @abstractmethod\n    def __init__(self, estimator, scoring=None,\n                 fit_params=None, n_jobs=1, iid='warn',\n                 refit=True, cv=None, verbose=0, pre_dispatch='2*n_jobs',\n                 error_score='raise-deprecating', return_train_score=True):\n        self.scoring = scoring\n        self.estimator = estimator",
+      "score": 0.8735811710357666
+    },
+    {
+      "symbol_id": "benchmarks/bench_tree.py::bench_scikit_tree_regressor",
+      "signature": "def bench_scikit_tree_regressor(X, Y):",
+      "summary": "",
+      "document_text": "File: benchmarks/bench_tree.py\nSymbol: benchmarks/bench_tree.py::bench_scikit_tree_regressor\nSignature: def bench_scikit_tree_regressor(X, Y):\nDocstring: \nBody Preview:     \"\"\"Benchmark with scikit-learn decision tree regressor\"\"\"\n    from sklearn.tree import DecisionTreeRegressor\n    gc.collect()\n    # start time\n    tstart = datetime.now()\n    clf = DecisionTreeRegressor()\n    clf.fit(X, Y).predict(X)\n    delta = (datetime.now() - tstart)",
+      "score": 0.8735509514808655
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_search.py::_CVScoreTuple.__repr__",
+      "signature": "def __repr__(self):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_search.py\nSymbol: sklearn/model_selection/_search.py::_CVScoreTuple.__repr__\nSignature: def __repr__(self):\nDocstring: \nBody Preview:         \"\"\"Simple custom repr to summarize the main info\"\"\"\n        return \"mean: {0:.5f}, std: {1:.5f}, params: {2}\".format(\n            self.mean_validation_score,\n            np.std(self.cv_validation_scores),\n            self.parameters)\nclass BaseSearchCV(six.with_metaclass(ABCMeta, BaseEstimator,\n                                      MetaEstimatorMixin)):\n    \"\"\"Base class for hyper parameter search with cross-validation.\"\"\"",
+      "score": 0.8731825351715088
+    }
+  ]
+}

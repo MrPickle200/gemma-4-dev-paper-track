@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-26194",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/metrics/_ranking.py::_binary_roc_auc_score",
+      "signature": "def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):",
+      "summary": "",
+      "document_text": "File: sklearn/metrics/_ranking.py\nSymbol: sklearn/metrics/_ranking.py::_binary_roc_auc_score\nSignature: def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):\nDocstring: \nBody Preview:     \"\"\"Binary roc auc score.\"\"\"\n    if len(np.unique(y_true)) != 2:\n        raise ValueError(\n            \"Only one class present in y_true. ROC AUC score \"\n            \"is not defined in that case.\"\n        )\n    fpr, tpr, _ = roc_curve(y_true, y_score, sample_weight=sample_weight)\n    if max_fpr is None or max_fpr == 1:\n        return auc(fpr, tpr)\n    if max_fpr <= 0 or max_fpr > 1:",
+      "score": 0.8907517194747925
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_fit_non_negative",
+      "signature": "def check_fit_non_negative(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_fit_non_negative\nSignature: def check_fit_non_negative(name, estimator_orig):\nDocstring: \nBody Preview:     # Check that proper warning is raised for non-negative X\n    # when tag requires_positive_X is present\n    X = np.array([[-1.0, 1], [-1.0, 1]])\n    y = np.array([1, 2])\n    estimator = clone(estimator_orig)\n    with raises(ValueError):\n        estimator.fit(X, y)\ndef check_fit_idempotent(name, estimator_orig):\n    # Check that est.fit(X) is the same as est.fit(X).fit(X). Ideally we would",
+      "score": 0.8618874549865723
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_fit_score_takes_y",
+      "signature": "def check_fit_score_takes_y(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_fit_score_takes_y\nSignature: def check_fit_score_takes_y(name, estimator_orig):\nDocstring: \nBody Preview:     # check that all estimators accept an optional y\n    # in fit and score so they can be used in pipelines\n    rnd = np.random.RandomState(0)\n    n_samples = 30\n    X = rnd.uniform(size=(n_samples, 3))\n    X = _enforce_estimator_tags_X(estimator_orig, X)\n    y = np.arange(n_samples) % 3\n    estimator = clone(estimator_orig)\n    y = _enforce_estimator_tags_y(estimator, y)\n    set_random_state(estimator)",
+      "score": 0.8605079650878906
+    },
+    {
+      "symbol_id": "sklearn/metrics/_scorer.py::negative_likelihood_ratio",
+      "signature": "def negative_likelihood_ratio(y_true, y_pred):",
+      "summary": "",
+      "document_text": "File: sklearn/metrics/_scorer.py\nSymbol: sklearn/metrics/_scorer.py::negative_likelihood_ratio\nSignature: def negative_likelihood_ratio(y_true, y_pred):\nDocstring: \nBody Preview:     return class_likelihood_ratios(y_true, y_pred)[1]\npositive_likelihood_ratio_scorer = make_scorer(positive_likelihood_ratio)\nneg_negative_likelihood_ratio_scorer = make_scorer(\n    negative_likelihood_ratio, greater_is_better=False\n)\n# Score functions that need decision values\ntop_k_accuracy_scorer = make_scorer(\n    top_k_accuracy_score, greater_is_better=True, needs_threshold=True",
+      "score": 0.8560160994529724
+    },
+    {
+      "symbol_id": "examples/calibration/plot_calibration_curve.py::NaivelyCalibratedLinearSVC.predict_proba",
+      "signature": "def predict_proba(self, X):",
+      "summary": "",
+      "document_text": "File: examples/calibration/plot_calibration_curve.py\nSymbol: examples/calibration/plot_calibration_curve.py::NaivelyCalibratedLinearSVC.predict_proba\nSignature: def predict_proba(self, X):\nDocstring: \nBody Preview:         \"\"\"Min-max scale output of `decision_function` to [0, 1].\"\"\"\n        df = self.decision_function(X)\n        calibrated_df = (df - self.df_min_) / (self.df_max_ - self.df_min_)\n        proba_pos_class = np.clip(calibrated_df, 0, 1)\n        proba_neg_class = 1 - proba_pos_class\n        proba = np.c_[proba_neg_class, proba_pos_class]\n        return proba\n# %%",
+      "score": 0.8552645444869995
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::_enforce_estimator_tags_y",
+      "signature": "def _enforce_estimator_tags_y(estimator, y):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::_enforce_estimator_tags_y\nSignature: def _enforce_estimator_tags_y(estimator, y):\nDocstring: \nBody Preview:     # Estimators with a `requires_positive_y` tag only accept strictly positive\n    # data\n    if _safe_tags(estimator, key=\"requires_positive_y\"):\n        # Create strictly positive y. The minimal increment above 0 is 1, as\n        # y could be of integer dtype.\n        y += 1 + abs(y.min())\n    # Estimators with a `binary_only` tag only accept up to two unique y values\n    if _safe_tags(estimator, key=\"binary_only\") and y.size > 0:\n        y = np.where(y == y.flat[0], y, y.flat[0] + 1)\n    # Estimators in mono_output_task_error raise ValueError if y is of 1-D",
+      "score": 0.8532419204711914
+    },
+    {
+      "symbol_id": "sklearn/cross_decomposition/_pls.py::_PLS._more_tags",
+      "signature": "def _more_tags(self):",
+      "summary": "",
+      "document_text": "File: sklearn/cross_decomposition/_pls.py\nSymbol: sklearn/cross_decomposition/_pls.py::_PLS._more_tags\nSignature: def _more_tags(self):\nDocstring: \nBody Preview:         return {\"poor_score\": True, \"requires_y\": False}\nclass PLSRegression(_PLS):\n    \"\"\"PLS regression.\n    PLSRegression is also known as PLS2 or PLS1, depending on the number of\n    targets.\n    Read more in the :ref:`User Guide <cross_decomposition>`.",
+      "score": 0.8525013327598572
+    },
+    {
+      "symbol_id": "sklearn/feature_selection/_variance_threshold.py::VarianceThreshold._get_support_mask",
+      "signature": "def _get_support_mask(self):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_selection/_variance_threshold.py\nSymbol: sklearn/feature_selection/_variance_threshold.py::VarianceThreshold._get_support_mask\nSignature: def _get_support_mask(self):\nDocstring: \nBody Preview:         check_is_fitted(self)\n        return self.variances_ > self.threshold\n    def _more_tags(self):\n        return {\"allow_nan\": True}",
+      "score": 0.8519923090934753
+    }
+  ]
+}

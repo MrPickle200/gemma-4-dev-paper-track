@@ -1,0 +1,2 @@
+model,variant,thinking,line_numbers,runs,runs_with_edit,runs_real_edit,noop_edits,malformed_edit_rate,mean_total_tokens,mean_peak_context,mean_turns,finished,ctx_over,syntax_rejected,compactions,repeated_identical_calls
+gemma-4-E4B,M4,on,False,50,49,49,1,0.28,39473,6277,7.1,46,0,4,39,31

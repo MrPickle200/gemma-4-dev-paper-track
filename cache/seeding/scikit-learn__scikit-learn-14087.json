@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14087",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/linear_model/logistic.py::LogisticRegressionCV",
+      "signature": "class LogisticRegressionCV(LogisticRegression, BaseEstimator,",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/logistic.py\nSymbol: sklearn/linear_model/logistic.py::LogisticRegressionCV\nSignature: class LogisticRegressionCV(LogisticRegression, BaseEstimator,\nDocstring: \nBody Preview:                            LinearClassifierMixin):\n    \"\"\"Logistic Regression CV (aka logit, MaxEnt) classifier.\n    See glossary entry for :term:`cross-validation estimator`.\n    This class implements logistic regression using liblinear, newton-cg, sag\n    of lbfgs optimizer. The newton-cg, sag and lbfgs solvers support only L2\n    regularization with primal formulation. The liblinear solver supports both\n    L1 and L2 regularization, with a dual formulation only for the L2 penalty.\n    Elastic-Net penalty is only supported by the saga solver.",
+      "score": 0.8686668276786804
+    },
+    {
+      "symbol_id": "sklearn/linear_model/logistic.py::LogisticRegressionCV.__init__",
+      "signature": "def __init__(self, Cs=10, fit_intercept=True, cv=None, dual=False,",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/logistic.py\nSymbol: sklearn/linear_model/logistic.py::LogisticRegressionCV.__init__\nSignature: def __init__(self, Cs=10, fit_intercept=True, cv=None, dual=False,\nDocstring: \nBody Preview:                  penalty='l2', scoring=None, solver='lbfgs', tol=1e-4,\n                 max_iter=100, class_weight=None, n_jobs=None, verbose=0,\n                 refit=True, intercept_scaling=1., multi_class='auto',\n                 random_state=None, l1_ratios=None):\n        self.Cs = Cs\n        self.fit_intercept = fit_intercept\n        self.cv = cv\n        self.dual = dual\n        self.penalty = penalty\n        self.scoring = scoring",
+      "score": 0.8519516587257385
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_regressors_no_decision_function",
+      "signature": "def check_regressors_no_decision_function(name, regressor_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_regressors_no_decision_function\nSignature: def check_regressors_no_decision_function(name, regressor_orig):\nDocstring: \nBody Preview:     # checks whether regressors have decision_function or predict_proba\n    rng = np.random.RandomState(0)\n    X = rng.normal(size=(10, 4))\n    regressor = clone(regressor_orig)\n    y = multioutput_estimator_convert_y_2d(regressor, X[:, 0])\n    if hasattr(regressor, \"n_components\"):\n        # FIXME CCA, PLS is not robust to rank 1 effects\n        regressor.n_components = 1\n    regressor.fit(X, y)",
+      "score": 0.8502663969993591
+    },
+    {
+      "symbol_id": "sklearn/linear_model/coordinate_descent.py::LinearModelCV",
+      "signature": "class LinearModelCV(LinearModel, MultiOutputMixin, metaclass=ABCMeta):",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/coordinate_descent.py\nSymbol: sklearn/linear_model/coordinate_descent.py::LinearModelCV\nSignature: class LinearModelCV(LinearModel, MultiOutputMixin, metaclass=ABCMeta):\nDocstring: \nBody Preview:     \"\"\"Base class for iterative model fitting along a regularization path\"\"\"\n    @abstractmethod\n    def __init__(self, eps=1e-3, n_alphas=100, alphas=None, fit_intercept=True,\n                 normalize=False, precompute='auto', max_iter=1000, tol=1e-4,\n                 copy_X=True, cv=None, verbose=False, n_jobs=None,\n                 positive=False, random_state=None, selection='cyclic'):\n        self.eps = eps\n        self.n_alphas = n_alphas\n        self.alphas = alphas\n        self.fit_intercept = fit_intercept",
+      "score": 0.8469078540802002
+    },
+    {
+      "symbol_id": "sklearn/linear_model/least_angle.py::LassoLarsCV.__init__",
+      "signature": "def __init__(self, fit_intercept=True, verbose=False, max_iter=500,",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/least_angle.py\nSymbol: sklearn/linear_model/least_angle.py::LassoLarsCV.__init__\nSignature: def __init__(self, fit_intercept=True, verbose=False, max_iter=500,\nDocstring: \nBody Preview:                  normalize=True, precompute='auto', cv=None,\n                 max_n_alphas=1000, n_jobs=None, eps=np.finfo(np.float).eps,\n                 copy_X=True, positive=False):\n        self.fit_intercept = fit_intercept\n        self.verbose = verbose\n        self.max_iter = max_iter\n        self.normalize = normalize\n        self.precompute = precompute\n        self.cv = cv\n        self.max_n_alphas = max_n_alphas",
+      "score": 0.840593695640564
+    },
+    {
+      "symbol_id": "examples/preprocessing/plot_discretization_classification.py::get_name",
+      "signature": "def get_name(estimator):",
+      "summary": "",
+      "document_text": "File: examples/preprocessing/plot_discretization_classification.py\nSymbol: examples/preprocessing/plot_discretization_classification.py::get_name\nSignature: def get_name(estimator):\nDocstring: \nBody Preview:     name = estimator.__class__.__name__\n    if name == 'Pipeline':\n        name = [get_name(est[1]) for est in estimator.steps]\n        name = ' + '.join(name)\n    return name\n# list of (estimator, param_grid), where param_grid is used in GridSearchCV\nclassifiers = [\n    (LogisticRegression(random_state=0), {\n        'C': np.logspace(-2, 7, 10)",
+      "score": 0.838426947593689
+    },
+    {
+      "symbol_id": "sklearn/linear_model/least_angle.py::Lars.__init__",
+      "signature": "def __init__(self, fit_intercept=True, verbose=False, normalize=True,",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/least_angle.py\nSymbol: sklearn/linear_model/least_angle.py::Lars.__init__\nSignature: def __init__(self, fit_intercept=True, verbose=False, normalize=True,\nDocstring: \nBody Preview:                  precompute='auto', n_nonzero_coefs=500,\n                 eps=np.finfo(np.float).eps, copy_X=True, fit_path=True):\n        self.fit_intercept = fit_intercept\n        self.verbose = verbose\n        self.normalize = normalize\n        self.precompute = precompute\n        self.n_nonzero_coefs = n_nonzero_coefs\n        self.eps = eps\n        self.copy_X = copy_X\n        self.fit_path = fit_path",
+      "score": 0.8354527950286865
+    },
+    {
+      "symbol_id": "sklearn/linear_model/logistic.py::LogisticRegression.__init__",
+      "signature": "def __init__(self, penalty='l2', dual=False, tol=1e-4, C=1.0,",
+      "summary": "",
+      "document_text": "File: sklearn/linear_model/logistic.py\nSymbol: sklearn/linear_model/logistic.py::LogisticRegression.__init__\nSignature: def __init__(self, penalty='l2', dual=False, tol=1e-4, C=1.0,\nDocstring: \nBody Preview:                  fit_intercept=True, intercept_scaling=1, class_weight=None,\n                 random_state=None, solver='lbfgs', max_iter=100,\n                 multi_class='auto', verbose=0, warm_start=False, n_jobs=None,\n                 l1_ratio=None):\n        self.penalty = penalty\n        self.dual = dual\n        self.tol = tol\n        self.C = C\n        self.fit_intercept = fit_intercept\n        self.intercept_scaling = intercept_scaling",
+      "score": 0.8347464799880981
+    }
+  ]
+}

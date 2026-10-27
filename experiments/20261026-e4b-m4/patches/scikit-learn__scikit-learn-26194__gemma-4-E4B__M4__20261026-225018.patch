@@ -1,0 +1,14 @@
+diff --git a/sklearn/metrics/_ranking.py b/sklearn/metrics/_ranking.py
+index 0cdead9233..d9206bb326 100644
+--- a/sklearn/metrics/_ranking.py
++++ b/sklearn/metrics/_ranking.py
+@@ -357,7 +357,8 @@ def _binary_roc_auc_score(y_true, y_score, sample_weight=None, max_fpr=None):
+             "is not defined in that case."
+         )
+ 
+-    fpr, tpr, _ = roc_curve(y_true, y_score, sample_weight=sample_weight)
++    fpr, tpr, thresholds = roc_curve(y_true, y_score, sample_weight=sample_weight)
++    threshold_s = np.clip(threshold_s, 0, 1)
+     if max_fpr is None or max_fpr == 1:
+         return auc(fpr, tpr)
+     if max_fpr <= 0 or max_fpr > 1:

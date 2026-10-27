@@ -1,0 +1,15 @@
+diff --git a/sympy/matrices/matrices.py b/sympy/matrices/matrices.py
+index b6808b58d9..fcd777fe26 100644
+--- a/sympy/matrices/matrices.py
++++ b/sympy/matrices/matrices.py
+@@ -1673,7 +1673,9 @@ def multiply_elementwise(self, other):
+         if self.shape != other.shape:
+             raise ShapeError("Matrix shapes must agree {} != {}".format(self.shape, other.shape))
+ 
+-        return self._eval_matrix_mul_elementwise(other)
++    def sum_all(self):
++        """Return the sum of all elements in the matrix."""
++        return sum(sum(row) for row in self.tolist())
+ 
+ 
+ class MatrixBase(MatrixArithmetic, MatrixOperations, MatrixProperties, MatrixShaping):

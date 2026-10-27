@@ -1,0 +1,15 @@
+diff --git a/sympy/functions/elementary/hyperbolic.py b/sympy/functions/elementary/hyperbolic.py
+index 860989f7c1..55d4effdf3 100644
+--- a/sympy/functions/elementary/hyperbolic.py
++++ b/sympy/functions/elementary/hyperbolic.py
+@@ -122,8 +122,8 @@ def eval(cls, arg):
+             elif arg.is_negative:
+                 return -cls(-arg)
+         else:
+-            if arg is S.ComplexInfinity:
+-                return S.NaN
++            if arg.is_Piecewise:
++                return arg
+ 
+             i_coeff = arg.as_coefficient(S.ImaginaryUnit)
+ 

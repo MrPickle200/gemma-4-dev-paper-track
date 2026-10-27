@@ -1,0 +1,13 @@
+diff --git a/sympy/concrete/products.py b/sympy/concrete/products.py
+index 66aafde2d6..584fb0c8d5 100644
+--- a/sympy/concrete/products.py
++++ b/sympy/concrete/products.py
+@@ -253,7 +253,7 @@ def _eval_product(self, term, limits):
+ 
+         dif = n - a
+         if dif.is_Integer:
+-            return Mul(*[term.subs(k, a + i) for i in range(dif + 1)])
++            return Mul(*(term.subs(k, a + i) for i in range(dif + 1)))
+ 
+         elif term.is_polynomial(k):
+             poly = term.as_poly(k)

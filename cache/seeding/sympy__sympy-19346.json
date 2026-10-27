@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-19346",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/pretty/pretty.py::PrettyPrinter._print_tuple",
+      "signature": "def _print_tuple(self, t):",
+      "summary": "",
+      "document_text": "File: sympy/printing/pretty/pretty.py\nSymbol: sympy/printing/pretty/pretty.py::PrettyPrinter._print_tuple\nSignature: def _print_tuple(self, t):\nDocstring: \nBody Preview:         if len(t) == 1:\n            ptuple = prettyForm(*stringPict.next(self._print(t[0]), ','))\n            return prettyForm(*ptuple.parens('(', ')', ifascii_nougly=True))\n        else:\n            return self._print_seq(t, '(', ')')\n    def _print_Tuple(self, expr):\n        return self._print_tuple(expr)\n    def _print_dict(self, d):\n        keys = sorted(d.keys(), key=default_sort_key)",
+      "score": 0.9302295446395874
+    },
+    {
+      "symbol_id": "sympy/printing/pretty/pretty.py::PrettyPrinter._print_Tuple",
+      "signature": "def _print_Tuple(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/pretty/pretty.py\nSymbol: sympy/printing/pretty/pretty.py::PrettyPrinter._print_Tuple\nSignature: def _print_Tuple(self, expr):\nDocstring: \nBody Preview:         return self._print_tuple(expr)\n    def _print_dict(self, d):\n        keys = sorted(d.keys(), key=default_sort_key)\n        items = []\n        for k in keys:\n            K = self._print(k)\n            V = self._print(d[k])\n            s = prettyForm(*stringPict.next(K, ': ', V))",
+      "score": 0.9288536310195923
+    },
+    {
+      "symbol_id": "sympy/printing/repr.py::srepr",
+      "signature": "def srepr(expr, **settings):",
+      "summary": "",
+      "document_text": "File: sympy/printing/repr.py\nSymbol: sympy/printing/repr.py::srepr\nSignature: def srepr(expr, **settings):\nDocstring: \nBody Preview:     \"\"\"return expr in repr form\"\"\"\n    return ReprPrinter(settings).doprint(expr)",
+      "score": 0.9171132445335388
+    },
+    {
+      "symbol_id": "sympy/printing/repr.py::ReprPrinter._print_tuple",
+      "signature": "def _print_tuple(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/repr.py\nSymbol: sympy/printing/repr.py::ReprPrinter._print_tuple\nSignature: def _print_tuple(self, expr):\nDocstring: \nBody Preview:         if len(expr) == 1:\n            return \"(%s,)\" % self._print(expr[0])\n        else:\n            return \"(%s)\" % self.reprify(expr, \", \")\n    def _print_WildFunction(self, expr):\n        return \"%s('%s')\" % (expr.__class__.__name__, expr.name)\n    def _print_AlgebraicNumber(self, expr):\n        return \"%s(%s, %s)\" % (expr.__class__.__name__,\n            self._print(expr.root), self._print(expr.coeffs()))",
+      "score": 0.9167599678039551
+    },
+    {
+      "symbol_id": "sympy/printing/pretty/pretty.py::PrettyPrinter._print_list",
+      "signature": "def _print_list(self, l):",
+      "summary": "",
+      "document_text": "File: sympy/printing/pretty/pretty.py\nSymbol: sympy/printing/pretty/pretty.py::PrettyPrinter._print_list\nSignature: def _print_list(self, l):\nDocstring: \nBody Preview:         return self._print_seq(l, '[', ']')\n    def _print_tuple(self, t):\n        if len(t) == 1:\n            ptuple = prettyForm(*stringPict.next(self._print(t[0]), ','))\n            return prettyForm(*ptuple.parens('(', ')', ifascii_nougly=True))\n        else:\n            return self._print_seq(t, '(', ')')\n    def _print_Tuple(self, expr):\n        return self._print_tuple(expr)",
+      "score": 0.9155887961387634
+    },
+    {
+      "symbol_id": "sympy/printing/repr.py::ReprPrinter._print_Symbol",
+      "signature": "def _print_Symbol(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/repr.py\nSymbol: sympy/printing/repr.py::ReprPrinter._print_Symbol\nSignature: def _print_Symbol(self, expr):\nDocstring: \nBody Preview:         d = expr._assumptions.generator\n        # print the dummy_index like it was an assumption\n        if expr.is_Dummy:\n            d['dummy_index'] = expr.dummy_index\n        if d == {}:\n            return \"%s(%s)\" % (expr.__class__.__name__, self._print(expr.name))\n        else:\n            attr = ['%s=%s' % (k, v) for k, v in d.items()]\n            return \"%s(%s, %s)\" % (expr.__class__.__name__,\n                                   self._print(expr.name), ', '.join(attr))",
+      "score": 0.9146528244018555
+    },
+    {
+      "symbol_id": "sympy/printing/str.py::StrPrinter._print_Tuple",
+      "signature": "def _print_Tuple(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/str.py\nSymbol: sympy/printing/str.py::StrPrinter._print_Tuple\nSignature: def _print_Tuple(self, expr):\nDocstring: \nBody Preview:         return self._print_tuple(expr)\n    def _print_Transpose(self, T):\n        return \"%s.T\" % self.parenthesize(T.arg, PRECEDENCE[\"Pow\"])\n    def _print_Uniform(self, expr):\n        return \"Uniform(%s, %s)\" % (self._print(expr.a), self._print(expr.b))\n    def _print_Quantity(self, expr):\n        if self._settings.get(\"abbrev\", False):\n            return \"%s\" % expr.abbrev",
+      "score": 0.9097616076469421
+    },
+    {
+      "symbol_id": "sympy/printing/maple.py::MapleCodePrinter._print_Tuple",
+      "signature": "def _print_Tuple(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/maple.py\nSymbol: sympy/printing/maple.py::MapleCodePrinter._print_Tuple\nSignature: def _print_Tuple(self, expr):\nDocstring: \nBody Preview:         return self._print(list(expr))\n    def _print_Assignment(self, expr):\n        lhs = self._print(expr.lhs)\n        rhs = self._print(expr.rhs)\n        return \"{lhs} := {rhs}\".format(lhs=lhs, rhs=rhs)\n    def _print_Pow(self, expr, **kwargs):\n        PREC = precedence(expr)\n        if expr.exp == -1:\n            return '1/%s' % (self.parenthesize(expr.base, PREC))",
+      "score": 0.9056156277656555
+    }
+  ]
+}

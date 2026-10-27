@@ -1,0 +1,61 @@
+{
+  "instance_id": "psf__requests-6028",
+  "top_symbols": [
+    {
+      "symbol_id": "requests/exceptions.py::ProxyError",
+      "signature": "class ProxyError(ConnectionError):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::ProxyError\nSignature: class ProxyError(ConnectionError):\nDocstring: \nBody Preview:     \"\"\"A proxy error occurred.\"\"\"\nclass SSLError(ConnectionError):\n    \"\"\"An SSL error occurred.\"\"\"\nclass Timeout(RequestException):\n    \"\"\"The request timed out.\n    Catching this error will catch both",
+      "score": 0.8629173040390015
+    },
+    {
+      "symbol_id": "requests/exceptions.py::HTTPError",
+      "signature": "class HTTPError(RequestException):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::HTTPError\nSignature: class HTTPError(RequestException):\nDocstring: \nBody Preview:     \"\"\"An HTTP error occurred.\"\"\"\nclass ConnectionError(RequestException):\n    \"\"\"A Connection error occurred.\"\"\"\nclass ProxyError(ConnectionError):\n    \"\"\"A proxy error occurred.\"\"\"",
+      "score": 0.8518232107162476
+    },
+    {
+      "symbol_id": "requests/exceptions.py::InvalidProxyURL",
+      "signature": "class InvalidProxyURL(InvalidURL):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::InvalidProxyURL\nSignature: class InvalidProxyURL(InvalidURL):\nDocstring: \nBody Preview:     \"\"\"The proxy URL provided is invalid.\"\"\"\nclass ChunkedEncodingError(RequestException):\n    \"\"\"The server declared chunked encoding but sent an invalid chunk.\"\"\"\nclass ContentDecodingError(RequestException, BaseHTTPError):\n    \"\"\"Failed to decode response content.\"\"\"",
+      "score": 0.8441935777664185
+    },
+    {
+      "symbol_id": "requests/exceptions.py::RequestsDependencyWarning",
+      "signature": "class RequestsDependencyWarning(RequestsWarning):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::RequestsDependencyWarning\nSignature: class RequestsDependencyWarning(RequestsWarning):\nDocstring: \nBody Preview:     \"\"\"An imported dependency doesn't match the expected version range.\"\"\"",
+      "score": 0.8441415429115295
+    },
+    {
+      "symbol_id": "requests/exceptions.py::ConnectionError",
+      "signature": "class ConnectionError(RequestException):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::ConnectionError\nSignature: class ConnectionError(RequestException):\nDocstring: \nBody Preview:     \"\"\"A Connection error occurred.\"\"\"\nclass ProxyError(ConnectionError):\n    \"\"\"A proxy error occurred.\"\"\"\nclass SSLError(ConnectionError):\n    \"\"\"An SSL error occurred.\"\"\"",
+      "score": 0.8418087959289551
+    },
+    {
+      "symbol_id": "requests/auth.py::HTTPBasicAuth.__call__",
+      "signature": "def __call__(self, r):",
+      "summary": "",
+      "document_text": "File: requests/auth.py\nSymbol: requests/auth.py::HTTPBasicAuth.__call__\nSignature: def __call__(self, r):\nDocstring: \nBody Preview:         r.headers['Authorization'] = _basic_auth_str(self.username, self.password)\n        return r\nclass HTTPProxyAuth(HTTPBasicAuth):\n    \"\"\"Attaches HTTP Proxy Authentication to a given Request object.\"\"\"\n    def __call__(self, r):\n        r.headers['Proxy-Authorization'] = _basic_auth_str(self.username, self.password)\n        return r",
+      "score": 0.8360687494277954
+    },
+    {
+      "symbol_id": "requests/exceptions.py::FileModeWarning",
+      "signature": "class FileModeWarning(RequestsWarning, DeprecationWarning):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::FileModeWarning\nSignature: class FileModeWarning(RequestsWarning, DeprecationWarning):\nDocstring: \nBody Preview:     \"\"\"A file was opened in text mode, but Requests determined its binary length.\"\"\"\nclass RequestsDependencyWarning(RequestsWarning):\n    \"\"\"An imported dependency doesn't match the expected version range.\"\"\"",
+      "score": 0.8327292203903198
+    },
+    {
+      "symbol_id": "requests/exceptions.py::InvalidHeader",
+      "signature": "class InvalidHeader(RequestException, ValueError):",
+      "summary": "",
+      "document_text": "File: requests/exceptions.py\nSymbol: requests/exceptions.py::InvalidHeader\nSignature: class InvalidHeader(RequestException, ValueError):\nDocstring: \nBody Preview:     \"\"\"The header value provided was somehow invalid.\"\"\"\nclass InvalidProxyURL(InvalidURL):\n    \"\"\"The proxy URL provided is invalid.\"\"\"\nclass ChunkedEncodingError(RequestException):\n    \"\"\"The server declared chunked encoding but sent an invalid chunk.\"\"\"",
+      "score": 0.8266576528549194
+    }
+  ]
+}

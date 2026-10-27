@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-13852",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/functions/special/zeta_functions.py::polylog._eval_expand_func",
+      "signature": "def _eval_expand_func(self, **hints):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/zeta_functions.py\nSymbol: sympy/functions/special/zeta_functions.py::polylog._eval_expand_func\nSignature: def _eval_expand_func(self, **hints):\nDocstring: \nBody Preview:         from sympy import log, expand_mul, Dummy, exp_polar, I\n        s, z = self.args\n        if s == 1:\n            return -log(1 + exp_polar(-I*pi)*z)\n        if s.is_Integer and s <= 0:\n            u = Dummy('u')\n            start = u/(1 - u)\n            for _ in range(-s):\n                start = u*start.diff(u)\n            return expand_mul(start).subs(u, z)",
+      "score": 0.9446640014648438
+    },
+    {
+      "symbol_id": "sympy/functions/special/zeta_functions.py::polylog.fdiff",
+      "signature": "def fdiff(self, argindex=1):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/zeta_functions.py\nSymbol: sympy/functions/special/zeta_functions.py::polylog.fdiff\nSignature: def fdiff(self, argindex=1):\nDocstring: \nBody Preview:         s, z = self.args\n        if argindex == 2:\n            return polylog(s - 1, z)/z\n        raise ArgumentIndexError\n    def _eval_rewrite_as_lerchphi(self, s, z):\n        return z*lerchphi(z, s, 1)\n    def _eval_expand_func(self, **hints):\n        from sympy import log, expand_mul, Dummy, exp_polar, I\n        s, z = self.args",
+      "score": 0.9205734133720398
+    },
+    {
+      "symbol_id": "sympy/functions/special/error_functions.py::Ei._eval_rewrite_as_expint",
+      "signature": "def _eval_rewrite_as_expint(self, z):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/error_functions.py\nSymbol: sympy/functions/special/error_functions.py::Ei._eval_rewrite_as_expint\nSignature: def _eval_rewrite_as_expint(self, z):\nDocstring: \nBody Preview:         return -expint(1, polar_lift(-1)*z) - I*pi\n    def _eval_rewrite_as_li(self, z):\n        if isinstance(z, log):\n            return li(z.args[0])\n        # TODO:\n        # Actually it only holds that:\n        #  Ei(z) = li(exp(z))\n        # for -pi < imag(z) <= pi\n        return li(exp(z))",
+      "score": 0.9073767066001892
+    },
+    {
+      "symbol_id": "sympy/functions/special/zeta_functions.py::polylog",
+      "signature": "class polylog(Function):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/zeta_functions.py\nSymbol: sympy/functions/special/zeta_functions.py::polylog\nSignature: class polylog(Function):\nDocstring: \nBody Preview:     r\"\"\"\n    Polylogarithm function.\n    For :math:`|z| < 1` and :math:`s \\in \\mathbb{C}`, the polylogarithm is\n    defined by\n    .. math:: \\operatorname{Li}_s(z) = \\sum_{n=1}^\\infty \\frac{z^n}{n^s},\n    where the standard branch of the argument is used for :math:`n`. It admits\n    an analytic continuation which is branched at :math:`z=1` (notably not on the\n    sheet of initial definition), :math:`z=0` and :math:`z=\\infty`.",
+      "score": 0.900081217288971
+    },
+    {
+      "symbol_id": "sympy/codegen/cfunctions.py::log2._eval_expand_func",
+      "signature": "def _eval_expand_func(self, **hints):",
+      "summary": "",
+      "document_text": "File: sympy/codegen/cfunctions.py\nSymbol: sympy/codegen/cfunctions.py::log2._eval_expand_func\nSignature: def _eval_expand_func(self, **hints):\nDocstring: \nBody Preview:         return _log2(*self.args)\n    def _eval_rewrite_as_log(self, arg):\n        return _log2(arg)\n    _eval_rewrite_as_tractable = _eval_rewrite_as_log\ndef _fma(x, y, z):\n    return x*y + z",
+      "score": 0.8937965631484985
+    },
+    {
+      "symbol_id": "sympy/functions/special/error_functions.py::Ei._eval_rewrite_as_uppergamma",
+      "signature": "def _eval_rewrite_as_uppergamma(self, z):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/error_functions.py\nSymbol: sympy/functions/special/error_functions.py::Ei._eval_rewrite_as_uppergamma\nSignature: def _eval_rewrite_as_uppergamma(self, z):\nDocstring: \nBody Preview:         from sympy import uppergamma\n        # XXX this does not currently work usefully because uppergamma\n        #     immediately turns into expint\n        return -uppergamma(0, polar_lift(-1)*z) - I*pi\n    def _eval_rewrite_as_expint(self, z):\n        return -expint(1, polar_lift(-1)*z) - I*pi\n    def _eval_rewrite_as_li(self, z):\n        if isinstance(z, log):\n            return li(z.args[0])",
+      "score": 0.8911381363868713
+    },
+    {
+      "symbol_id": "sympy/functions/special/gamma_functions.py::uppergamma._eval_rewrite_as_expint",
+      "signature": "def _eval_rewrite_as_expint(self, s, x):",
+      "summary": "",
+      "document_text": "File: sympy/functions/special/gamma_functions.py\nSymbol: sympy/functions/special/gamma_functions.py::uppergamma._eval_rewrite_as_expint\nSignature: def _eval_rewrite_as_expint(self, s, x):\nDocstring: \nBody Preview:         from sympy import expint\n        return expint(1 - s, x)*x**s\n###############################################################################\n###################### POLYGAMMA and LOGGAMMA FUNCTIONS #######################\n###############################################################################\nclass polygamma(Function):\n    r\"\"\"\n    The function ``polygamma(n, z)`` returns ``log(gamma(z)).diff(n + 1)``.",
+      "score": 0.8909200429916382
+    },
+    {
+      "symbol_id": "sympy/codegen/cfunctions.py::log1p._eval_expand_func",
+      "signature": "def _eval_expand_func(self, **hints):",
+      "summary": "",
+      "document_text": "File: sympy/codegen/cfunctions.py\nSymbol: sympy/codegen/cfunctions.py::log1p._eval_expand_func\nSignature: def _eval_expand_func(self, **hints):\nDocstring: \nBody Preview:         return _log1p(*self.args)\n    def _eval_rewrite_as_log(self, arg):\n        return _log1p(arg)\n    _eval_rewrite_as_tractable = _eval_rewrite_as_log\n    @classmethod\n    def eval(cls, arg):\n        if not arg.is_Float:  # not safe to add 1 to Float\n            return log.eval(arg + S.One)",
+      "score": 0.8895881175994873
+    }
+  ]
+}

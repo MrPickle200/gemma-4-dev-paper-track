@@ -1,0 +1,14 @@
+diff --git a/sympy/printing/pretty/pretty.py b/sympy/printing/pretty/pretty.py
+index 3917fdd71f..ae5893e038 100644
+--- a/sympy/printing/pretty/pretty.py
++++ b/sympy/printing/pretty/pretty.py
+@@ -2383,8 +2383,7 @@ def _print_list(self, l):
+ 
+     def _print_tuple(self, t):
+         if len(t) == 1:
+-            ptuple = prettyForm(*stringPict.next(self._print(t[0]), ','))
+-            return prettyForm(*ptuple.parens('(', ')', ifascii_nougly=True))
++            return prettyForm(*stringPict.next(self._print(t[0]), ','))
+         else:
+             return self._print_seq(t, '(', ')')
+ 

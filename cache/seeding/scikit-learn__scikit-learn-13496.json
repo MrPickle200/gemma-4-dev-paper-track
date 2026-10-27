@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13496",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/ensemble/forest.py::BaseForest.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/forest.py\nSymbol: sklearn/ensemble/forest.py::BaseForest.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  base_estimator,\n                 n_estimators=100,\n                 estimator_params=tuple(),\n                 bootstrap=False,\n                 oob_score=False,\n                 n_jobs=None,\n                 random_state=None,\n                 verbose=0,\n                 warm_start=False,\n                 class_weight=None):",
+      "score": 0.889163613319397
+    },
+    {
+      "symbol_id": "sklearn/ensemble/forest.py::ForestClassifier.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/forest.py\nSymbol: sklearn/ensemble/forest.py::ForestClassifier.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  base_estimator,\n                 n_estimators=100,\n                 estimator_params=tuple(),\n                 bootstrap=False,\n                 oob_score=False,\n                 n_jobs=None,\n                 random_state=None,\n                 verbose=0,\n                 warm_start=False,\n                 class_weight=None):",
+      "score": 0.887108325958252
+    },
+    {
+      "symbol_id": "sklearn/ensemble/forest.py::RandomTreesEmbedding.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/forest.py\nSymbol: sklearn/ensemble/forest.py::RandomTreesEmbedding.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  n_estimators='warn',\n                 max_depth=5,\n                 min_samples_split=2,\n                 min_samples_leaf=1,\n                 min_weight_fraction_leaf=0.,\n                 max_leaf_nodes=None,\n                 min_impurity_decrease=0.,\n                 min_impurity_split=None,\n                 sparse_output=True,\n                 n_jobs=None,",
+      "score": 0.8849574327468872
+    },
+    {
+      "symbol_id": "sklearn/ensemble/bagging.py::BaseBagging.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/bagging.py\nSymbol: sklearn/ensemble/bagging.py::BaseBagging.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  base_estimator=None,\n                 n_estimators=10,\n                 max_samples=1.0,\n                 max_features=1.0,\n                 bootstrap=True,\n                 bootstrap_features=False,\n                 oob_score=False,\n                 warm_start=False,\n                 n_jobs=None,\n                 random_state=None,",
+      "score": 0.8824427127838135
+    },
+    {
+      "symbol_id": "sklearn/ensemble/forest.py::ExtraTreesClassifier.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/forest.py\nSymbol: sklearn/ensemble/forest.py::ExtraTreesClassifier.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  n_estimators='warn',\n                 criterion=\"gini\",\n                 max_depth=None,\n                 min_samples_split=2,\n                 min_samples_leaf=1,\n                 min_weight_fraction_leaf=0.,\n                 max_features=\"auto\",\n                 max_leaf_nodes=None,\n                 min_impurity_decrease=0.,\n                 min_impurity_split=None,",
+      "score": 0.8791652917861938
+    },
+    {
+      "symbol_id": "sklearn/ensemble/bagging.py::BaggingRegressor.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/bagging.py\nSymbol: sklearn/ensemble/bagging.py::BaggingRegressor.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  base_estimator=None,\n                 n_estimators=10,\n                 max_samples=1.0,\n                 max_features=1.0,\n                 bootstrap=True,\n                 bootstrap_features=False,\n                 oob_score=False,\n                 warm_start=False,\n                 n_jobs=None,\n                 random_state=None,",
+      "score": 0.8781801462173462
+    },
+    {
+      "symbol_id": "sklearn/ensemble/bagging.py::BaggingClassifier.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/bagging.py\nSymbol: sklearn/ensemble/bagging.py::BaggingClassifier.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  base_estimator=None,\n                 n_estimators=10,\n                 max_samples=1.0,\n                 max_features=1.0,\n                 bootstrap=True,\n                 bootstrap_features=False,\n                 oob_score=False,\n                 warm_start=False,\n                 n_jobs=None,\n                 random_state=None,",
+      "score": 0.878075361251831
+    },
+    {
+      "symbol_id": "sklearn/ensemble/iforest.py::IsolationForest",
+      "signature": "class IsolationForest(BaseBagging, OutlierMixin):",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/iforest.py\nSymbol: sklearn/ensemble/iforest.py::IsolationForest\nSignature: class IsolationForest(BaseBagging, OutlierMixin):\nDocstring: \nBody Preview:     \"\"\"Isolation Forest Algorithm\n    Return the anomaly score of each sample using the IsolationForest algorithm\n    The IsolationForest 'isolates' observations by randomly selecting a feature\n    and then randomly selecting a split value between the maximum and minimum\n    values of the selected feature.\n    Since recursive partitioning can be represented by a tree structure, the\n    number of splittings required to isolate a sample is equivalent to the path\n    length from the root node to the terminating node.",
+      "score": 0.8775161504745483
+    }
+  ]
+}

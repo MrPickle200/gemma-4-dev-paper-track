@@ -1,0 +1,5 @@
+model,variant,thinking,line_numbers,runs,runs_with_edit,runs_real_edit,noop_edits,malformed_edit_rate,mean_total_tokens,mean_peak_context,mean_turns,finished,ctx_over,syntax_rejected,compactions,repeated_identical_calls
+gemma-4-E2B,B0,on,False,50,41,36,32,0.464,75063,7383,11.0,23,0,0,0,71
+gemma-4-E2B,M1,on,False,50,38,37,12,0.667,84613,8994,11.8,17,0,3,0,66
+gemma-4-E2B,M2,on,False,50,48,45,22,0.613,81316,8531,10.3,31,0,6,0,67
+gemma-4-E2B,M3,on,False,50,45,43,15,0.333,68550,7678,10.3,37,0,4,41,44

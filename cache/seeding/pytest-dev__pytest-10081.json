@@ -1,0 +1,61 @@
+{
+  "instance_id": "pytest-dev__pytest-10081",
+  "top_symbols": [
+    {
+      "symbol_id": "src/_pytest/debugging.py::post_mortem",
+      "signature": "def post_mortem(t: types.TracebackType) -> None:",
+      "summary": "",
+      "document_text": "File: src/_pytest/debugging.py\nSymbol: src/_pytest/debugging.py::post_mortem\nSignature: def post_mortem(t: types.TracebackType) -> None:\nDocstring: \nBody Preview:     p = pytestPDB._init_pdb(\"post_mortem\")\n    p.reset()\n    p.interaction(None, t)\n    if p.quitting:\n        outcomes.exit(\"Quitting debugger\")",
+      "score": 0.8912132978439331
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestTracebackCutting",
+      "signature": "class TestTracebackCutting:",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestTracebackCutting\nSignature: class TestTracebackCutting:\nDocstring: \nBody Preview:     def test_skip_simple(self):\n        with pytest.raises(pytest.skip.Exception) as excinfo:\n            pytest.skip(\"xxx\")\n        assert excinfo.traceback[-1].frame.code.name == \"skip\"\n        assert excinfo.traceback[-1].ishidden()\n        assert excinfo.traceback[-2].frame.code.name == \"test_skip_simple\"\n        assert not excinfo.traceback[-2].ishidden()\n    def test_traceback_argsetup(self, pytester: Pytester) -> None:\n        pytester.makeconftest(\n            \"\"\"",
+      "score": 0.8902288675308228
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestTracebackCutting.test_skip_simple",
+      "signature": "def test_skip_simple(self):",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestTracebackCutting.test_skip_simple\nSignature: def test_skip_simple(self):\nDocstring: \nBody Preview:         with pytest.raises(pytest.skip.Exception) as excinfo:\n            pytest.skip(\"xxx\")\n        assert excinfo.traceback[-1].frame.code.name == \"skip\"\n        assert excinfo.traceback[-1].ishidden()\n        assert excinfo.traceback[-2].frame.code.name == \"test_skip_simple\"\n        assert not excinfo.traceback[-2].ishidden()\n    def test_traceback_argsetup(self, pytester: Pytester) -> None:\n        pytester.makeconftest(\n            \"\"\"\n            import pytest",
+      "score": 0.8896863460540771
+    },
+    {
+      "symbol_id": "src/_pytest/unraisableexception.py::pytest_runtest_call",
+      "signature": "def pytest_runtest_call() -> Generator[None, None, None]:",
+      "summary": "",
+      "document_text": "File: src/_pytest/unraisableexception.py\nSymbol: src/_pytest/unraisableexception.py::pytest_runtest_call\nSignature: def pytest_runtest_call() -> Generator[None, None, None]:\nDocstring: \nBody Preview:     yield from unraisable_exception_runtest_hook()\n@pytest.hookimpl(hookwrapper=True, tryfirst=True)\ndef pytest_runtest_teardown() -> Generator[None, None, None]:\n    yield from unraisable_exception_runtest_hook()",
+      "score": 0.8844842910766602
+    },
+    {
+      "symbol_id": "bench/skip.py::test_foo",
+      "signature": "def test_foo(x):",
+      "summary": "",
+      "document_text": "File: bench/skip.py\nSymbol: bench/skip.py::test_foo\nSignature: def test_foo(x):\nDocstring: \nBody Preview:     if SKIP:\n        pytest.skip(\"heh\")",
+      "score": 0.8843376636505127
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestClass.test_setup_teardown_class_as_classmethod",
+      "signature": "def test_setup_teardown_class_as_classmethod(self, pytester: Pytester) -> None:",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestClass.test_setup_teardown_class_as_classmethod\nSignature: def test_setup_teardown_class_as_classmethod(self, pytester: Pytester) -> None:\nDocstring: \nBody Preview:         pytester.makepyfile(\n            test_mod1=\"\"\"\n            class TestClassMethod(object):\n                @classmethod\n                def setup_class(cls):\n                    pass\n                def test_1(self):\n                    pass\n                @classmethod\n                def teardown_class(cls):",
+      "score": 0.8808128833770752
+    },
+    {
+      "symbol_id": "src/_pytest/unraisableexception.py::pytest_runtest_setup",
+      "signature": "def pytest_runtest_setup() -> Generator[None, None, None]:",
+      "summary": "",
+      "document_text": "File: src/_pytest/unraisableexception.py\nSymbol: src/_pytest/unraisableexception.py::pytest_runtest_setup\nSignature: def pytest_runtest_setup() -> Generator[None, None, None]:\nDocstring: \nBody Preview:     yield from unraisable_exception_runtest_hook()\n@pytest.hookimpl(hookwrapper=True, tryfirst=True)\ndef pytest_runtest_call() -> Generator[None, None, None]:\n    yield from unraisable_exception_runtest_hook()\n@pytest.hookimpl(hookwrapper=True, tryfirst=True)\ndef pytest_runtest_teardown() -> Generator[None, None, None]:\n    yield from unraisable_exception_runtest_hook()",
+      "score": 0.8803249597549438
+    },
+    {
+      "symbol_id": "testing/python/fixtures.py::TestContextManagerFixtureFuncs.test_teardown_exception",
+      "signature": "def test_teardown_exception(self, pytester: Pytester) -> None:",
+      "summary": "",
+      "document_text": "File: testing/python/fixtures.py\nSymbol: testing/python/fixtures.py::TestContextManagerFixtureFuncs.test_teardown_exception\nSignature: def test_teardown_exception(self, pytester: Pytester) -> None:\nDocstring: \nBody Preview:         pytester.makepyfile(\n            \"\"\"\n            import pytest\n            @pytest.fixture(scope=\"module\")\n            def arg1():\n                yield 1\n                pytest.fail(\"teardown\")\n            def test_1(arg1):\n                pass\n        \"\"\"",
+      "score": 0.8802440166473389
+    }
+  ]
+}

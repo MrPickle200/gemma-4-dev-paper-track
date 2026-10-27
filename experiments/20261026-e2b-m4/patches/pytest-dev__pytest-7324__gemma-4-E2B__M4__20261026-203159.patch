@@ -1,0 +1,16 @@
+diff --git a/src/_pytest/assertion/rewrite.py b/src/_pytest/assertion/rewrite.py
+index cec0c5501..e81a62266 100644
+--- a/src/_pytest/assertion/rewrite.py
++++ b/src/_pytest/assertion/rewrite.py
+@@ -715,7 +715,10 @@ class AssertionRewriter(ast.NodeVisitor):
+                     for i, child in enumerate(field):
+                         if isinstance(child, ast.Assert):
+                             # Transform assert.
+-                            new.extend(self.visit(child))
++                            if isinstance(child.test, ast.Constant) and isinstance(child.test.value, str):
++                                new.append(child)
++                            else:
++                                new.extend(self.visit(child))
+                         else:
+                             new.append(child)
+                             if isinstance(child, ast.AST):

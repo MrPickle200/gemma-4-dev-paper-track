@@ -1,0 +1,17 @@
+diff --git a/sympy/matrices/matrices.py b/sympy/matrices/matrices.py
+index 927fbe34fd..1345c1d57c 100644
+--- a/sympy/matrices/matrices.py
++++ b/sympy/matrices/matrices.py
+@@ -38,7 +38,11 @@ def _iszero(x):
+     try:
+         return x.is_zero
+     except AttributeError:
+-        return None
++        x = simplify(x)
++        try:
++            return x.is_zero
++        except AttributeError:
++            return None
+ 
+ 
+ def _is_zero_after_expand_mul(x):

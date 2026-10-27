@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-14976",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/core/numbers.py::sympify_mpq",
+      "signature": "def sympify_mpq(x):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::sympify_mpq\nSignature: def sympify_mpq(x):\nDocstring: \nBody Preview:         return Rational(long(x.numerator), long(x.denominator))\n    converter[type(gmpy.mpz(1))] = sympify_mpz\n    converter[type(gmpy.mpq(1, 2))] = sympify_mpq\nexcept ImportError:\n    pass\ndef sympify_mpmath(x):\n    return Expr._from_mpmath(x, x.context.prec)",
+      "score": 0.9269177317619324
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::sympify_mpmath",
+      "signature": "def sympify_mpmath(x):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::sympify_mpmath\nSignature: def sympify_mpmath(x):\nDocstring: \nBody Preview:     return Expr._from_mpmath(x, x.context.prec)\nconverter[mpnumeric] = sympify_mpmath\ndef sympify_mpq(x):\n    p, q = x._mpq_\n    return Rational(p, q, 1)\nconverter[type(mpmath.rational.mpq(1, 2))] = sympify_mpq",
+      "score": 0.9195500612258911
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::NumberSymbol._eval_evalf",
+      "signature": "def _eval_evalf(self, prec):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::NumberSymbol._eval_evalf\nSignature: def _eval_evalf(self, prec):\nDocstring: \nBody Preview:         return Float._new(self._as_mpf_val(prec), prec)\n    def __eq__(self, other):\n        try:\n            other = _sympify(other)\n        except SympifyError:\n            return NotImplemented\n        if self is other:\n            return True\n        if other.is_Number and self.is_irrational:\n            return False",
+      "score": 0.9128432273864746
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Exp1._as_mpf_val",
+      "signature": "def _as_mpf_val(self, prec):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Exp1._as_mpf_val\nSignature: def _as_mpf_val(self, prec):\nDocstring: \nBody Preview:         return mpf_e(prec)\n    def approximation_interval(self, number_cls):\n        if issubclass(number_cls, Integer):\n            return (Integer(2), Integer(3))\n        elif issubclass(number_cls, Rational):\n            pass\n    def _eval_power(self, expt):\n        from sympy import exp\n        return exp(expt)",
+      "score": 0.9106868505477905
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Rational._mpmath_",
+      "signature": "def _mpmath_(self, prec, rnd):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Rational._mpmath_\nSignature: def _mpmath_(self, prec, rnd):\nDocstring: \nBody Preview:         return mpmath.make_mpf(mlib.from_rational(self.p, self.q, prec, rnd))\n    def __abs__(self):\n        return Rational(abs(self.p), self.q)\n    def __int__(self):\n        p, q = self.p, self.q\n        if p < 0:\n            return -int(-p//q)\n        return int(p//q)",
+      "score": 0.909835934638977
+    },
+    {
+      "symbol_id": "sympy/core/expr.py::Expr._from_mpmath",
+      "signature": "def _from_mpmath(x, prec):",
+      "summary": "",
+      "document_text": "File: sympy/core/expr.py\nSymbol: sympy/core/expr.py::Expr._from_mpmath\nSignature: def _from_mpmath(x, prec):\nDocstring: \nBody Preview:         from sympy import Float\n        if hasattr(x, \"_mpf_\"):\n            return Float._new(x._mpf_, prec)\n        elif hasattr(x, \"_mpc_\"):\n            re, im = x._mpc_\n            re = Float._new(re, prec)\n            im = Float._new(im, prec)*S.ImaginaryUnit\n            return re + im\n        else:\n            raise TypeError(\"expected mpmath number (mpf or mpc)\")",
+      "score": 0.9094995856285095
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::GoldenRatio._as_mpf_val",
+      "signature": "def _as_mpf_val(self, prec):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::GoldenRatio._as_mpf_val\nSignature: def _as_mpf_val(self, prec):\nDocstring: \nBody Preview:          # XXX track down why this has to be increased\n        rv = mlib.from_man_exp(phi_fixed(prec + 10), -prec - 10)\n        return mpf_norm(rv, prec)\n    def _eval_expand_func(self, **hints):\n        from sympy import sqrt\n        return S.Half + S.Half*sqrt(5)\n    def approximation_interval(self, number_cls):\n        if issubclass(number_cls, Integer):\n            return (S.One, Rational(2))",
+      "score": 0.9084886312484741
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::GoldenRatio._latex",
+      "signature": "def _latex(self, printer):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::GoldenRatio._latex\nSignature: def _latex(self, printer):\nDocstring: \nBody Preview:         return r\"\\phi\"\n    def __int__(self):\n        return 1\n    def _as_mpf_val(self, prec):\n         # XXX track down why this has to be increased\n        rv = mlib.from_man_exp(phi_fixed(prec + 10), -prec - 10)\n        return mpf_norm(rv, prec)\n    def _eval_expand_func(self, **hints):",
+      "score": 0.9073187112808228
+    }
+  ]
+}

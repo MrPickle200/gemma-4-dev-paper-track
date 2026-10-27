@@ -1,0 +1,61 @@
+{
+  "instance_id": "pytest-dev__pytest-7236",
+  "top_symbols": [
+    {
+      "symbol_id": "src/_pytest/debugging.py::post_mortem",
+      "signature": "def post_mortem(t):",
+      "summary": "",
+      "document_text": "File: src/_pytest/debugging.py\nSymbol: src/_pytest/debugging.py::post_mortem\nSignature: def post_mortem(t):\nDocstring: \nBody Preview:     p = pytestPDB._init_pdb(\"post_mortem\")\n    p.reset()\n    p.interaction(None, t)\n    if p.quitting:\n        outcomes.exit(\"Quitting debugger\")",
+      "score": 0.9026122689247131
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestTracebackCutting.test_skip_simple",
+      "signature": "def test_skip_simple(self):",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestTracebackCutting.test_skip_simple\nSignature: def test_skip_simple(self):\nDocstring: \nBody Preview:         with pytest.raises(pytest.skip.Exception) as excinfo:\n            pytest.skip(\"xxx\")\n        assert excinfo.traceback[-1].frame.code.name == \"skip\"\n        assert excinfo.traceback[-1].ishidden()\n        assert excinfo.traceback[-2].frame.code.name == \"test_skip_simple\"\n        assert not excinfo.traceback[-2].ishidden()\n    def test_traceback_argsetup(self, testdir):\n        testdir.makeconftest(\n            \"\"\"\n            import pytest",
+      "score": 0.8883137702941895
+    },
+    {
+      "symbol_id": "src/_pytest/debugging.py::PdbInvoke",
+      "signature": "class PdbInvoke:",
+      "summary": "",
+      "document_text": "File: src/_pytest/debugging.py\nSymbol: src/_pytest/debugging.py::PdbInvoke\nSignature: class PdbInvoke:\nDocstring: \nBody Preview:     def pytest_exception_interact(self, node, call, report):\n        capman = node.config.pluginmanager.getplugin(\"capturemanager\")\n        if capman:\n            capman.suspend_global_capture(in_=True)\n            out, err = capman.read_global_capture()\n            sys.stdout.write(out)\n            sys.stdout.write(err)\n        _enter_pdb(node, call.excinfo, report)\n    def pytest_internalerror(self, excrepr, excinfo):\n        tb = _postmortem_traceback(excinfo)",
+      "score": 0.8810374736785889
+    },
+    {
+      "symbol_id": "testing/python/collect.py::TestTracebackCutting",
+      "signature": "class TestTracebackCutting:",
+      "summary": "",
+      "document_text": "File: testing/python/collect.py\nSymbol: testing/python/collect.py::TestTracebackCutting\nSignature: class TestTracebackCutting:\nDocstring: \nBody Preview:     def test_skip_simple(self):\n        with pytest.raises(pytest.skip.Exception) as excinfo:\n            pytest.skip(\"xxx\")\n        assert excinfo.traceback[-1].frame.code.name == \"skip\"\n        assert excinfo.traceback[-1].ishidden()\n        assert excinfo.traceback[-2].frame.code.name == \"test_skip_simple\"\n        assert not excinfo.traceback[-2].ishidden()\n    def test_traceback_argsetup(self, testdir):\n        testdir.makeconftest(\n            \"\"\"",
+      "score": 0.8795593976974487
+    },
+    {
+      "symbol_id": "src/_pytest/skipping.py::pytest_runtest_setup",
+      "signature": "def pytest_runtest_setup(item):",
+      "summary": "",
+      "document_text": "File: src/_pytest/skipping.py\nSymbol: src/_pytest/skipping.py::pytest_runtest_setup\nSignature: def pytest_runtest_setup(item):\nDocstring: \nBody Preview:     # Check if skip or skipif are specified as pytest marks\n    item._store[skipped_by_mark_key] = False\n    eval_skipif = MarkEvaluator(item, \"skipif\")\n    if eval_skipif.istrue():\n        item._store[skipped_by_mark_key] = True\n        skip(eval_skipif.getexplanation())\n    for skip_info in item.iter_markers(name=\"skip\"):\n        item._store[skipped_by_mark_key] = True\n        if \"reason\" in skip_info.kwargs:\n            skip(skip_info.kwargs[\"reason\"])",
+      "score": 0.8794747591018677
+    },
+    {
+      "symbol_id": "testing/python/fixtures.py::TestFixtureUsages.test_factory_setup_as_classes_fails",
+      "signature": "def test_factory_setup_as_classes_fails(self, testdir):",
+      "summary": "",
+      "document_text": "File: testing/python/fixtures.py\nSymbol: testing/python/fixtures.py::TestFixtureUsages.test_factory_setup_as_classes_fails\nSignature: def test_factory_setup_as_classes_fails(self, testdir):\nDocstring: \nBody Preview:         testdir.makepyfile(\n            \"\"\"\n            import pytest\n            class arg1(object):\n                def __init__(self, request):\n                    self.x = 1\n            arg1 = pytest.fixture()(arg1)\n        \"\"\"\n        )\n        reprec = testdir.inline_run()",
+      "score": 0.8792269825935364
+    },
+    {
+      "symbol_id": "src/_pytest/unittest.py::TestCaseFunction.runtest",
+      "signature": "def runtest(self):",
+      "summary": "",
+      "document_text": "File: src/_pytest/unittest.py\nSymbol: src/_pytest/unittest.py::TestCaseFunction.runtest\nSignature: def runtest(self):\nDocstring: \nBody Preview:         from _pytest.debugging import maybe_wrap_pytest_function_for_tracing\n        maybe_wrap_pytest_function_for_tracing(self)\n        # let the unittest framework handle async functions\n        if is_async_function(self.obj):\n            self._testcase(self)\n        else:\n            # when --pdb is given, we want to postpone calling tearDown() otherwise\n            # when entering the pdb prompt, tearDown() would have probably cleaned up\n            # instance variables, which makes it difficult to debug",
+      "score": 0.8764758110046387
+    },
+    {
+      "symbol_id": "src/_pytest/debugging.py::PdbInvoke.pytest_internalerror",
+      "signature": "def pytest_internalerror(self, excrepr, excinfo):",
+      "summary": "",
+      "document_text": "File: src/_pytest/debugging.py\nSymbol: src/_pytest/debugging.py::PdbInvoke.pytest_internalerror\nSignature: def pytest_internalerror(self, excrepr, excinfo):\nDocstring: \nBody Preview:         tb = _postmortem_traceback(excinfo)\n        post_mortem(tb)\nclass PdbTrace:\n    @hookimpl(hookwrapper=True)\n    def pytest_pyfunc_call(self, pyfuncitem):\n        wrap_pytest_function_for_tracing(pyfuncitem)\n        yield",
+      "score": 0.8752937316894531
+    }
+  ]
+}

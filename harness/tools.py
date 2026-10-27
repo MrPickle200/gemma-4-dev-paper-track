@@ -340,10 +340,10 @@ class ToolBox:
         self.line_numbers = line_numbers
         self.variant = variant
         # The variant is the single switch that turns module behaviour on/off.
-        self.use_ast_nav = variant in ("M2", "M3")
-        self.structured_edit = variant in ("M1", "M2", "M3")
-        self.syntax_gate = variant in ("M1", "M2", "M3")
-        self.allow_lock = variant == "M3"
+        self.use_ast_nav = variant in ("M2", "M3", "M4")
+        self.structured_edit = variant in ("M1", "M2", "M3", "M4")
+        self.syntax_gate = variant in ("M1", "M2", "M3", "M4")
+        self.allow_lock = variant in ("M3", "M4")
         self.locked: dict | None = None               # set by lock_targets (M3)
         # counters feeding the metrics in IDEA.md §4
         self.stats = {
@@ -370,11 +370,11 @@ class ToolBox:
     def specs(self, variant: str | None = None) -> list[dict]:
         variant = variant or self.variant
         tools: list[dict] = []
-        if variant in ("M2", "M3"):
+        if variant in ("M2", "M3", "M4"):
             tools += self._nav_specs()
         else:
             tools += self._bash_specs()
-        if variant == "M3":
+        if variant in ("M3", "M4"):
             tools.append(self._lock_spec())
         tools.append(self._edit_spec())
         tools.append(_fn_schema(

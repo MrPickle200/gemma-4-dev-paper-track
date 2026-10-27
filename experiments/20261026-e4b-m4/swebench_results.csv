@@ -1,0 +1,2 @@
+model,resolved,unresolved,error,empty_patch,infra_failure,submitted,resolved_ids
+gemma-4-E4B_M4,9,38,0,3,0,50,psf__requests-1724 pytest-dev__pytest-5631 scikit-learn__scikit-learn-13135 scikit-learn__scikit-learn-13142 scikit-learn__scikit-learn-13496 scikit-learn__scikit-learn-14141 sympy__sympy-12096 sympy__sympy-13480 sympy__sympy-16766

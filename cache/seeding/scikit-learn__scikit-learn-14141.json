@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14141",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/utils/_show_versions.py::show_versions",
+      "signature": "def show_versions():",
+      "summary": "",
+      "document_text": "File: sklearn/utils/_show_versions.py\nSymbol: sklearn/utils/_show_versions.py::show_versions\nSignature: def show_versions():\nDocstring: \nBody Preview:     \"Print useful debugging information\"\n    sys_info = _get_sys_info()\n    deps_info = _get_deps_info()\n    blas_info = _get_blas_info()\n    print('\\nSystem:')\n    for k, stat in sys_info.items():\n        print(\"{k:>10}: {stat}\".format(k=k, stat=stat))\n    print('\\nBLAS:')",
+      "score": 0.8727147579193115
+    },
+    {
+      "symbol_id": "sklearn/utils/_show_versions.py::_get_deps_info",
+      "signature": "def _get_deps_info():",
+      "summary": "",
+      "document_text": "File: sklearn/utils/_show_versions.py\nSymbol: sklearn/utils/_show_versions.py::_get_deps_info\nSignature: def _get_deps_info():\nDocstring: \nBody Preview:     \"\"\"Overview of the installed version of main dependencies\n    Returns\n    -------\n    deps_info: dict\n        version information on relevant Python libraries\n    \"\"\"\n    deps = [\n        \"pip\",\n        \"setuptools\",",
+      "score": 0.8138033747673035
+    },
+    {
+      "symbol_id": "sklearn/externals/six.py::_add_doc",
+      "signature": "def _add_doc(func, doc):",
+      "summary": "",
+      "document_text": "File: sklearn/externals/six.py\nSymbol: sklearn/externals/six.py::_add_doc\nSignature: def _add_doc(func, doc):\nDocstring: \nBody Preview:     \"\"\"Add documentation to a function.\"\"\"\n    func.__doc__ = doc\ndef _import_module(name):\n    \"\"\"Import module, returning the module after the last dot.\"\"\"\n    __import__(name)\n    return sys.modules[name]\nclass _LazyDescr(object):",
+      "score": 0.806917667388916
+    },
+    {
+      "symbol_id": "sklearn/utils/_show_versions.py::_get_blas_info",
+      "signature": "def _get_blas_info():",
+      "summary": "",
+      "document_text": "File: sklearn/utils/_show_versions.py\nSymbol: sklearn/utils/_show_versions.py::_get_blas_info\nSignature: def _get_blas_info():\nDocstring: \nBody Preview:     \"\"\"Information on system BLAS\n    Uses the `scikit-learn` builtin method\n    :func:`sklearn._build_utils.get_blas_info` which may fail from time to time\n    Returns\n    -------\n    blas_info: dict\n        system BLAS information\n    \"\"\"",
+      "score": 0.8062586188316345
+    },
+    {
+      "symbol_id": "sklearn/utils/_show_versions.py::_get_sys_info",
+      "signature": "def _get_sys_info():",
+      "summary": "",
+      "document_text": "File: sklearn/utils/_show_versions.py\nSymbol: sklearn/utils/_show_versions.py::_get_sys_info\nSignature: def _get_sys_info():\nDocstring: \nBody Preview:     \"\"\"System information\n    Return\n    ------\n    sys_info : dict\n        system and Python version information\n    \"\"\"\n    python = sys.version.replace('\\n', ' ')\n    blob = [",
+      "score": 0.7946614027023315
+    },
+    {
+      "symbol_id": "sklearn/externals/six.py::add_metaclass",
+      "signature": "def add_metaclass(metaclass):",
+      "summary": "",
+      "document_text": "File: sklearn/externals/six.py\nSymbol: sklearn/externals/six.py::add_metaclass\nSignature: def add_metaclass(metaclass):\nDocstring: \nBody Preview:     \"\"\"Class decorator for creating a class with a metaclass.\"\"\"\n    def wrapper(cls):\n        orig_vars = cls.__dict__.copy()\n        orig_vars.pop('__dict__', None)\n        orig_vars.pop('__weakref__', None)\n        for slots_var in orig_vars.get('__slots__', ()):\n            orig_vars.pop(slots_var)\n        return metaclass(cls.__name__, cls.__bases__, orig_vars)\n    return wrapper",
+      "score": 0.7934581637382507
+    },
+    {
+      "symbol_id": "sklearn/externals/setup.py::configuration",
+      "signature": "def configuration(parent_package='', top_path=None):",
+      "summary": "",
+      "document_text": "File: sklearn/externals/setup.py\nSymbol: sklearn/externals/setup.py::configuration\nSignature: def configuration(parent_package='', top_path=None):\nDocstring: \nBody Preview:     from numpy.distutils.misc_util import Configuration\n    config = Configuration('externals', parent_package, top_path)\n    config.add_subpackage('joblib')\n    return config",
+      "score": 0.7852308750152588
+    },
+    {
+      "symbol_id": "conftest.py::pytest_addoption",
+      "signature": "def pytest_addoption(parser):",
+      "summary": "",
+      "document_text": "File: conftest.py\nSymbol: conftest.py::pytest_addoption\nSignature: def pytest_addoption(parser):\nDocstring: \nBody Preview:     parser.addoption(\"--skip-network\", action=\"store_true\", default=False,\n                     help=\"skip network tests\")\ndef pytest_collection_modifyitems(config, items):\n    # FeatureHasher is not compatible with PyPy\n    if platform.python_implementation() == 'PyPy':\n        skip_marker = pytest.mark.skip(\n            reason='FeatureHasher is not compatible with PyPy')\n        for item in items:",
+      "score": 0.7810741662979126
+    }
+  ]
+}

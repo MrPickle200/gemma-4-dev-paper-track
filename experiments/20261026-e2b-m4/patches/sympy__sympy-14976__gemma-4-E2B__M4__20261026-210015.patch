@@ -1,0 +1,13 @@
+diff --git a/sympy/core/numbers.py b/sympy/core/numbers.py
+index 22337208ce..f252b4d930 100644
+--- a/sympy/core/numbers.py
++++ b/sympy/core/numbers.py
+@@ -1723,7 +1723,7 @@ def _as_mpf_val(self, prec):
+         return mlib.from_rational(self.p, self.q, prec, rnd)
+ 
+     def _mpmath_(self, prec, rnd):
+-        return mpmath.make_mpf(mlib.from_rational(self.p, self.q, prec, rnd))
++        return mpmath.mpf(self.p / self.q)
+ 
+     def __abs__(self):
+         return Rational(abs(self.p), self.q)

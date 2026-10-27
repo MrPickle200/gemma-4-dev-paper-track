@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-12096",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.dup_eval",
+      "signature": "def dup_eval(self, f, a):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.dup_eval\nSignature: def dup_eval(self, f, a):\nDocstring: \nBody Preview:         return dup_eval(self.to_dense(f), a, self.domain)\n    def dmp_eval(self, f, a):\n        result = dmp_eval(self.to_dense(f), a, self.ngens-1, self.domain)\n        return self[1:].from_dense(result)\n    def dmp_eval_in(self, f, a, j):\n        result = dmp_eval_in(self.to_dense(f), a, j, self.ngens-1, self.domain)\n        return self.drop(j).from_dense(result)\n    def dmp_diff_eval_in(self, f, m, a, j):\n        result = dmp_diff_eval_in(self.to_dense(f), m, a, j, self.ngens-1, self.domain)\n        return self.drop(j).from_dense(result)",
+      "score": 0.8978301286697388
+    },
+    {
+      "symbol_id": "sympy/core/function.py::Function._eval_evalf",
+      "signature": "def _eval_evalf(self, prec):",
+      "summary": "",
+      "document_text": "File: sympy/core/function.py\nSymbol: sympy/core/function.py::Function._eval_evalf\nSignature: def _eval_evalf(self, prec):\nDocstring: \nBody Preview:         # Lookup mpmath function based on name\n        fname = self.func.__name__\n        try:\n            if not hasattr(mpmath, fname):\n                from sympy.utilities.lambdify import MPMATH_TRANSLATIONS\n                fname = MPMATH_TRANSLATIONS[fname]\n            func = getattr(mpmath, fname)\n        except (AttributeError, KeyError):\n            try:\n                return Float(self._imp_(*self.args), prec)",
+      "score": 0.8966449499130249
+    },
+    {
+      "symbol_id": "sympy/core/expr.py::UnevaluatedExpr.doit",
+      "signature": "def doit(self, *args, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/core/expr.py\nSymbol: sympy/core/expr.py::UnevaluatedExpr.doit\nSignature: def doit(self, *args, **kwargs):\nDocstring: \nBody Preview:         if kwargs.get(\"deep\", True):\n            return self.args[0].doit(*args, **kwargs)\n        else:\n            return self.args[0]\nfrom .mul import Mul\nfrom .add import Add\nfrom .power import Pow\nfrom .function import Derivative, Function\nfrom .mod import Mod",
+      "score": 0.8937323093414307
+    },
+    {
+      "symbol_id": "sympy/core/function.py::AppliedUndef.__new__",
+      "signature": "def __new__(cls, *args, **options):",
+      "summary": "",
+      "document_text": "File: sympy/core/function.py\nSymbol: sympy/core/function.py::AppliedUndef.__new__\nSignature: def __new__(cls, *args, **options):\nDocstring: \nBody Preview:         args = list(map(sympify, args))\n        obj = super(AppliedUndef, cls).__new__(cls, *args, **options)\n        return obj\n    def _eval_as_leading_term(self, x):\n        return self\n    def _sage_(self):\n        import sage.all as sage\n        fname = str(self.func)\n        args = [arg._sage_() for arg in self.args]",
+      "score": 0.8930783867835999
+    },
+    {
+      "symbol_id": "sympy/printing/lambdarepr.py::NumExprPrinter._print_Function",
+      "signature": "def _print_Function(self, e):",
+      "summary": "",
+      "document_text": "File: sympy/printing/lambdarepr.py\nSymbol: sympy/printing/lambdarepr.py::NumExprPrinter._print_Function\nSignature: def _print_Function(self, e):\nDocstring: \nBody Preview:         func_name = e.func.__name__\n        nstr = self._numexpr_functions.get(func_name, None)\n        if nstr is None:\n            # check for implemented_function\n            if hasattr(e, '_imp_'):\n                return \"(%s)\" % self._print(e._imp_(*e.args))\n            else:\n                raise TypeError(\"numexpr does not support function '%s'\" %\n                                func_name)\n        return \"%s(%s)\" % (nstr, self._print_seq(e.args))",
+      "score": 0.8843571543693542
+    },
+    {
+      "symbol_id": "sympy/core/function.py::AppliedUndef._eval_as_leading_term",
+      "signature": "def _eval_as_leading_term(self, x):",
+      "summary": "",
+      "document_text": "File: sympy/core/function.py\nSymbol: sympy/core/function.py::AppliedUndef._eval_as_leading_term\nSignature: def _eval_as_leading_term(self, x):\nDocstring: \nBody Preview:         return self\n    def _sage_(self):\n        import sage.all as sage\n        fname = str(self.func)\n        args = [arg._sage_() for arg in self.args]\n        func = sage.function(fname)(*args)\n        return func\nclass UndefinedFunction(FunctionClass):\n    \"\"\"",
+      "score": 0.8830571174621582
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::arg.eval",
+      "signature": "def eval(cls, arg):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::arg.eval\nSignature: def eval(cls, arg):\nDocstring: \nBody Preview:         if not arg.is_Atom:\n            c, arg_ = factor_terms(arg).as_coeff_Mul()\n            if arg_.is_Mul:\n                arg_ = Mul(*[a if (sign(a) not in (-1, 1)) else\n                    sign(a) for a in arg_.args])\n            arg_ = sign(c)*arg_\n        else:\n            arg_ = arg\n        if arg_.atoms(AppliedUndef):\n            return",
+      "score": 0.8792861700057983
+    },
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.gf_eval",
+      "signature": "def gf_eval(self, f, a):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.gf_eval\nSignature: def gf_eval(self, f, a):\nDocstring: \nBody Preview:         return gf_eval(self.to_gf_dense(f), a, self.domain.mod, self.domain.dom)\n    def gf_multi_eval(self, f, A):\n        return gf_multi_eval(self.to_gf_dense(f), A, self.domain.mod, self.domain.dom)\n    def gf_compose(self, f, g):\n        return self.from_gf_dense(gf_compose(self.to_gf_dense(f), self.to_gf_dense(g), self.domain.mod, self.domain.dom))\n    def gf_compose_mod(self, g, h, f):\n        return self.from_gf_dense(gf_compose_mod(self.to_gf_dense(g), self.to_gf_dense(h), self.to_gf_dense(f), self.domain.mod, self.domain.dom))\n    def gf_trace_map(self, a, b, c, n, f):\n        a = self.to_gf_dense(a)",
+      "score": 0.8786964416503906
+    }
+  ]
+}

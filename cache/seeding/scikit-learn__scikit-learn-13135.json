@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-13135",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/preprocessing/_discretization.py::KBinsDiscretizer.__init__",
+      "signature": "def __init__(self, n_bins=5, encode='onehot', strategy='quantile'):",
+      "summary": "",
+      "document_text": "File: sklearn/preprocessing/_discretization.py\nSymbol: sklearn/preprocessing/_discretization.py::KBinsDiscretizer.__init__\nSignature: def __init__(self, n_bins=5, encode='onehot', strategy='quantile'):\nDocstring: \nBody Preview:         self.n_bins = n_bins\n        self.encode = encode\n        self.strategy = strategy\n    def fit(self, X, y=None):\n        \"\"\"Fits the estimator.\n        Parameters\n        ----------\n        X : numeric array-like, shape (n_samples, n_features)\n            Data to be discretized.",
+      "score": 0.8543426990509033
+    },
+    {
+      "symbol_id": "sklearn/preprocessing/_discretization.py::KBinsDiscretizer",
+      "signature": "class KBinsDiscretizer(BaseEstimator, TransformerMixin):",
+      "summary": "",
+      "document_text": "File: sklearn/preprocessing/_discretization.py\nSymbol: sklearn/preprocessing/_discretization.py::KBinsDiscretizer\nSignature: class KBinsDiscretizer(BaseEstimator, TransformerMixin):\nDocstring: \nBody Preview:     \"\"\"Bin continuous data into intervals.\n    Read more in the :ref:`User Guide <preprocessing_discretization>`.\n    Parameters\n    ----------\n    n_bins : int or array-like, shape (n_features,) (default=5)\n        The number of bins to produce. Raises ValueError if ``n_bins < 2``.\n    encode : {'onehot', 'onehot-dense', 'ordinal'}, (default='onehot')\n        Method used to encode the transformed result.",
+      "score": 0.8530056476593018
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::KFold.__init__",
+      "signature": "def __init__(self, n_splits='warn', shuffle=False,",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::KFold.__init__\nSignature: def __init__(self, n_splits='warn', shuffle=False,\nDocstring: \nBody Preview:                  random_state=None):\n        if n_splits == 'warn':\n            warnings.warn(NSPLIT_WARNING, FutureWarning)\n            n_splits = 3\n        super().__init__(n_splits, shuffle, random_state)\n    def _iter_test_indices(self, X, y=None, groups=None):\n        n_samples = _num_samples(X)\n        indices = np.arange(n_samples)\n        if self.shuffle:\n            check_random_state(self.random_state).shuffle(indices)",
+      "score": 0.8433745503425598
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_supervised_y_2d",
+      "signature": "def check_supervised_y_2d(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_supervised_y_2d\nSignature: def check_supervised_y_2d(name, estimator_orig):\nDocstring: \nBody Preview:     if \"MultiTask\" in name:\n        # These only work on 2d, so this test makes no sense\n        return\n    rnd = np.random.RandomState(0)\n    X = pairwise_estimator_convert_X(rnd.uniform(size=(10, 3)), estimator_orig)\n    y = np.arange(10) % 3\n    estimator = clone(estimator_orig)\n    set_random_state(estimator)\n    # fit\n    estimator.fit(X, y)",
+      "score": 0.8414621353149414
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_estimators_empty_data_messages",
+      "signature": "def check_estimators_empty_data_messages(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_estimators_empty_data_messages\nSignature: def check_estimators_empty_data_messages(name, estimator_orig):\nDocstring: \nBody Preview:     e = clone(estimator_orig)\n    set_random_state(e, 1)\n    X_zero_samples = np.empty(0).reshape(0, 3)\n    # The precise message can change depending on whether X or y is\n    # validated first. Let us test the type of exception only:\n    with assert_raises(ValueError, msg=\"The estimator {} does not\"\n                       \" raise an error when an empty data is used \"\n                       \"to train. Perhaps use \"\n                       \"check_array in train.\".format(name)):\n        e.fit(X_zero_samples, [])",
+      "score": 0.8390790224075317
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_sparsify_coefficients",
+      "signature": "def check_sparsify_coefficients(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_sparsify_coefficients\nSignature: def check_sparsify_coefficients(name, estimator_orig):\nDocstring: \nBody Preview:     X = np.array([[-2, -1], [-1, -1], [-1, -2], [1, 1], [1, 2], [2, 1],\n                  [-1, -2], [2, 2], [-2, -2]])\n    y = [1, 1, 1, 2, 2, 2, 3, 3, 3]\n    est = clone(estimator_orig)\n    est.fit(X, y)\n    pred_orig = est.predict(X)\n    # test sparsify with dense inputs\n    est.sparsify()\n    assert sparse.issparse(est.coef_)",
+      "score": 0.8385886549949646
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_transformer_data_not_an_array",
+      "signature": "def check_transformer_data_not_an_array(name, transformer):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_transformer_data_not_an_array\nSignature: def check_transformer_data_not_an_array(name, transformer):\nDocstring: \nBody Preview:     X, y = make_blobs(n_samples=30, centers=[[0, 0, 0], [1, 1, 1]],\n                      random_state=0, n_features=2, cluster_std=0.1)\n    X = StandardScaler().fit_transform(X)\n    # We need to make sure that we have non negative data, for things\n    # like NMF\n    X -= X.min() - .1\n    this_X = NotAnArray(X)\n    this_y = NotAnArray(np.asarray(y))\n    _check_transformer(name, transformer, this_X, this_y)",
+      "score": 0.8374897241592407
+    },
+    {
+      "symbol_id": "sklearn/model_selection/_split.py::GroupKFold.__init__",
+      "signature": "def __init__(self, n_splits='warn'):",
+      "summary": "",
+      "document_text": "File: sklearn/model_selection/_split.py\nSymbol: sklearn/model_selection/_split.py::GroupKFold.__init__\nSignature: def __init__(self, n_splits='warn'):\nDocstring: \nBody Preview:         if n_splits == 'warn':\n            warnings.warn(NSPLIT_WARNING, FutureWarning)\n            n_splits = 3\n        super().__init__(n_splits, shuffle=False, random_state=None)\n    def _iter_test_indices(self, X, y, groups):\n        if groups is None:\n            raise ValueError(\"The 'groups' parameter should not be None.\")\n        groups = check_array(groups, ensure_2d=False, dtype=None)\n        unique_groups, groups = np.unique(groups, return_inverse=True)",
+      "score": 0.8371221423149109
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-18698",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/polys/sqfreetools.py::dup_gf_sqf_list",
+      "signature": "def dup_gf_sqf_list(f, K, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/sqfreetools.py\nSymbol: sympy/polys/sqfreetools.py::dup_gf_sqf_list\nSignature: def dup_gf_sqf_list(f, K, all=False):\nDocstring: \nBody Preview:     \"\"\"Compute square-free decomposition of ``f`` in ``GF(p)[x]``. \"\"\"\n    f = dup_convert(f, K, K.dom)\n    coeff, factors = gf_sqf_list(f, K.mod, K.dom, all=all)\n    for i, (f, k) in enumerate(factors):\n        factors[i] = (dup_convert(f, K.dom, K), k)\n    return K.convert(coeff, K.dom), factors",
+      "score": 0.8962091207504272
+    },
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.dmp_gf_sqf_list",
+      "signature": "def dmp_gf_sqf_list(self, f, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.dmp_gf_sqf_list\nSignature: def dmp_gf_sqf_list(self, f, all=False):\nDocstring: \nBody Preview:         coeff, factors = dmp_gf_sqf_list(self.to_dense(f), self.ngens-1, self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dup_sqf_list(self, f, all=False):\n        coeff, factors = dup_sqf_list(self.to_dense(f), self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dup_sqf_list_include(self, f, all=False):\n        factors = dup_sqf_list_include(self.to_dense(f), self.domain, all=all)\n        return [ (self.from_dense(g), k) for g, k in factors ]\n    def dmp_sqf_list(self, f, all=False):\n        coeff, factors = dmp_sqf_list(self.to_dense(f), self.ngens-1, self.domain, all=all)",
+      "score": 0.8752474188804626
+    },
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.dup_gf_sqf_list",
+      "signature": "def dup_gf_sqf_list(self, f, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.dup_gf_sqf_list\nSignature: def dup_gf_sqf_list(self, f, all=False):\nDocstring: \nBody Preview:         coeff, factors = dup_gf_sqf_list(self.to_dense(f), self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dmp_gf_sqf_list(self, f, all=False):\n        coeff, factors = dmp_gf_sqf_list(self.to_dense(f), self.ngens-1, self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dup_sqf_list(self, f, all=False):\n        coeff, factors = dup_sqf_list(self.to_dense(f), self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dup_sqf_list_include(self, f, all=False):\n        factors = dup_sqf_list_include(self.to_dense(f), self.domain, all=all)",
+      "score": 0.868996262550354
+    },
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.dup_sqf_list",
+      "signature": "def dup_sqf_list(self, f, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.dup_sqf_list\nSignature: def dup_sqf_list(self, f, all=False):\nDocstring: \nBody Preview:         coeff, factors = dup_sqf_list(self.to_dense(f), self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dup_sqf_list_include(self, f, all=False):\n        factors = dup_sqf_list_include(self.to_dense(f), self.domain, all=all)\n        return [ (self.from_dense(g), k) for g, k in factors ]\n    def dmp_sqf_list(self, f, all=False):\n        coeff, factors = dmp_sqf_list(self.to_dense(f), self.ngens-1, self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dmp_sqf_list_include(self, f, all=False):\n        factors = dmp_sqf_list_include(self.to_dense(f), self.ngens-1, self.domain, all=all)",
+      "score": 0.8670679330825806
+    },
+    {
+      "symbol_id": "sympy/polys/polytools.py::sqf_list",
+      "signature": "def sqf_list(f, *gens, **args):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polytools.py\nSymbol: sympy/polys/polytools.py::sqf_list\nSignature: def sqf_list(f, *gens, **args):\nDocstring: \nBody Preview:     \"\"\"\n    Compute a list of square-free factors of ``f``.\n    Examples\n    ========\n    >>> from sympy import sqf_list\n    >>> from sympy.abc import x\n    >>> sqf_list(2*x**5 + 16*x**4 + 50*x**3 + 76*x**2 + 56*x + 16)\n    (2, [(x + 1, 2), (x + 2, 3)])",
+      "score": 0.8663528561592102
+    },
+    {
+      "symbol_id": "sympy/polys/rings.py::PolyElement.sqf_list",
+      "signature": "def sqf_list(f, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/rings.py\nSymbol: sympy/polys/rings.py::PolyElement.sqf_list\nSignature: def sqf_list(f, all=False):\nDocstring: \nBody Preview:         return f.ring.dmp_sqf_list(f, all=all)\n    def factor_list(f):\n        return f.ring.dmp_factor_list(f)",
+      "score": 0.8639336824417114
+    },
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.gf_sqf_list",
+      "signature": "def gf_sqf_list(self, f, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.gf_sqf_list\nSignature: def gf_sqf_list(self, f, all=False):\nDocstring: \nBody Preview:         coeff, factors = gf_sqf_part(self.to_gf_dense(f), self.domain.mod, self.domain.dom)\n        return coeff, [ (self.from_gf_dense(g), k) for g, k in factors ]\n    def gf_Qmatrix(self, f):\n        return gf_Qmatrix(self.to_gf_dense(f), self.domain.mod, self.domain.dom)\n    def gf_berlekamp(self, f):\n        factors = gf_berlekamp(self.to_gf_dense(f), self.domain.mod, self.domain.dom)\n        return [ self.from_gf_dense(g) for g in factors ]\n    def gf_ddf_zassenhaus(self, f):\n        factors = gf_ddf_zassenhaus(self.to_gf_dense(f), self.domain.mod, self.domain.dom)",
+      "score": 0.8634499311447144
+    },
+    {
+      "symbol_id": "sympy/polys/compatibility.py::IPolys.dup_sqf_list_include",
+      "signature": "def dup_sqf_list_include(self, f, all=False):",
+      "summary": "",
+      "document_text": "File: sympy/polys/compatibility.py\nSymbol: sympy/polys/compatibility.py::IPolys.dup_sqf_list_include\nSignature: def dup_sqf_list_include(self, f, all=False):\nDocstring: \nBody Preview:         factors = dup_sqf_list_include(self.to_dense(f), self.domain, all=all)\n        return [ (self.from_dense(g), k) for g, k in factors ]\n    def dmp_sqf_list(self, f, all=False):\n        coeff, factors = dmp_sqf_list(self.to_dense(f), self.ngens-1, self.domain, all=all)\n        return (coeff, [ (self.from_dense(g), k) for g, k in factors ])\n    def dmp_sqf_list_include(self, f, all=False):\n        factors = dmp_sqf_list_include(self.to_dense(f), self.ngens-1, self.domain, all=all)\n        return [ (self.from_dense(g), k) for g, k in factors ]\n    def dup_gff_list(self, f):\n        factors = dup_gff_list(self.to_dense(f), self.domain)",
+      "score": 0.8614407777786255
+    }
+  ]
+}

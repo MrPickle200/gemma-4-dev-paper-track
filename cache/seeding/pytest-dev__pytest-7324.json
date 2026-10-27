@@ -1,0 +1,61 @@
+{
+  "instance_id": "pytest-dev__pytest-7324",
+  "top_symbols": [
+    {
+      "symbol_id": "src/_pytest/main.py::NoMatch",
+      "signature": "class NoMatch(Exception):",
+      "summary": "",
+      "document_text": "File: src/_pytest/main.py\nSymbol: src/_pytest/main.py::NoMatch\nSignature: class NoMatch(Exception):\nDocstring: \nBody Preview:     \"\"\" raised if matching cannot locate a matching names. \"\"\"\nclass Interrupted(KeyboardInterrupt):\n    \"\"\" signals an interrupted test run. \"\"\"\n    __module__ = \"builtins\"  # for py3\nclass Failed(Exception):\n    \"\"\" signals a stop as failed test run. \"\"\"",
+      "score": 0.8612085580825806
+    },
+    {
+      "symbol_id": "src/_pytest/pytester.py::Testdir.runpython",
+      "signature": "def runpython(self, script) -> RunResult:",
+      "summary": "",
+      "document_text": "File: src/_pytest/pytester.py\nSymbol: src/_pytest/pytester.py::Testdir.runpython\nSignature: def runpython(self, script) -> RunResult:\nDocstring: \nBody Preview:         \"\"\"Run a python script using sys.executable as interpreter.\n        Returns a :py:class:`RunResult`.\n        \"\"\"\n        return self.run(sys.executable, script)\n    def runpython_c(self, command):\n        \"\"\"Run python -c \"command\", return a :py:class:`RunResult`.\"\"\"\n        return self.run(sys.executable, \"-c\", command)",
+      "score": 0.853945255279541
+    },
+    {
+      "symbol_id": "src/_pytest/python.py::PyCollector.isnosetest",
+      "signature": "def isnosetest(self, obj):",
+      "summary": "",
+      "document_text": "File: src/_pytest/python.py\nSymbol: src/_pytest/python.py::PyCollector.isnosetest\nSignature: def isnosetest(self, obj):\nDocstring: \nBody Preview:         \"\"\" Look for the __test__ attribute, which is applied by the\n        @nose.tools.istest decorator\n        \"\"\"\n        # We explicitly check for \"is True\" here to not mistakenly treat\n        # classes with a custom __getattr__ returning something truthy (like a\n        # function) as test classes.\n        return safe_getattr(obj, \"__test__\", False) is True\n    def classnamefilter(self, name):\n        return self._matches_prefix_or_glob_option(\"python_classes\", name)",
+      "score": 0.851681113243103
+    },
+    {
+      "symbol_id": "src/_pytest/assertion/rewrite.py::AssertionRewriter",
+      "signature": "class AssertionRewriter(ast.NodeVisitor):",
+      "summary": "",
+      "document_text": "File: src/_pytest/assertion/rewrite.py\nSymbol: src/_pytest/assertion/rewrite.py::AssertionRewriter\nSignature: class AssertionRewriter(ast.NodeVisitor):\nDocstring: \nBody Preview:     \"\"\"Assertion rewriting implementation.\n    The main entrypoint is to call .run() with an ast.Module instance,\n    this will then find all the assert statements and rewrite them to\n    provide intermediate values and a detailed assertion error.  See\n    http://pybites.blogspot.be/2011/07/behind-scenes-of-pytests-new-assertion.html\n    for an overview of how this works.\n    The entry point here is .run() which will iterate over all the\n    statements in an ast.Module and for each ast.Assert statement it\n    finds call .visit() with it.  Then .visit_Assert() takes over and",
+      "score": 0.8514279723167419
+    },
+    {
+      "symbol_id": "src/_pytest/python.py::Class.collect",
+      "signature": "def collect(self) -> Iterable[Union[nodes.Item, nodes.Collector]]:",
+      "summary": "",
+      "document_text": "File: src/_pytest/python.py\nSymbol: src/_pytest/python.py::Class.collect\nSignature: def collect(self) -> Iterable[Union[nodes.Item, nodes.Collector]]:\nDocstring: \nBody Preview:         if not safe_getattr(self.obj, \"__test__\", True):\n            return []\n        if hasinit(self.obj):\n            assert self.parent is not None\n            self.warn(\n                PytestCollectionWarning(\n                    \"cannot collect test class %r because it has a \"\n                    \"__init__ constructor (from: %s)\"\n                    % (self.obj.__name__, self.parent.nodeid)\n                )",
+      "score": 0.8496999740600586
+    },
+    {
+      "symbol_id": "src/_pytest/assertion/__init__.py::pytest_assertrepr_compare",
+      "signature": "def pytest_assertrepr_compare(",
+      "summary": "",
+      "document_text": "File: src/_pytest/assertion/__init__.py\nSymbol: src/_pytest/assertion/__init__.py::pytest_assertrepr_compare\nSignature: def pytest_assertrepr_compare(\nDocstring: \nBody Preview:     config: Config, op: str, left: Any, right: Any\n) -> Optional[List[str]]:\n    return util.assertrepr_compare(config=config, op=op, left=left, right=right)",
+      "score": 0.8481812477111816
+    },
+    {
+      "symbol_id": "src/_pytest/compat.py::NotSetType",
+      "signature": "class NotSetType(enum.Enum):",
+      "summary": "",
+      "document_text": "File: src/_pytest/compat.py\nSymbol: src/_pytest/compat.py::NotSetType\nSignature: class NotSetType(enum.Enum):\nDocstring: \nBody Preview:     token = 0\nNOTSET = NotSetType.token  # type: Final # noqa: E305\n# fmt: on\nMODULE_NOT_FOUND_ERROR = (\n    \"ModuleNotFoundError\" if sys.version_info[:2] >= (3, 6) else \"ImportError\"\n)\nif sys.version_info >= (3, 8):\n    from importlib import metadata as importlib_metadata",
+      "score": 0.8479950428009033
+    },
+    {
+      "symbol_id": "src/_pytest/python.py::PyCollector.classnamefilter",
+      "signature": "def classnamefilter(self, name):",
+      "summary": "",
+      "document_text": "File: src/_pytest/python.py\nSymbol: src/_pytest/python.py::PyCollector.classnamefilter\nSignature: def classnamefilter(self, name):\nDocstring: \nBody Preview:         return self._matches_prefix_or_glob_option(\"python_classes\", name)\n    def istestfunction(self, obj, name):\n        if self.funcnamefilter(name) or self.isnosetest(obj):\n            if isinstance(obj, staticmethod):\n                # static methods need to be unwrapped\n                obj = safe_getattr(obj, \"__func__\", False)\n            return (\n                safe_getattr(obj, \"__call__\", False)\n                and fixtures.getfixturemarker(obj) is None\n            )",
+      "score": 0.8477554321289062
+    }
+  ]
+}

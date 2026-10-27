@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-15017",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/tensor/array/ndim_array.py::NDimArray.__len__",
+      "signature": "def __len__(self):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/ndim_array.py\nSymbol: sympy/tensor/array/ndim_array.py::NDimArray.__len__\nSignature: def __len__(self):\nDocstring: \nBody Preview:         \"\"\"Overload common function len(). Returns number of elements in array.\n        Examples\n        ========\n        >>> from sympy import MutableDenseNDimArray\n        >>> a = MutableDenseNDimArray.zeros(3, 3)\n        >>> a\n        [[0, 0, 0], [0, 0, 0], [0, 0, 0]]\n        >>> len(a)\n        9",
+      "score": 0.9332218170166016
+    },
+    {
+      "symbol_id": "sympy/tensor/array/ndim_array.py::NDimArray._scan_iterable_shape",
+      "signature": "def _scan_iterable_shape(cls, iterable):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/ndim_array.py\nSymbol: sympy/tensor/array/ndim_array.py::NDimArray._scan_iterable_shape\nSignature: def _scan_iterable_shape(cls, iterable):\nDocstring: \nBody Preview:         def f(pointer):\n            if not isinstance(pointer, Iterable):\n                return [pointer], ()\n            result = []\n            elems, shapes = zip(*[f(i) for i in pointer])\n            if len(set(shapes)) != 1:\n                raise ValueError(\"could not determine shape unambiguously\")\n            for i in elems:\n                result.extend(i)\n            return result, (len(shapes),)+shapes[0]",
+      "score": 0.8916912078857422
+    },
+    {
+      "symbol_id": "sympy/tensor/array/sparse_ndim_array.py::MutableSparseNDimArray",
+      "signature": "class MutableSparseNDimArray(MutableNDimArray, SparseNDimArray):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/sparse_ndim_array.py\nSymbol: sympy/tensor/array/sparse_ndim_array.py::MutableSparseNDimArray\nSignature: class MutableSparseNDimArray(MutableNDimArray, SparseNDimArray):\nDocstring: \nBody Preview:     def __new__(cls, iterable=None, shape=None, **kwargs):\n        from sympy.utilities.iterables import flatten\n        shape, flat_list = cls._handle_ndarray_creation_inputs(iterable, shape, **kwargs)\n        self = object.__new__(cls)\n        self._shape = shape\n        self._rank = len(shape)\n        self._loop_size = functools.reduce(lambda x,y: x*y, shape) if shape else 0\n        # Sparse array:",
+      "score": 0.8827313780784607
+    },
+    {
+      "symbol_id": "sympy/tensor/array/ndim_array.py::NDimArray.rank",
+      "signature": "def rank(self):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/ndim_array.py\nSymbol: sympy/tensor/array/ndim_array.py::NDimArray.rank\nSignature: def rank(self):\nDocstring: \nBody Preview:         \"\"\"\n        Returns rank of array.\n        Examples\n        ========\n        >>> from sympy import MutableDenseNDimArray\n        >>> a = MutableDenseNDimArray.zeros(3,4,5,6,3)\n        >>> a.rank()\n        5",
+      "score": 0.8814283609390259
+    },
+    {
+      "symbol_id": "sympy/tensor/array/dense_ndim_array.py::ImmutableDenseNDimArray._new",
+      "signature": "def _new(cls, iterable, shape, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/dense_ndim_array.py\nSymbol: sympy/tensor/array/dense_ndim_array.py::ImmutableDenseNDimArray._new\nSignature: def _new(cls, iterable, shape, **kwargs):\nDocstring: \nBody Preview:         from sympy.utilities.iterables import flatten\n        shape, flat_list = cls._handle_ndarray_creation_inputs(iterable, shape, **kwargs)\n        shape = Tuple(*map(_sympify, shape))\n        flat_list = flatten(flat_list)\n        flat_list = Tuple(*flat_list)\n        self = Basic.__new__(cls, flat_list, shape, **kwargs)\n        self._shape = shape\n        self._array = list(flat_list)\n        self._rank = len(shape)\n        self._loop_size = functools.reduce(lambda x,y: x*y, shape) if shape else 0",
+      "score": 0.8764622211456299
+    },
+    {
+      "symbol_id": "sympy/tensor/array/dense_ndim_array.py::MutableDenseNDimArray._new",
+      "signature": "def _new(cls, iterable, shape, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/dense_ndim_array.py\nSymbol: sympy/tensor/array/dense_ndim_array.py::MutableDenseNDimArray._new\nSignature: def _new(cls, iterable, shape, **kwargs):\nDocstring: \nBody Preview:         from sympy.utilities.iterables import flatten\n        shape, flat_list = cls._handle_ndarray_creation_inputs(iterable, shape, **kwargs)\n        flat_list = flatten(flat_list)\n        self = object.__new__(cls)\n        self._shape = shape\n        self._array = list(flat_list)\n        self._rank = len(shape)\n        self._loop_size = functools.reduce(lambda x,y: x*y, shape) if shape else 0\n        return self",
+      "score": 0.8762589693069458
+    },
+    {
+      "symbol_id": "sympy/matrices/immutable.py::ImmutableDenseMatrix.shape",
+      "signature": "def shape(self):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/immutable.py\nSymbol: sympy/matrices/immutable.py::ImmutableDenseMatrix.shape\nSignature: def shape(self):\nDocstring: \nBody Preview:         return tuple(int(i) for i in self.args[:2])\n# This is included after the class definition as a workaround for issue 7213.\n# See https://github.com/sympy/sympy/issues/7213\n# the object is non-zero\n# See https://github.com/sympy/sympy/issues/7213\nImmutableDenseMatrix.is_zero = DenseMatrix.is_zero\n# make sure ImmutableDenseMatrix is aliased as ImmutableMatrix\nImmutableMatrix = ImmutableDenseMatrix",
+      "score": 0.8731899261474609
+    },
+    {
+      "symbol_id": "sympy/tensor/array/ndim_array.py::ImmutableNDimArray",
+      "signature": "class ImmutableNDimArray(NDimArray, Basic):",
+      "summary": "",
+      "document_text": "File: sympy/tensor/array/ndim_array.py\nSymbol: sympy/tensor/array/ndim_array.py::ImmutableNDimArray\nSignature: class ImmutableNDimArray(NDimArray, Basic):\nDocstring: \nBody Preview:     _op_priority = 11.0\n    def __hash__(self):\n        return Basic.__hash__(self)\n    def as_immutable(self):\n        return self\n    def as_mutable(self):\n        raise NotImplementedError(\"abstract method\")",
+      "score": 0.872516393661499
+    }
+  ]
+}

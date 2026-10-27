@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-25931",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/ensemble/_iforest.py::IsolationForest.__init__",
+      "signature": "def __init__(",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/_iforest.py\nSymbol: sklearn/ensemble/_iforest.py::IsolationForest.__init__\nSignature: def __init__(\nDocstring: \nBody Preview:         self,\n        *,\n        n_estimators=100,\n        max_samples=\"auto\",\n        contamination=\"auto\",\n        max_features=1.0,\n        bootstrap=False,\n        n_jobs=None,\n        random_state=None,\n        verbose=0,",
+      "score": 0.8778066039085388
+    },
+    {
+      "symbol_id": "examples/miscellaneous/plot_outlier_detection_bench.py::compute_prediction",
+      "signature": "def compute_prediction(X, model_name):",
+      "summary": "",
+      "document_text": "File: examples/miscellaneous/plot_outlier_detection_bench.py\nSymbol: examples/miscellaneous/plot_outlier_detection_bench.py::compute_prediction\nSignature: def compute_prediction(X, model_name):\nDocstring: \nBody Preview:     print(f\"Computing {model_name} prediction...\")\n    if model_name == \"LOF\":\n        clf = LocalOutlierFactor(n_neighbors=20, contamination=\"auto\")\n        clf.fit(X)\n        y_pred = clf.negative_outlier_factor_\n    if model_name == \"IForest\":\n        clf = IsolationForest(random_state=rng, contamination=\"auto\")\n        y_pred = clf.fit(X).decision_function(X)\n    return y_pred",
+      "score": 0.8739435076713562
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_classifiers_multilabel_representation_invariance",
+      "signature": "def check_classifiers_multilabel_representation_invariance(name, classifier_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_classifiers_multilabel_representation_invariance\nSignature: def check_classifiers_multilabel_representation_invariance(name, classifier_orig):\nDocstring: \nBody Preview:     X, y = make_multilabel_classification(\n        n_samples=100,\n        n_features=2,\n        n_classes=5,\n        n_labels=3,\n        length=50,\n        allow_unlabeled=True,\n        random_state=0,\n    )\n    X = scale(X)",
+      "score": 0.8613988161087036
+    },
+    {
+      "symbol_id": "sklearn/feature_selection/_base.py::SelectorMixin._transform",
+      "signature": "def _transform(self, X):",
+      "summary": "",
+      "document_text": "File: sklearn/feature_selection/_base.py\nSymbol: sklearn/feature_selection/_base.py::SelectorMixin._transform\nSignature: def _transform(self, X):\nDocstring: \nBody Preview:         \"\"\"Reduce X to the selected features.\"\"\"\n        mask = self.get_support()\n        if not mask.any():\n            warnings.warn(\n                \"No features were selected: either the data is\"\n                \" too noisy or the selection test too strict.\",\n                UserWarning,\n            )\n            if hasattr(X, \"iloc\"):\n                return X.iloc[:, :0]",
+      "score": 0.850343644618988
+    },
+    {
+      "symbol_id": "sklearn/utils/estimator_checks.py::check_complex_data",
+      "signature": "def check_complex_data(name, estimator_orig):",
+      "summary": "",
+      "document_text": "File: sklearn/utils/estimator_checks.py\nSymbol: sklearn/utils/estimator_checks.py::check_complex_data\nSignature: def check_complex_data(name, estimator_orig):\nDocstring: \nBody Preview:     rng = np.random.RandomState(42)\n    # check that estimators raise an exception on providing complex data\n    X = rng.uniform(size=10) + 1j * rng.uniform(size=10)\n    X = X.reshape(-1, 1)\n    # Something both valid for classification and regression\n    y = rng.randint(low=0, high=2, size=10) + 1j\n    estimator = clone(estimator_orig)\n    set_random_state(estimator, random_state=0)\n    with raises(ValueError, match=\"Complex data not supported\"):\n        estimator.fit(X, y)",
+      "score": 0.8440440893173218
+    },
+    {
+      "symbol_id": "sklearn/neighbors/_lof.py::LocalOutlierFactor._check_novelty_fit_predict",
+      "signature": "def _check_novelty_fit_predict(self):",
+      "summary": "",
+      "document_text": "File: sklearn/neighbors/_lof.py\nSymbol: sklearn/neighbors/_lof.py::LocalOutlierFactor._check_novelty_fit_predict\nSignature: def _check_novelty_fit_predict(self):\nDocstring: \nBody Preview:         if self.novelty:\n            msg = (\n                \"fit_predict is not available when novelty=True. Use \"\n                \"novelty=False if you want to predict on the training set.\"\n            )\n            raise AttributeError(msg)\n        return True\n    @available_if(_check_novelty_fit_predict)\n    def fit_predict(self, X, y=None):\n        \"\"\"Fit the model to the training set X and return the labels.",
+      "score": 0.8430160880088806
+    },
+    {
+      "symbol_id": "sklearn/externals/_arff.py::BadAttributeName",
+      "signature": "class BadAttributeName(ArffException):",
+      "summary": "",
+      "document_text": "File: sklearn/externals/_arff.py\nSymbol: sklearn/externals/_arff.py::BadAttributeName\nSignature: class BadAttributeName(ArffException):\nDocstring: \nBody Preview:     '''Error raised when an attribute name is provided twice the attribute\n    declaration.'''\n    def __init__(self, value, value2):\n        super().__init__()\n        self.message = (\n            ('Bad @ATTRIBUTE name %s at line' % value) +\n            ' %d, this name is already in use in line' +\n            (' %d.' % value2)\n        )",
+      "score": 0.8424746990203857
+    },
+    {
+      "symbol_id": "sklearn/tree/_export.py::Sentinel",
+      "signature": "class Sentinel:",
+      "summary": "",
+      "document_text": "File: sklearn/tree/_export.py\nSymbol: sklearn/tree/_export.py::Sentinel\nSignature: class Sentinel:\nDocstring: \nBody Preview:     def __repr__(self):\n        return '\"tree.dot\"'\nSENTINEL = Sentinel()\n@validate_params(\n    {\n        \"decision_tree\": [DecisionTreeClassifier, DecisionTreeRegressor],\n        \"max_depth\": [Interval(Integral, 0, None, closed=\"left\"), None],",
+      "score": 0.8420658111572266
+    }
+  ]
+}

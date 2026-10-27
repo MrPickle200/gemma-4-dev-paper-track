@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-21930",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/physics/secondquant.py::CreateBoson._latex",
+      "signature": "def _latex(self, printer):",
+      "summary": "",
+      "document_text": "File: sympy/physics/secondquant.py\nSymbol: sympy/physics/secondquant.py::CreateBoson._latex\nSignature: def _latex(self, printer):\nDocstring: \nBody Preview:         return \"b^\\\\dagger_{%s}\" % self.state.name\nB = AnnihilateBoson\nBd = CreateBoson\nclass FermionicOperator(SqOperator):\n    @property\n    def is_restricted(self):\n        \"\"\"",
+      "score": 0.9335439205169678
+    },
+    {
+      "symbol_id": "sympy/physics/secondquant.py::CreateBoson.__repr__",
+      "signature": "def __repr__(self):",
+      "summary": "",
+      "document_text": "File: sympy/physics/secondquant.py\nSymbol: sympy/physics/secondquant.py::CreateBoson.__repr__\nSignature: def __repr__(self):\nDocstring: \nBody Preview:         return \"CreateBoson(%s)\" % self.state\n    def _latex(self, printer):\n        return \"b^\\\\dagger_{%s}\" % self.state.name\nB = AnnihilateBoson\nBd = CreateBoson\nclass FermionicOperator(SqOperator):",
+      "score": 0.9317799210548401
+    },
+    {
+      "symbol_id": "sympy/physics/secondquant.py::Commutator.__repr__",
+      "signature": "def __repr__(self):",
+      "summary": "",
+      "document_text": "File: sympy/physics/secondquant.py\nSymbol: sympy/physics/secondquant.py::Commutator.__repr__\nSignature: def __repr__(self):\nDocstring: \nBody Preview:         return \"Commutator(%s,%s)\" % (self.args[0], self.args[1])\n    def __str__(self):\n        return \"[%s,%s]\" % (self.args[0], self.args[1])\n    def _latex(self, printer):\n        return \"\\\\left[%s,%s\\\\right]\" % tuple([\n            printer._print(arg) for arg in self.args])\nclass NO(Expr):",
+      "score": 0.9261376857757568
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/commutator.py::Commutator._pretty",
+      "signature": "def _pretty(self, printer, *args):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/commutator.py\nSymbol: sympy/physics/quantum/commutator.py::Commutator._pretty\nSignature: def _pretty(self, printer, *args):\nDocstring: \nBody Preview:         pform = printer._print(self.args[0], *args)\n        pform = prettyForm(*pform.right(prettyForm(',')))\n        pform = prettyForm(*pform.right(printer._print(self.args[1], *args)))\n        pform = prettyForm(*pform.parens(left='[', right=']'))\n        return pform\n    def _latex(self, printer, *args):\n        return \"\\\\left[%s,%s\\\\right]\" % tuple([\n            printer._print(arg, *args) for arg in self.args])",
+      "score": 0.9237619042396545
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/hilbert.py::L2._sympystr",
+      "signature": "def _sympystr(self, printer, *args):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/hilbert.py\nSymbol: sympy/physics/quantum/hilbert.py::L2._sympystr\nSignature: def _sympystr(self, printer, *args):\nDocstring: \nBody Preview:         return \"L2(%s)\" % printer._print(self.interval, *args)\n    def _pretty(self, printer, *args):\n        pform_exp = prettyForm('2')\n        pform_base = prettyForm('L')\n        return pform_base**pform_exp\n    def _latex(self, printer, *args):\n        interval = printer._print(self.interval, *args)\n        return r'{\\mathcal{L}^2}\\left( %s \\right)' % interval",
+      "score": 0.9226514101028442
+    },
+    {
+      "symbol_id": "sympy/functions/elementary/complexes.py::adjoint._latex",
+      "signature": "def _latex(self, printer, exp=None, *args):",
+      "summary": "",
+      "document_text": "File: sympy/functions/elementary/complexes.py\nSymbol: sympy/functions/elementary/complexes.py::adjoint._latex\nSignature: def _latex(self, printer, exp=None, *args):\nDocstring: \nBody Preview:         arg = printer._print(self.args[0])\n        tex = r'%s^{\\dagger}' % arg\n        if exp:\n            tex = r'\\left(%s\\right)^{%s}' % (tex, exp)\n        return tex\n    def _pretty(self, printer, *args):\n        from sympy.printing.pretty.stringpict import prettyForm\n        pform = printer._print(self.args[0], *args)\n        if printer._use_unicode:\n            pform = pform**prettyForm('\\N{DAGGER}')",
+      "score": 0.9216607809066772
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/operator.py::OuterProduct._sympyrepr",
+      "signature": "def _sympyrepr(self, printer, *args):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/operator.py\nSymbol: sympy/physics/quantum/operator.py::OuterProduct._sympyrepr\nSignature: def _sympyrepr(self, printer, *args):\nDocstring: \nBody Preview:         return '%s(%s,%s)' % (self.__class__.__name__,\n            printer._print(self.ket, *args), printer._print(self.bra, *args))\n    def _pretty(self, printer, *args):\n        pform = self.ket._pretty(printer, *args)\n        return prettyForm(*pform.right(self.bra._pretty(printer, *args)))\n    def _latex(self, printer, *args):\n        k = printer._print(self.ket, *args)\n        b = printer._print(self.bra, *args)\n        return k + b",
+      "score": 0.9170598983764648
+    },
+    {
+      "symbol_id": "sympy/physics/quantum/commutator.py::Commutator._sympyrepr",
+      "signature": "def _sympyrepr(self, printer, *args):",
+      "summary": "",
+      "document_text": "File: sympy/physics/quantum/commutator.py\nSymbol: sympy/physics/quantum/commutator.py::Commutator._sympyrepr\nSignature: def _sympyrepr(self, printer, *args):\nDocstring: \nBody Preview:         return \"%s(%s,%s)\" % (\n            self.__class__.__name__, printer._print(\n                self.args[0]), printer._print(self.args[1])\n        )\n    def _sympystr(self, printer, *args):\n        return \"[%s,%s]\" % (\n            printer._print(self.args[0]), printer._print(self.args[1]))\n    def _pretty(self, printer, *args):\n        pform = printer._print(self.args[0], *args)",
+      "score": 0.9169190526008606
+    }
+  ]
+}

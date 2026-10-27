@@ -75,24 +75,27 @@ LOOP_WARNING = ("LOOP DETECTED: You just executed the exact same tool call with 
 
 def system_prompt(variant: str) -> str:
     parts = [_BASE_PROMPT]
-    if variant == "M3":
+    if variant in ("M3", "M4"):
         parts.append(_M3_PHASES)
         parts.append(_LOCALIZE_AST)
     elif variant == "M2":
         parts.append(_LOCALIZE_AST)
     else:
         parts.append(_LOCALIZE_BASH)
-    if variant in ("M1", "M2", "M3"):
+    if variant in ("M1", "M2", "M3", "M4"):
         parts.append(_EDIT_STRUCTURED)
     return "\n\n".join(parts)
 
 
-def build_user_prompt(task: dict) -> str:
-    return (
+def build_user_prompt(task: dict, seeded_text: str | None = None) -> str:
+    base = (
         f"Repository: {task['repo']}\n\n"
         f"Bug report:\n{task['problem_statement']}\n\n"
         "Locate the cause and apply the fix."
     )
+    if seeded_text:
+        base = base + "\n\n" + seeded_text
+    return base
 
 
 class JsonlLogger:
@@ -207,11 +210,24 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
               logger: JsonlLogger, verbose: bool = True) -> dict:
     specs = toolbox.specs(cfg.variant)
     sys_prompt = system_prompt(cfg.variant)
+    seeded_symbols = None
+    seeded_text = None
+    if cfg.variant == "M4":
+        try:
+            from harness.seeding import load_cache, format_block
+            cache_path = Path("cache/seeding") / f"{task['instance_id']}.json"
+            c = load_cache(cache_path)
+            if c:
+                seeded_symbols = c.get("top_symbols", [])[:8]
+                seeded_text = format_block(seeded_symbols)
+        except Exception:
+            seeded_symbols = None
+            seeded_text = None
     messages: list[dict] = [
         {"role": "system", "content": sys_prompt},
-        {"role": "user", "content": build_user_prompt(task)},
+        {"role": "user", "content": build_user_prompt(task, seeded_text)},
     ]
-    phase = "localize" if cfg.variant == "M3" else "solve"
+    phase = "localize" if cfg.variant in ("M3", "M4") else "solve"
     compacted = False
 
     logger.write({
@@ -231,6 +247,7 @@ def run_agent(cfg: RunConfig, task: dict, client: LLMClient, toolbox: ToolBox,
         },
         "problem_statement_chars": len(task["problem_statement"]),
         "system_prompt_chars": len(sys_prompt),
+        "seeded_symbols": seeded_symbols,
     })
 
     t_run = time.time()

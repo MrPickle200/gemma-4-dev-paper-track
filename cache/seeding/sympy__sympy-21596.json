@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-21596",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/sets/fancysets.py::Integers.as_relational",
+      "signature": "def as_relational(self, x):",
+      "summary": "",
+      "document_text": "File: sympy/sets/fancysets.py\nSymbol: sympy/sets/fancysets.py::Integers.as_relational\nSignature: def as_relational(self, x):\nDocstring: \nBody Preview:         from sympy.functions.elementary.integers import floor\n        return And(Eq(floor(x), x), -oo < x, x < oo)\n    def _eval_is_subset(self, other):\n        return Range(-oo, oo).is_subset(other)\n    def _eval_is_superset(self, other):\n        return Range(-oo, oo).is_superset(other)\nclass Reals(Interval, metaclass=Singleton):",
+      "score": 0.9130078554153442
+    },
+    {
+      "symbol_id": "sympy/sets/handlers/issubset.py::is_subset_sets",
+      "signature": "def is_subset_sets(a_interval, b_rationals): # noqa:F811",
+      "summary": "",
+      "document_text": "File: sympy/sets/handlers/issubset.py\nSymbol: sympy/sets/handlers/issubset.py::is_subset_sets\nSignature: def is_subset_sets(a_interval, b_rationals): # noqa:F811\nDocstring: \nBody Preview:     if a_interval.measure.is_extended_nonzero:\n        return False\n@dispatch(Range, Complexes)  # type: ignore # noqa:F811\ndef is_subset_sets(a, b): # noqa:F811\n    return True\n@dispatch(Complexes, Interval)  # type: ignore # noqa:F811\ndef is_subset_sets(a, b): # noqa:F811\n    return False",
+      "score": 0.9119539260864258
+    },
+    {
+      "symbol_id": "sympy/assumptions/handlers/sets.py::_",
+      "signature": "def _(expr, assumptions):",
+      "summary": "",
+      "document_text": "File: sympy/assumptions/handlers/sets.py\nSymbol: sympy/assumptions/handlers/sets.py::_\nSignature: def _(expr, assumptions):\nDocstring: \nBody Preview:     return None\n# ImaginaryPredicate\ndef _Imaginary_number(expr, assumptions):\n    # let as_real_imag() work first since the expression may\n    # be simpler to evaluate\n    r = expr.as_real_imag()[0].evalf(2)\n    if r._prec != 1:\n        return not r",
+      "score": 0.9069193601608276
+    },
+    {
+      "symbol_id": "sympy/sets/fancysets.py::Integers._contains",
+      "signature": "def _contains(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/sets/fancysets.py\nSymbol: sympy/sets/fancysets.py::Integers._contains\nSignature: def _contains(self, other):\nDocstring: \nBody Preview:         if not isinstance(other, Expr):\n            return S.false\n        return other.is_integer\n    def __iter__(self):\n        yield S.Zero\n        i = S.One\n        while True:\n            yield i\n            yield -i\n            i = i + 1",
+      "score": 0.9051827192306519
+    },
+    {
+      "symbol_id": "sympy/sets/handlers/issubset.py::is_subset_sets",
+      "signature": "def is_subset_sets(a, b): # noqa:F811",
+      "summary": "",
+      "document_text": "File: sympy/sets/handlers/issubset.py\nSymbol: sympy/sets/handlers/issubset.py::is_subset_sets\nSignature: def is_subset_sets(a, b): # noqa:F811\nDocstring: \nBody Preview:     return False\n@dispatch(Complexes, Rationals)  # type: ignore # noqa:F811\ndef is_subset_sets(a, b): # noqa:F811\n    return False\n@dispatch(Rationals, Reals)  # type: ignore # noqa:F811\ndef is_subset_sets(a, b): # noqa:F811\n    return True\n@dispatch(Rationals, Range)  # type: ignore # noqa:F811",
+      "score": 0.9042819738388062
+    },
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter._print_Reals",
+      "signature": "def _print_Reals(self, i):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter._print_Reals\nSignature: def _print_Reals(self, i):\nDocstring: \nBody Preview:         return r\"\\mathbb{R}\"\n    def _print_Complexes(self, i):\n        return r\"\\mathbb{C}\"\n    def _print_ImageSet(self, s):\n        expr = s.lamda.expr\n        sig = s.lamda.signature\n        xys = ((self._print(x), self._print(y)) for x, y in zip(sig, s.base_sets))\n        xinys = r\" , \".join(r\"%s \\in %s\" % xy for xy in xys)\n        return r\"\\left\\{%s\\; \\middle|\\; %s\\right\\}\" % (self._print(expr), xinys)",
+      "score": 0.9042253494262695
+    },
+    {
+      "symbol_id": "sympy/sets/powerset.py::PowerSet._eval_is_subset",
+      "signature": "def _eval_is_subset(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/sets/powerset.py\nSymbol: sympy/sets/powerset.py::PowerSet._eval_is_subset\nSignature: def _eval_is_subset(self, other):\nDocstring: \nBody Preview:         if isinstance(other, PowerSet):\n            return self.arg.is_subset(other.arg)\n    def __len__(self):\n        return 2 ** len(self.arg)\n    def __iter__(self):\n        from .sets import FiniteSet\n        found = [S.EmptySet]\n        yield S.EmptySet",
+      "score": 0.9035630226135254
+    },
+    {
+      "symbol_id": "sympy/assumptions/handlers/sets.py::_RealPredicate_number",
+      "signature": "def _RealPredicate_number(expr, assumptions):",
+      "summary": "",
+      "document_text": "File: sympy/assumptions/handlers/sets.py\nSymbol: sympy/assumptions/handlers/sets.py::_RealPredicate_number\nSignature: def _RealPredicate_number(expr, assumptions):\nDocstring: \nBody Preview:     # let as_real_imag() work first since the expression may\n    # be simpler to evaluate\n    i = expr.as_real_imag()[1].evalf(2)\n    if i._prec != 1:\n        return not i\n    # allow None to be returned if we couldn't show for sure\n    # that i was 0\n@RealPredicate.register_many(Abs, Exp1, Float, GoldenRatio, im, Pi, Rational,\n    re, TribonacciConstant)\ndef _(expr, assumptions):",
+      "score": 0.9032043814659119
+    }
+  ]
+}

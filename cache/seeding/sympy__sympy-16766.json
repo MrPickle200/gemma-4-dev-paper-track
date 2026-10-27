@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-16766",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/rcode.py::RCodePrinter._print_Indexed",
+      "signature": "def _print_Indexed(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/rcode.py\nSymbol: sympy/printing/rcode.py::RCodePrinter._print_Indexed\nSignature: def _print_Indexed(self, expr):\nDocstring: \nBody Preview:         inds = [ self._print(i) for i in expr.indices ]\n        return \"%s[%s]\" % (self._print(expr.base.label), \", \".join(inds))\n    def _print_Idx(self, expr):\n        return self._print(expr.label)\n    def _print_Exp1(self, expr):\n        return \"exp(1)\"\n    def _print_Pi(self, expr):\n        return 'pi'",
+      "score": 0.971862256526947
+    },
+    {
+      "symbol_id": "sympy/printing/jscode.py::JavascriptCodePrinter._print_Indexed",
+      "signature": "def _print_Indexed(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/jscode.py\nSymbol: sympy/printing/jscode.py::JavascriptCodePrinter._print_Indexed\nSignature: def _print_Indexed(self, expr):\nDocstring: \nBody Preview:         # calculate index for 1d array\n        dims = expr.shape\n        elem = S.Zero\n        offset = S.One\n        for i in reversed(range(expr.rank)):\n            elem += expr.indices[i]*offset\n            offset *= dims[i]\n        return \"%s[%s]\" % (self._print(expr.base.label), self._print(elem))\n    def _print_Idx(self, expr):\n        return self._print(expr.label)",
+      "score": 0.9606889486312866
+    },
+    {
+      "symbol_id": "sympy/printing/rust.py::RustCodePrinter._print_Indexed",
+      "signature": "def _print_Indexed(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/rust.py\nSymbol: sympy/printing/rust.py::RustCodePrinter._print_Indexed\nSignature: def _print_Indexed(self, expr):\nDocstring: \nBody Preview:         # calculate index for 1d array\n        dims = expr.shape\n        elem = S.Zero\n        offset = S.One\n        for i in reversed(range(expr.rank)):\n            elem += expr.indices[i]*offset\n            offset *= dims[i]\n        return \"%s[%s]\" % (self._print(expr.base.label), self._print(elem))\n    def _print_Idx(self, expr):\n        return expr.label.name",
+      "score": 0.9591383934020996
+    },
+    {
+      "symbol_id": "sympy/printing/octave.py::OctaveCodePrinter._print_Indexed",
+      "signature": "def _print_Indexed(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/octave.py\nSymbol: sympy/printing/octave.py::OctaveCodePrinter._print_Indexed\nSignature: def _print_Indexed(self, expr):\nDocstring: \nBody Preview:         inds = [ self._print(i) for i in expr.indices ]\n        return \"%s(%s)\" % (self._print(expr.base.label), \", \".join(inds))\n    def _print_Idx(self, expr):\n        return self._print(expr.label)\n    def _print_KroneckerDelta(self, expr):\n        prec = PRECEDENCE[\"Pow\"]\n        return \"double(%s == %s)\" % tuple(self.parenthesize(x, prec)",
+      "score": 0.9584695100784302
+    },
+    {
+      "symbol_id": "sympy/printing/llvmjitcode.py::LLVMJitCallbackPrinter._print_Indexed",
+      "signature": "def _print_Indexed(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/llvmjitcode.py\nSymbol: sympy/printing/llvmjitcode.py::LLVMJitCallbackPrinter._print_Indexed\nSignature: def _print_Indexed(self, expr):\nDocstring: \nBody Preview:         array, idx = self.func_arg_map[expr.base]\n        offset = int(expr.indices[0].evalf())\n        array_ptr = self.builder.gep(array, [ll.Constant(ll.IntType(32), offset)])\n        fp_array_ptr = self.builder.bitcast(array_ptr, ll.PointerType(self.fp_type))\n        value = self.builder.load(fp_array_ptr)\n        return value\n    def _print_Symbol(self, s):\n        val = self.tmp_var.get(s)\n        if val:\n            return val",
+      "score": 0.957026481628418
+    },
+    {
+      "symbol_id": "sympy/printing/llvmjitcode.py::LLVMJitCallbackPrinter",
+      "signature": "class LLVMJitCallbackPrinter(LLVMJitPrinter):",
+      "summary": "",
+      "document_text": "File: sympy/printing/llvmjitcode.py\nSymbol: sympy/printing/llvmjitcode.py::LLVMJitCallbackPrinter\nSignature: class LLVMJitCallbackPrinter(LLVMJitPrinter):\nDocstring: \nBody Preview:     def __init__(self, *args, **kwargs):\n        super(LLVMJitCallbackPrinter, self).__init__(*args, **kwargs)\n    def _print_Indexed(self, expr):\n        array, idx = self.func_arg_map[expr.base]\n        offset = int(expr.indices[0].evalf())\n        array_ptr = self.builder.gep(array, [ll.Constant(ll.IntType(32), offset)])\n        fp_array_ptr = self.builder.bitcast(array_ptr, ll.PointerType(self.fp_type))\n        value = self.builder.load(fp_array_ptr)\n        return value",
+      "score": 0.9486528038978577
+    },
+    {
+      "symbol_id": "sympy/printing/latex.py::LatexPrinter._print_TensorIndex",
+      "signature": "def _print_TensorIndex(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/latex.py\nSymbol: sympy/printing/latex.py::LatexPrinter._print_TensorIndex\nSignature: def _print_TensorIndex(self, expr):\nDocstring: \nBody Preview:         return \"{}%s{%s}\" % (\n            \"^\" if expr.is_up else \"_\",\n            self._print(expr.args[0])\n        )\n    def _print_UniversalSet(self, expr):\n        return r\"\\mathbb{U}\"\n    def _print_tuple(self, expr):\n        return r\"\\left( %s\\right)\" % \\\n            r\", \\  \".join([self._print(i) for i in expr])",
+      "score": 0.9428761005401611
+    },
+    {
+      "symbol_id": "sympy/printing/julia.py::JuliaCodePrinter._print_Indexed",
+      "signature": "def _print_Indexed(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/julia.py\nSymbol: sympy/printing/julia.py::JuliaCodePrinter._print_Indexed\nSignature: def _print_Indexed(self, expr):\nDocstring: \nBody Preview:         inds = [ self._print(i) for i in expr.indices ]\n        return \"%s[%s]\" % (self._print(expr.base.label), \",\".join(inds))\n    def _print_Idx(self, expr):\n        return self._print(expr.label)\n    def _print_Identity(self, expr):\n        return \"eye(%s)\" % self._print(expr.shape[0])",
+      "score": 0.9427393674850464
+    }
+  ]
+}

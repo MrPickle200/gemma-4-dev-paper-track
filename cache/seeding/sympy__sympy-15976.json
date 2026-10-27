@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-15976",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/printing/mathml.py::MathMLPresentationPrinter._print_int",
+      "signature": "def _print_int(self, p):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathml.py\nSymbol: sympy/printing/mathml.py::MathMLPresentationPrinter._print_int\nSignature: def _print_int(self, p):\nDocstring: \nBody Preview:         dom_element = self.dom.createElement(self.mathml_tag(p))\n        dom_element.appendChild(self.dom.createTextNode(str(p)))\n        return dom_element\ndef mathml(expr, printer='content', **settings):\n    \"\"\"Returns the MathML representation of expr. If printer is presentation then\n     prints Presentation MathML else prints content MathML.\n    \"\"\"\n    if printer == 'presentation':\n        return MathMLPresentationPrinter(settings).doprint(expr)",
+      "score": 0.9171932935714722
+    },
+    {
+      "symbol_id": "sympy/printing/mathml.py::MathMLPresentationPrinter._print_MatrixSymbol",
+      "signature": "def _print_MatrixSymbol(self, sym):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathml.py\nSymbol: sympy/printing/mathml.py::MathMLPresentationPrinter._print_MatrixSymbol\nSignature: def _print_MatrixSymbol(self, sym):\nDocstring: \nBody Preview:         return self._print_Symbol(sym, style=self._settings['mat_symbol_style'])\n    _print_RandomSymbol = _print_Symbol\n    def _print_Pow(self, e):\n        # Here we use root instead of power if the exponent is the reciprocal of an integer\n        if e.exp.is_negative or len(str(e.base)) > 1:\n            mrow = self.dom.createElement('mrow')\n            x = self.dom.createElement('mfenced')\n            x.appendChild(self._print(e.base))\n            mrow.appendChild(x)",
+      "score": 0.9142192602157593
+    },
+    {
+      "symbol_id": "sympy/printing/mathml.py::MathMLContentPrinter._print_ImaginaryUnit",
+      "signature": "def _print_ImaginaryUnit(self, e):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathml.py\nSymbol: sympy/printing/mathml.py::MathMLContentPrinter._print_ImaginaryUnit\nSignature: def _print_ImaginaryUnit(self, e):\nDocstring: \nBody Preview:         return self.dom.createElement('imaginaryi')\n    def _print_EulerGamma(self, e):\n        return self.dom.createElement('eulergamma')\n    def _print_GoldenRatio(self, e):\n        \"\"\"We use unicode #x3c6 for Greek letter phi as defined here\n        http://www.w3.org/2003/entities/2007doc/isogrk1.html\"\"\"\n        x = self.dom.createElement('cn')\n        x.appendChild(self.dom.createTextNode(u\"\\N{GREEK SMALL LETTER PHI}\"))\n        return x",
+      "score": 0.9135653972625732
+    },
+    {
+      "symbol_id": "sympy/printing/mathml.py::MathMLPresentationPrinter._print_Number",
+      "signature": "def _print_Number(self, e):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathml.py\nSymbol: sympy/printing/mathml.py::MathMLPresentationPrinter._print_Number\nSignature: def _print_Number(self, e):\nDocstring: \nBody Preview:         x = self.dom.createElement(self.mathml_tag(e))\n        x.appendChild(self.dom.createTextNode(str(e)))\n        return x\n    def _print_Derivative(self, e):\n        mrow = self.dom.createElement('mrow')\n        x = self.dom.createElement('mo')\n        if requires_partial(e):\n            x.appendChild(self.dom.createTextNode('&#x2202;'))\n            y = self.dom.createElement('mo')\n            y.appendChild(self.dom.createTextNode('&#x2202;'))",
+      "score": 0.9131227135658264
+    },
+    {
+      "symbol_id": "sympy/printing/fcode.py::FCodePrinter._print_ImaginaryUnit",
+      "signature": "def _print_ImaginaryUnit(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/fcode.py\nSymbol: sympy/printing/fcode.py::FCodePrinter._print_ImaginaryUnit\nSignature: def _print_ImaginaryUnit(self, expr):\nDocstring: \nBody Preview:         # purpose: print complex numbers nicely in Fortran.\n        return \"cmplx(0,1)\"\n    def _print_int(self, expr):\n        return str(expr)\n    def _print_Mul(self, expr):\n        # purpose: print complex numbers nicely in Fortran.\n        if expr.is_number and expr.is_imaginary:\n            return \"cmplx(0,%s)\" % (\n                self._print(-S.ImaginaryUnit*expr)",
+      "score": 0.9120910167694092
+    },
+    {
+      "symbol_id": "sympy/printing/mathml.py::MathMLPresentationPrinter._print_Derivative",
+      "signature": "def _print_Derivative(self, e):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathml.py\nSymbol: sympy/printing/mathml.py::MathMLPresentationPrinter._print_Derivative\nSignature: def _print_Derivative(self, e):\nDocstring: \nBody Preview:         mrow = self.dom.createElement('mrow')\n        x = self.dom.createElement('mo')\n        if requires_partial(e):\n            x.appendChild(self.dom.createTextNode('&#x2202;'))\n            y = self.dom.createElement('mo')\n            y.appendChild(self.dom.createTextNode('&#x2202;'))\n        else:\n            x.appendChild(self.dom.createTextNode(self.mathml_tag(e)))\n            y = self.dom.createElement('mo')\n            y.appendChild(self.dom.createTextNode(self.mathml_tag(e)))",
+      "score": 0.9110668301582336
+    },
+    {
+      "symbol_id": "sympy/printing/mathematica.py::MCodePrinter._print_Pi",
+      "signature": "def _print_Pi(self, expr):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathematica.py\nSymbol: sympy/printing/mathematica.py::MCodePrinter._print_Pi\nSignature: def _print_Pi(self, expr):\nDocstring: \nBody Preview:         return 'Pi'\n    def _print_Infinity(self, expr):\n        return 'Infinity'\n    def _print_NegativeInfinity(self, expr):\n        return '-Infinity'\n    def _print_list(self, expr):\n        return '{' + ', '.join(self.doprint(a) for a in expr) + '}'\n    _print_tuple = _print_list",
+      "score": 0.910340428352356
+    },
+    {
+      "symbol_id": "sympy/printing/mathml.py::MathMLPresentationPrinter._print_Exp1",
+      "signature": "def _print_Exp1(self, e):",
+      "summary": "",
+      "document_text": "File: sympy/printing/mathml.py\nSymbol: sympy/printing/mathml.py::MathMLPresentationPrinter._print_Exp1\nSignature: def _print_Exp1(self, e):\nDocstring: \nBody Preview:         x = self.dom.createElement('mi')\n        x.appendChild(self.dom.createTextNode('&ExponentialE;'))\n        return x\n    def _print_Pi(self, e):\n        x = self.dom.createElement('mi')\n        x.appendChild(self.dom.createTextNode('&pi;'))\n        return x\n    def _print_Infinity(self, e):\n        x = self.dom.createElement('mi')",
+      "score": 0.9097630381584167
+    }
+  ]
+}

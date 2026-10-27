@@ -1,0 +1,13 @@
+diff --git a/sklearn/cluster/k_means_.py b/sklearn/cluster/k_means_.py
+index b7fbdf7da3..722b791ea2 100644
+--- a/sklearn/cluster/k_means_.py
++++ b/sklearn/cluster/k_means_.py
+@@ -904,7 +904,7 @@ class KMeans(BaseEstimator, ClusterMixin, TransformerMixin):
+ 
+     """
+ 
+-    def __init__(self, n_clusters=8, init='k-means++', n_init=10,
++    def __init__(self, n_clusters=8, init='k-means++', n_init=1,
+                  max_iter=300, tol=1e-4, precompute_distances='auto',
+                  verbose=0, random_state=None, copy_x=True,
+                  n_jobs=None, algorithm='auto'):

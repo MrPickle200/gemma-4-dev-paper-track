@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-24213",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/physics/units/quantities.py::Quantity._collect_factor_and_dimension",
+      "signature": "def _collect_factor_and_dimension(expr, unit_system=\"SI\"):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/quantities.py\nSymbol: sympy/physics/units/quantities.py::Quantity._collect_factor_and_dimension\nSignature: def _collect_factor_and_dimension(expr, unit_system=\"SI\"):\nDocstring: \nBody Preview:         \"\"\"Return tuple with scale factor expression and dimension expression.\"\"\"\n        sympy_deprecation_warning(\n            \"\"\"\n            Quantity._collect_factor_and_dimension() is deprecated. This\n            method has been moved to the UnitSystem class. Use\n            unit_system._collect_factor_and_dimension(expr) instead.\n            \"\"\",\n            deprecated_since_version=\"1.5\",\n            active_deprecations_target=\"deprecated-quantity-methods\",\n        )",
+      "score": 0.8903567790985107
+    },
+    {
+      "symbol_id": "sympy/physics/units/util.py::check_dimensions",
+      "signature": "def check_dimensions(expr, unit_system=\"SI\"):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/util.py\nSymbol: sympy/physics/units/util.py::check_dimensions\nSignature: def check_dimensions(expr, unit_system=\"SI\"):\nDocstring: \nBody Preview:     \"\"\"Return expr if units in addends have the same\n    base dimensions, else raise a ValueError.\"\"\"\n    # the case of adding a number to a dimensional quantity\n    # is ignored for the sake of SymPy core routines, so this\n    # function will raise an error now if such an addend is\n    # found.\n    # Also, when doing substitutions, multiplicative constants\n    # might be introduced, so remove those now\n    from sympy.physics.units import UnitSystem\n    unit_system = UnitSystem.get_unit_system(unit_system)",
+      "score": 0.8873534798622131
+    },
+    {
+      "symbol_id": "sympy/physics/units/dimensions.py::_QuantityMapper.set_quantity_dimension",
+      "signature": "def set_quantity_dimension(self, unit, dimension):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/dimensions.py\nSymbol: sympy/physics/units/dimensions.py::_QuantityMapper.set_quantity_dimension\nSignature: def set_quantity_dimension(self, unit, dimension):\nDocstring: \nBody Preview:         from sympy.physics.units import Quantity\n        dimension = sympify(dimension)\n        if not isinstance(dimension, Dimension):\n            if dimension == 1:\n                dimension = Dimension(1)\n            else:\n                raise ValueError(\"expected dimension or 1\")\n        elif isinstance(dimension, Quantity):\n            dimension = self.get_quantity_dimension(dimension)\n        self._quantity_dimension_map[unit] = dimension",
+      "score": 0.8816625475883484
+    },
+    {
+      "symbol_id": "sympy/physics/units/dimensions.py::Dimension.__repr__",
+      "signature": "def __repr__(self):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/dimensions.py\nSymbol: sympy/physics/units/dimensions.py::Dimension.__repr__\nSignature: def __repr__(self):\nDocstring: \nBody Preview:         return self.__str__()\n    def __neg__(self):\n        return self\n    def __add__(self, other):\n        from sympy.physics.units.quantities import Quantity\n        other = sympify(other)\n        if isinstance(other, Basic):\n            if other.has(Quantity):\n                raise TypeError(\"cannot sum dimension and quantity\")",
+      "score": 0.8799367547035217
+    },
+    {
+      "symbol_id": "sympy/physics/units/dimensions.py::_QuantityMapper.__init__",
+      "signature": "def __init__(self, *args, **kwargs):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/dimensions.py\nSymbol: sympy/physics/units/dimensions.py::_QuantityMapper.__init__\nSignature: def __init__(self, *args, **kwargs):\nDocstring: \nBody Preview:         self._quantity_dimension_map = {}\n        self._quantity_scale_factors = {}\n    def set_quantity_dimension(self, unit, dimension):\n        from sympy.physics.units import Quantity\n        dimension = sympify(dimension)\n        if not isinstance(dimension, Dimension):\n            if dimension == 1:\n                dimension = Dimension(1)\n            else:\n                raise ValueError(\"expected dimension or 1\")",
+      "score": 0.8793284893035889
+    },
+    {
+      "symbol_id": "sympy/physics/units/dimensions.py::_QuantityMapper",
+      "signature": "class _QuantityMapper:",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/dimensions.py\nSymbol: sympy/physics/units/dimensions.py::_QuantityMapper\nSignature: class _QuantityMapper:\nDocstring: \nBody Preview:     _quantity_scale_factors_global = {}  # type: tDict[Expr, Expr]\n    _quantity_dimensional_equivalence_map_global = {}  # type: tDict[Expr, Expr]\n    _quantity_dimension_global = {}  # type: tDict[Expr, Expr]\n    def __init__(self, *args, **kwargs):\n        self._quantity_dimension_map = {}\n        self._quantity_scale_factors = {}\n    def set_quantity_dimension(self, unit, dimension):\n        from sympy.physics.units import Quantity",
+      "score": 0.8776239156723022
+    },
+    {
+      "symbol_id": "sympy/physics/units/quantities.py::Quantity.get_dimensional_expr",
+      "signature": "def get_dimensional_expr(expr, unit_system=\"SI\"):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/quantities.py\nSymbol: sympy/physics/units/quantities.py::Quantity.get_dimensional_expr\nSignature: def get_dimensional_expr(expr, unit_system=\"SI\"):\nDocstring: \nBody Preview:         sympy_deprecation_warning(\n            \"\"\"\n            Quantity.get_dimensional_expr() is deprecated. It is now\n            associated with UnitSystem objects. The dimensional relations\n            depend on the unit system used. Use\n            unit_system.get_dimensional_expr() instead.\n            \"\"\",\n            deprecated_since_version=\"1.5\",\n            active_deprecations_target=\"deprecated-quantity-methods\",\n        )",
+      "score": 0.8770590424537659
+    },
+    {
+      "symbol_id": "sympy/physics/units/dimensions.py::Dimension.__mul__",
+      "signature": "def __mul__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/physics/units/dimensions.py\nSymbol: sympy/physics/units/dimensions.py::Dimension.__mul__\nSignature: def __mul__(self, other):\nDocstring: \nBody Preview:         from sympy.physics.units.quantities import Quantity\n        if isinstance(other, Basic):\n            if other.has(Quantity):\n                raise TypeError(\"cannot sum dimension and quantity\")\n            if isinstance(other, Dimension):\n                return Dimension(self.name*other.name)\n            if not other.free_symbols:  # other.is_number cannot be used\n                return self\n            return super().__mul__(other)\n        return self",
+      "score": 0.8636978268623352
+    }
+  ]
+}

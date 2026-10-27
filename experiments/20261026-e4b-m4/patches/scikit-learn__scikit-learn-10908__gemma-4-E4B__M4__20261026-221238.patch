@@ -1,0 +1,13 @@
+diff --git a/sklearn/feature_extraction/text.py b/sklearn/feature_extraction/text.py
+index 9b1ebd6320..ed524603e0 100644
+--- a/sklearn/feature_extraction/text.py
++++ b/sklearn/feature_extraction/text.py
+@@ -736,6 +736,8 @@ class CountVectorizer(BaseEstimator, VectorizerMixin):
+                     % max_features)
+         self.ngram_range = ngram_range
+         self.vocabulary = vocabulary
++        if vocabulary is not None:
++            self.vocabulary_ = vocabulary
+         self.binary = binary
+         self.dtype = dtype
+ 

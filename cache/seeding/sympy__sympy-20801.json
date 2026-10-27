@@ -1,0 +1,61 @@
+{
+  "instance_id": "sympy__sympy-20801",
+  "top_symbols": [
+    {
+      "symbol_id": "sympy/logic/boolalg.py::BooleanFalse.__bool__",
+      "signature": "def __bool__(self):",
+      "summary": "",
+      "document_text": "File: sympy/logic/boolalg.py\nSymbol: sympy/logic/boolalg.py::BooleanFalse.__bool__\nSignature: def __bool__(self):\nDocstring: \nBody Preview:         return False\n    def __hash__(self):\n        return hash(False)\n    @property\n    def negated(self):\n        return S.true\n    def as_set(self):\n        \"\"\"",
+      "score": 0.9317277073860168
+    },
+    {
+      "symbol_id": "sympy/logic/boolalg.py::BooleanTrue.__bool__",
+      "signature": "def __bool__(self):",
+      "summary": "",
+      "document_text": "File: sympy/logic/boolalg.py\nSymbol: sympy/logic/boolalg.py::BooleanTrue.__bool__\nSignature: def __bool__(self):\nDocstring: \nBody Preview:         return True\n    def __hash__(self):\n        return hash(True)\n    @property\n    def negated(self):\n        return S.false\n    def as_set(self):\n        \"\"\"",
+      "score": 0.9191331267356873
+    },
+    {
+      "symbol_id": "sympy/core/numbers.py::Float.__bool__",
+      "signature": "def __bool__(self):",
+      "summary": "",
+      "document_text": "File: sympy/core/numbers.py\nSymbol: sympy/core/numbers.py::Float.__bool__\nSignature: def __bool__(self):\nDocstring: \nBody Preview:         return self._mpf_ != fzero\n    def __neg__(self):\n        return Float._new(mlib.mpf_neg(self._mpf_), self._prec)\n    @_sympifyit('other', NotImplemented)\n    def __add__(self, other):\n        if isinstance(other, Number) and global_parameters.evaluate:\n            rhs, prec = other._as_mpf_op(self._prec)\n            return Float._new(mlib.mpf_add(self._mpf_, rhs, prec, rnd), prec)\n        return Number.__add__(self, other)",
+      "score": 0.9094153642654419
+    },
+    {
+      "symbol_id": "sympy/logic/boolalg.py::BooleanFalse",
+      "signature": "class BooleanFalse(BooleanAtom, metaclass=Singleton):",
+      "summary": "",
+      "document_text": "File: sympy/logic/boolalg.py\nSymbol: sympy/logic/boolalg.py::BooleanFalse\nSignature: class BooleanFalse(BooleanAtom, metaclass=Singleton):\nDocstring: \nBody Preview:     \"\"\"\n    SymPy version of False, a singleton that can be accessed via S.false.\n    This is the SymPy version of False, for use in the logic module. The\n    primary advantage of using false instead of False is that shorthand boolean\n    operations like ~ and >> will work as expected on this class, whereas with\n    False they act bitwise on 0. Functions in the logic module will return this\n    class when they evaluate to false.\n    Notes\n    ======",
+      "score": 0.9068337082862854
+    },
+    {
+      "symbol_id": "sympy/polys/polytools.py::Poly.__bool__",
+      "signature": "def __bool__(f):",
+      "summary": "",
+      "document_text": "File: sympy/polys/polytools.py\nSymbol: sympy/polys/polytools.py::Poly.__bool__\nSignature: def __bool__(f):\nDocstring: \nBody Preview:         return not f.is_zero\n    def eq(f, g, strict=False):\n        if not strict:\n            return f == g\n        else:\n            return f._strict_eq(sympify(g))\n    def ne(f, g, strict=False):\n        return not f.eq(g, strict=strict)",
+      "score": 0.9067918658256531
+    },
+    {
+      "symbol_id": "sympy/sets/ordinals.py::Ordinal.__eq__",
+      "signature": "def __eq__(self, other):",
+      "summary": "",
+      "document_text": "File: sympy/sets/ordinals.py\nSymbol: sympy/sets/ordinals.py::Ordinal.__eq__\nSignature: def __eq__(self, other):\nDocstring: \nBody Preview:         if not isinstance(other, Ordinal):\n            try:\n                other = Ordinal.convert(other)\n            except TypeError:\n                return NotImplemented\n        return self.terms == other.terms\n    def __hash__(self):\n        return hash(self.args)\n    def __lt__(self, other):",
+      "score": 0.9005358815193176
+    },
+    {
+      "symbol_id": "sympy/matrices/dense.py::_iszero",
+      "signature": "def _iszero(x):",
+      "summary": "",
+      "document_text": "File: sympy/matrices/dense.py\nSymbol: sympy/matrices/dense.py::_iszero\nSignature: def _iszero(x):\nDocstring: \nBody Preview:     \"\"\"Returns True if x is zero.\"\"\"\n    return x.is_zero\ndef _compare_sequence(a, b):\n    \"\"\"Compares the elements of a list/tuple `a`\n    and a list/tuple `b`.  `_compare_sequence((1,2), [1, 2])`\n    is True, whereas `(1,2) == [1, 2]` is False\"\"\"\n    if type(a) is type(b):\n        # if they are the same type, compare directly\n        return a == b",
+      "score": 0.8987545967102051
+    },
+    {
+      "symbol_id": "sympy/codegen/cfunctions.py::log1p._eval_is_real",
+      "signature": "def _eval_is_real(self):",
+      "summary": "",
+      "document_text": "File: sympy/codegen/cfunctions.py\nSymbol: sympy/codegen/cfunctions.py::log1p._eval_is_real\nSignature: def _eval_is_real(self):\nDocstring: \nBody Preview:         return (self.args[0] + S.One).is_nonnegative\n    def _eval_is_finite(self):\n        if (self.args[0] + S.One).is_zero:\n            return False\n        return self.args[0].is_finite\n    def _eval_is_positive(self):\n        return self.args[0].is_positive\n    def _eval_is_zero(self):",
+      "score": 0.8976132869720459
+    }
+  ]
+}

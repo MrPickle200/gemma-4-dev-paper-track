@@ -104,9 +104,10 @@ def main() -> int:
         failures.append("plain completion did not return the expected string")
 
     print("[3/5] thinking control")
-    on = chat(model, [{"role": "user", "content": "What is 17 * 23? Answer with the number."}],
+    sys_msg = [{"role": "system", "content": "You are a helpful assistant."}]
+    on = chat(model, sys_msg + [{"role": "user", "content": "What is 17 * 23?"}],
               max_tokens=1024, chat_template_kwargs={"enable_thinking": True})
-    off = chat(model, [{"role": "user", "content": "What is 17 * 23? Answer with the number."}],
+    off = chat(model, sys_msg + [{"role": "user", "content": "What is 17 * 23?"}],
                max_tokens=1024, chat_template_kwargs={"enable_thinking": False})
     r_on = len(on["choices"][0]["message"].get("reasoning_content") or "")
     r_off = len(off["choices"][0]["message"].get("reasoning_content") or "")

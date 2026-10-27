@@ -39,7 +39,7 @@ from harness import config                        # noqa: E402
 from harness.config import is_infra_failure, turn_error      # noqa: E402
 from plot_metric4 import LABELS, bucket_of, calls_with_depth, load  # noqa: E402
 
-VARIANTS = ("B0", "M1", "M2", "M3")
+VARIANTS = ("B0", "M1", "M2", "M3", "M4")
 NAV_TOOLS = {"get_repo_map", "read_symbol", "find_references"}
 BASH_TOOLS = {"search_text", "read_file", "list_dir"}
 CATS = ("JSON_SCHEMA_ERROR", "SYMBOL_NOT_FOUND", "SEARCH_BLOCK_MISMATCH",
@@ -271,7 +271,7 @@ def main() -> int:
     m2_rows.append(m2_row("`>16K`", [">16K"]))
 
     # ---------------------------------------------------------------------------- section 3
-    m3 = [(inst, d) for (inst, v), d in per_run.items() if v == "M3"]
+    m3 = [(inst, d) for (inst, v), d in per_run.items() if v in ("M3", "M4")]
     compacted: list[tuple[str, dict, dict]] = []
     trig_turns: list[int] = []
     pre_tokens: list[int] = []

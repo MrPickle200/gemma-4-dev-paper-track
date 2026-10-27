@@ -1,0 +1,25 @@
+diff --git a/sympy/printing/latex.py b/sympy/printing/latex.py
+index ad4d7d9613..cf1f0d924d 100644
+--- a/sympy/printing/latex.py
++++ b/sympy/printing/latex.py
+@@ -149,18 +149,8 @@ def __init__(self, settings=None):
+                 self._settings['mode'] == 'inline':
+             self._settings['fold_short_frac'] = True
+ 
+-        mul_symbol_table = {
+-            None: r" ",
+-            "ldot": r" \,.\, ",
+-            "dot": r" \cdot ",
+-            "times": r" \times "
+-        }
+-
+-        self._settings['mul_symbol_latex'] = \
+-            mul_symbol_table[self._settings['mul_symbol']]
+-
+-        self._settings['mul_symbol_latex_numbers'] = \
+-            mul_symbol_table[self._settings['mul_symbol'] or 'dot']
++        self._settings['mul_symbol_latex'] = self._settings.get('mul_symbol', r" ")
++        self._settings['mul_symbol_latex_numbers'] = self._settings.get('mul_symbol', 'dot')
+ 
+         self._delim_dict = {'(': ')', '[': ']'}
+ 

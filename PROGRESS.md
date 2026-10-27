@@ -907,3 +907,28 @@ experiments/<tag>/runs/  patches/  predictions/  reports/  run_evaluation/
   the forced single-cell E2B/M3 re-run (used to verify the log harvest) briefly left the CSV with
   one row. It now keeps the rows of the cells it did not look at and sorts by model; a second
   `--merge-only` restored the full table (B0 3, M1 4, M2 5, M3 3 of 50 = 15/200).
+
+---
+
+## 2026-10-27 — Bước 4 & 5: Cấu hình M4 (Zero-Turn AST-Semantic Seeding)
+
+### Module M4 Implementation & Evaluation
+- **Zero-Turn Seeding**: Turn-0 injection of Top-8 AST Candidate Symbols ranked by Embedding Gemma 2 (270M) + lexical/identifier matching. Precomputed across all 50 tasks in `cache/seeding/*.json`.
+- **Harness Integration**:
+  - `harness/seeding.py`: Cache loading and Turn-0 candidate block formatter.
+  - `harness/agent.py`: Binds `phase = "localize"` for `M4`, injects candidate symbols block at Turn 0, logs `seeded_symbols` in `run_start`.
+  - `harness/tools.py` & `harness/config.py`: Enabled AST-Nav, AST-Edit, and `lock_targets` gate for `M4`.
+  - `scripts/eval_seeding_recall.py`: Evaluated Turn-0 retrieval against Gold Patch across all 50 tasks:
+    - Top-1/3/5/8 File Recall: 38.0% / 50.0% / 62.0% / 68.0%.
+    - Top-1/3/5/8 Symbol Recall: 12.0% / 28.0% / 34.0% / 44.0%.
+- **Experiments**:
+  - `experiments/20261026-e2b-m4/`: 50/50 tasks completed for `gemma-4-E2B`.
+  - `experiments/20261026-e4b-m4/`: 50/50 tasks completed for `gemma-4-E4B`.
+- **SWE-bench Docker Evaluation (Bước 5)**:
+  - `gemma-4-E2B_M4`: **4 / 50 resolved (8.0%)** (`requests-1724, sklearn-13496, sklearn-14141, sympy-13480`), recovering from M3's dip (6.0%).
+  - `gemma-4-E4B_M4`: **9 / 50 resolved (18.0%)** (`requests-1724, pytest-5631, sklearn-13135, sklearn-13142, sklearn-13496, sklearn-14141, sympy-12096, sympy-13480, sympy-16766`), achieving an all-time high (triple B0 baseline's 6.0%).
+- **Behavioral & Efficiency Impact**:
+  - Compaction trigger rate reached 96.0% (E2B) and 78.0% (E4B) with median turn at trigger = 3.
+  - `SYMBOL_NOT_FOUND` error share plunged from 65.1% to 16.3% on E2B, and from 45.1% to 18.6% on E4B.
+  - Real edit generation rate reached 92.0% (E2B) and 98.0% (E4B).
+  - Total tokens generated dropped by 36.6% on E2B and 44.5% on E4B compared to M3.

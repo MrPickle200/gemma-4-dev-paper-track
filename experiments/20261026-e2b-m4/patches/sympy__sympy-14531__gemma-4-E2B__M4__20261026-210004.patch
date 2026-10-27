@@ -1,0 +1,13 @@
+diff --git a/sympy/printing/str.py b/sympy/printing/str.py
+index cc1d19fcce..1902149afb 100644
+--- a/sympy/printing/str.py
++++ b/sympy/printing/str.py
+@@ -805,6 +805,8 @@ def _print_Tr(self, expr):
+ 
+ 
+ def sstr(expr, **settings):
++    printer = StrPrinter(**settings)
++    return printer.sstrrepr(expr)
+     """Returns the expression as a string.
+ 
+     For large expressions where speed is a concern, use the setting

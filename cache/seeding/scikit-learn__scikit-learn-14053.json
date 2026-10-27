@@ -1,0 +1,61 @@
+{
+  "instance_id": "scikit-learn__scikit-learn-14053",
+  "top_symbols": [
+    {
+      "symbol_id": "sklearn/tree/export.py::Sentinel.__repr__",
+      "signature": "def __repr__(self):",
+      "summary": "",
+      "document_text": "File: sklearn/tree/export.py\nSymbol: sklearn/tree/export.py::Sentinel.__repr__\nSignature: def __repr__(self):\nDocstring: \nBody Preview:         return '\"tree.dot\"'\nSENTINEL = Sentinel()\ndef plot_tree(decision_tree, max_depth=None, feature_names=None,\n              class_names=None, label='all', filled=False,\n              impurity=True, node_ids=False,\n              proportion=False, rotate=False, rounded=False,\n              precision=3, ax=None, fontsize=None):",
+      "score": 0.8850816488265991
+    },
+    {
+      "symbol_id": "sklearn/tree/export.py::_MPLTreeExporter",
+      "signature": "class _MPLTreeExporter(_BaseTreeExporter):",
+      "summary": "",
+      "document_text": "File: sklearn/tree/export.py\nSymbol: sklearn/tree/export.py::_MPLTreeExporter\nSignature: class _MPLTreeExporter(_BaseTreeExporter):\nDocstring: \nBody Preview:     def __init__(self, max_depth=None, feature_names=None,\n                 class_names=None, label='all', filled=False,\n                 impurity=True, node_ids=False,\n                 proportion=False, rotate=False, rounded=False,\n                 precision=3, fontsize=None):\n        super().__init__(\n            max_depth=max_depth, feature_names=feature_names,\n            class_names=class_names, label=label, filled=filled,\n            impurity=impurity, node_ids=node_ids, proportion=proportion,\n            rotate=rotate, rounded=rounded, precision=precision)",
+      "score": 0.8828887939453125
+    },
+    {
+      "symbol_id": "sklearn/tree/tree.py::ExtraTreeClassifier.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/tree/tree.py\nSymbol: sklearn/tree/tree.py::ExtraTreeClassifier.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  criterion=\"gini\",\n                 splitter=\"random\",\n                 max_depth=None,\n                 min_samples_split=2,\n                 min_samples_leaf=1,\n                 min_weight_fraction_leaf=0.,\n                 max_features=\"auto\",\n                 random_state=None,\n                 max_leaf_nodes=None,\n                 min_impurity_decrease=0.,",
+      "score": 0.8784677982330322
+    },
+    {
+      "symbol_id": "sklearn/tree/export.py::_MPLTreeExporter.__init__",
+      "signature": "def __init__(self, max_depth=None, feature_names=None,",
+      "summary": "",
+      "document_text": "File: sklearn/tree/export.py\nSymbol: sklearn/tree/export.py::_MPLTreeExporter.__init__\nSignature: def __init__(self, max_depth=None, feature_names=None,\nDocstring: \nBody Preview:                  class_names=None, label='all', filled=False,\n                 impurity=True, node_ids=False,\n                 proportion=False, rotate=False, rounded=False,\n                 precision=3, fontsize=None):\n        super().__init__(\n            max_depth=max_depth, feature_names=feature_names,\n            class_names=class_names, label=label, filled=filled,\n            impurity=impurity, node_ids=node_ids, proportion=proportion,\n            rotate=rotate, rounded=rounded, precision=precision)\n        self.fontsize = fontsize",
+      "score": 0.8759045600891113
+    },
+    {
+      "symbol_id": "sklearn/tree/_reingold_tilford.py::Tree",
+      "signature": "class Tree:",
+      "summary": "",
+      "document_text": "File: sklearn/tree/_reingold_tilford.py\nSymbol: sklearn/tree/_reingold_tilford.py::Tree\nSignature: class Tree:\nDocstring: \nBody Preview:     def __init__(self, label=\"\", node_id=-1, *children):\n        self.label = label\n        self.node_id = node_id\n        if children:\n            self.children = children\n        else:\n            self.children = []",
+      "score": 0.8704602718353271
+    },
+    {
+      "symbol_id": "sklearn/tree/export.py::Sentinel",
+      "signature": "class Sentinel(object):",
+      "summary": "",
+      "document_text": "File: sklearn/tree/export.py\nSymbol: sklearn/tree/export.py::Sentinel\nSignature: class Sentinel(object):\nDocstring: \nBody Preview:     def __repr__(self):\n        return '\"tree.dot\"'\nSENTINEL = Sentinel()\ndef plot_tree(decision_tree, max_depth=None, feature_names=None,\n              class_names=None, label='all', filled=False,\n              impurity=True, node_ids=False,\n              proportion=False, rotate=False, rounded=False,",
+      "score": 0.869179368019104
+    },
+    {
+      "symbol_id": "sklearn/ensemble/forest.py::ExtraTreesClassifier.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/ensemble/forest.py\nSymbol: sklearn/ensemble/forest.py::ExtraTreesClassifier.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  n_estimators=100,\n                 criterion=\"gini\",\n                 max_depth=None,\n                 min_samples_split=2,\n                 min_samples_leaf=1,\n                 min_weight_fraction_leaf=0.,\n                 max_features=\"auto\",\n                 max_leaf_nodes=None,\n                 min_impurity_decrease=0.,\n                 min_impurity_split=None,",
+      "score": 0.8652411699295044
+    },
+    {
+      "symbol_id": "sklearn/tree/tree.py::DecisionTreeClassifier.__init__",
+      "signature": "def __init__(self,",
+      "summary": "",
+      "document_text": "File: sklearn/tree/tree.py\nSymbol: sklearn/tree/tree.py::DecisionTreeClassifier.__init__\nSignature: def __init__(self,\nDocstring: \nBody Preview:                  criterion=\"gini\",\n                 splitter=\"best\",\n                 max_depth=None,\n                 min_samples_split=2,\n                 min_samples_leaf=1,\n                 min_weight_fraction_leaf=0.,\n                 max_features=None,\n                 random_state=None,\n                 max_leaf_nodes=None,\n                 min_impurity_decrease=0.,",
+      "score": 0.8651129603385925
+    }
+  ]
+}

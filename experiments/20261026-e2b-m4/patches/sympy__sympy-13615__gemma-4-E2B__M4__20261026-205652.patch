@@ -1,0 +1,17 @@
+diff --git a/sympy/sets/sets.py b/sympy/sets/sets.py
+index 917717bb74..58e28f2847 100644
+--- a/sympy/sets/sets.py
++++ b/sympy/sets/sets.py
+@@ -1944,10 +1944,9 @@ def _complement(self, other):
+                 intervals.append(Interval(nums[-1], S.Infinity, True, True))
+ 
+                 if syms != []:
+-                    return Complement(Union(intervals, evaluate=False),
+-                            FiniteSet(*syms), evaluate=False)
++                    return self - other
+                 else:
+-                    return Union(intervals, evaluate=False)
++                    return self - other
+             elif nums == []:
+                 return None
+ 

@@ -1,0 +1,16 @@
+diff --git a/sympy/codegen/ast.py b/sympy/codegen/ast.py
+index a02714b174..3ca34e39a7 100644
+--- a/sympy/codegen/ast.py
++++ b/sympy/codegen/ast.py
+@@ -904,6 +904,11 @@ def _construct_text(cls, text):
+             raise TypeError("Argument text is not a string type.")
+         return text
+ 
++    def __eq__(self, other):
++        if isinstance(other, String):
++            return self.text == other.text
++        return False
++
+     def _sympystr(self, printer, *args, **kwargs):
+         return self.text
+ 
