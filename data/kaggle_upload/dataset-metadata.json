@@ -1,0 +1,9 @@
+{
+  "title": "Gemma-4 M4 SFT 3000 Dataset",
+  "id": "daoviet/gemma4-m4-sft-3000",
+  "licenses": [
+    {
+      "name": "apache-2.0"
+    }
+  ]
+}

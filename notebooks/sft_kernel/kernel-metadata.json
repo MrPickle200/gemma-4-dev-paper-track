@@ -1,0 +1,19 @@
+{
+  "id": "daoviet/gemma-4-e2b-m4-sft",
+  "title": "Gemma 4 E2B M4 SFT",
+  "code_file": "gemma4_e2b_m4_sft.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "daoviet/gemma4-m4-sft-3000"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": [
+    "google/gemma-4/transformers/gemma-4-e2b-it/1"
+  ]
+}

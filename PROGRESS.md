@@ -932,3 +932,29 @@ experiments/<tag>/runs/  patches/  predictions/  reports/  run_evaluation/
   - `SYMBOL_NOT_FOUND` error share plunged from 65.1% to 16.3% on E2B, and from 45.1% to 18.6% on E4B.
   - Real edit generation rate reached 92.0% (E2B) and 98.0% (E4B).
   - Total tokens generated dropped by 36.6% on E2B and 44.5% on E4B compared to M3.
+
+---
+
+## 2026-10-28 — M4 Native SFT Fine-Tuning (Gemma 4 E2B & E4B on Kaggle T4)
+
+### Dataset Construction & Kaggle Upload
+- **`scripts/build_sft_m4.py`**: Built 3,000 sanitized M4 trajectories (`data/sft_m4_3000.jsonl`) following the 70-30 Phase-1 (AST symbol navigation + `lock_targets`) and Phase-2 (compacted context + structured `apply_edit`) recipe, aligned with Gemma 4's native tool-call format.
+- Uploaded dataset to Kaggle as `daoviet/gemma4-m4-sft-3000`.
+
+### QLoRA Fine-Tuning on Kaggle GPU (Nvidia T4 CC 7.5)
+- **Engineering Resolutions**:
+  - Targeted `model.language_model.*` linear projections (`q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj`), bypassing `vision_tower` and `audio_tower` `Gemma4ClippableLinear` modules (205 projections / 24.16M trainable params on E2B; 258 projections / 34.88M trainable params on E4B).
+  - Loaded base models in 4-bit NF4 (`bnb_4bit_compute_dtype=torch.float16`) with trainable LoRA weights in `torch.float32` and `fp16=False, bf16=False` in `SFTConfig` to bypass PyTorch's BFloat16 `GradScaler` limitation on Turing CC 7.5.
+  - Handled Kaggle's 20 GB `/kaggle/working` quota on E4B (where FP16 merged weights take 15.95 GB) by pruning intermediate checkpoints and exporting a dedicated 133 MB GGUF LoRA adapter (`convert_lora_to_gguf.py`).
+- **Convergence Results (188 steps, 2 epochs, `max_length=1536`)**:
+  - **Gemma 4 E2B (`daoviet/gemma-4-e2b-m4-sft`, Version 20 — 2.66h)**:
+    - Train loss: `7.4374` (pre-flight) $\rightarrow$ `4.2179` (step 5) $\rightarrow$ `1.0923` (step 50).
+    - Eval loss: `1.4855` (step 50) / `1.5828` (step 188); Eval token accuracy: **`89.46%`**.
+  - **Gemma 4 E4B (`daoviet/gemma-4-e4b-m4-sft`, Version 2 — 4.36h)**:
+    - Train loss: `5.0299` (pre-flight) $\rightarrow$ `3.0902` (step 5) $\rightarrow$ `0.6985` (step 50).
+    - Eval loss: `0.8796` (step 50) / `1.4234` (step 188); Eval token accuracy: **`90.61%`**.
+- **Local Artifacts (`models/`, gitignored) & Training Evidence (`notebooks/`, tracked)**:
+  - Downloaded `models/gemma-4-E2B-M4-sft-Q8_0.gguf` (4.71 GB) and quantized `models/gemma-4-E2B-M4-sft_q4_0-it.gguf` (3.18 GB).
+  - Downloaded `models/gemma-4-E4B-M4-sft-lora.gguf` (133.10 MB) and both PEFT LoRA adapter bundles under `models/lora/`.
+  - Tracked notebooks and full step-by-step `trainer_state.json` under `notebooks/sft_kernel/` and `notebooks/sft_e4b_kernel/`.
+  - Updated `scripts/serve.ps1` with `-Sft` and `-Lora` flags for one-command local serving.

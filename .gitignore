@@ -19,6 +19,9 @@ experiments/*.bak
 experiments/**/*.log
 experiments/**/*.log.*
 experiments/**/*.bak
+notebooks/**/*.log
+data/sft_m4_*.jsonl
+data/kaggle_upload/*.jsonl
 
 # per-instance Docker evaluator logs (eval.sh, patch.diff, test_output.txt, report.json)
 # regenerate with scripts/run_swebench_eval.py --force; the merged per-cell summary
