@@ -958,3 +958,43 @@ experiments/<tag>/runs/  patches/  predictions/  reports/  run_evaluation/
   - Downloaded `models/gemma-4-E4B-M4-sft-lora.gguf` (133.10 MB) and both PEFT LoRA adapter bundles under `models/lora/`.
   - Tracked notebooks and full step-by-step `trainer_state.json` under `notebooks/sft_kernel/` and `notebooks/sft_e4b_kernel/`.
   - Updated `scripts/serve.ps1` with `-Sft` and `-Lora` flags for one-command local serving.
+
+---
+
+## 2026-10-30 — Full Evaluation of Fine-Tuned Gemma 4 M4 SFT (E2B & E4B)
+
+### Overview
+Executed end-to-end benchmarking of both fine-tuned models on the full 50-task SWE-bench Verified Mini subset (`data/subset_50.json`) under configuration `M4` with thinking enabled (`--thinking on`, `temperature=0.0`).
+- `experiments/20261029-e2b-m4-sft/`: 50 tasks on `gemma-4-E2B-M4-sft` (4-slot local server, `-Ctx 131072 -Slots 4`, `--workers 4`).
+- `experiments/20261029-e4b-m4-sft/`: 50 tasks on `gemma-4-E4B-M4-sft` (1-slot local server with LoRA adapter, `-Ctx 32768 -Slots 1`, `--workers 1`).
+
+### 4-Way Comparative Results Table
+
+| Metric | Gemma 4 E2B Base M4 | Gemma 4 E2B SFT M4 | Gemma 4 E4B Base M4 | Gemma 4 E4B SFT M4 |
+|---|---|---|---|---|
+| **Resolved / 50 (%)** | 4 / 50 (8.0%) | **0 / 50 (0.0%)** | 9 / 50 (18.0%) | **0 / 50 (0.0%)** |
+| **Real Edits Generated (%)** | 46 / 50 (92.0%) | 13 / 50 (26.0%) | 49 / 50 (98.0%) | 0 / 50 (0.0%) |
+| **Malformed Arguments** | 6 | 22 | 1 | 262 |
+| **Malformed Edits** | 12 | 15 (malf_rate: 68.2%) | 5 | 0 (0 edits attempted) |
+| **Compaction Trigger Rate (%)** | 48 / 50 (96.0%) | 32 / 50 (64.0%) | 39 / 50 (78.0%) | 1 / 50 (2.0%) |
+| **Median Turns to Compaction** | 3.0 | 2.0 | 3.0 | 9.0 |
+| **Mean Total Tokens** | 16,840 | 40,266 | 20,410 | 33,617 |
+| **Loop Blocked Count** | 4 | 6 | 0 | 122 |
+
+### Key Diagnostic Findings & Failure Mode Analysis
+
+1. **Catastrophic Syntax Degeneration on E4B SFT (LoRA):**
+   - E4B SFT suffered an extreme regression in tool calling format: 262 failed tool calls (100% of errors classified as `JSON_SCHEMA_ERROR`).
+   - The model frequently emitted pathological nested bracket structures (`{"type": {"type": ...}}`) or character repetitions inside argument values until hitting the hard ceiling of 16,384 completion tokens, leading to `toolcall_rejected` / server JSON parse errors.
+   - Alternatively, it wrapped parameter names in quote characters (`"\"file\""`) or template tokens (`<|"|>`), causing the tool dispatcher to reject arguments. As a consequence, 0 valid edits were produced across all 50 tasks.
+
+2. **Degradation of Precision Editing on E2B SFT:**
+   - E2B SFT managed to trigger compaction on 32 tasks (64.0%), but its editing fidelity collapsed: malformed edit rate surged to 68.2% (compared to ~20.7% on base).
+   - Only 6 non-empty patches were submitted to evaluation (vs 31 in base E2B M4), and 0 / 50 instances were resolved.
+   - Total token consumption escalated dramatically from 16.8K to 40.3K due to verbose, repetitive reasoning traces.
+
+3. **Hypothesis Evaluation Summary:**
+   - **H1 (Tool Call Reliability): REFUTED.** SFT did not stabilize tool-call syntax; on the contrary, it introduced repetitive degeneration and template token pollution into arguments.
+   - **H2 (Compaction Timing): PARTIALLY SUPPORTED on E2B, REFUTED on E4B.** E2B SFT compacted faster when successful (median turn 2.0 vs 3.0), but overall trigger rate fell from 96% to 64%. On E4B SFT, compaction collapsed to 2.0% (1/50) due to syntax blockages in Phase 1.
+   - **H3 (Resolution Rate Lift): REFUTED.** Neither model resolved any benchmark tasks (0.0% vs 8.0% and 18.0% for base models), proving that naive multi-turn SFT without constrained output formatting during training harms the fragile execution grounding of quantised micro-models.
+

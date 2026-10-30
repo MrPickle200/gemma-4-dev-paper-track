@@ -1,0 +1,17 @@
+diff --git a/sklearn/mixture/gaussian_mixture.py b/sklearn/mixture/gaussian_mixture.py
+index 9e3bf3cb4c..0fccb26ceb 100644
+--- a/sklearn/mixture/gaussian_mixture.py
++++ b/sklearn/mixture/gaussian_mixture.py
+@@ -604,11 +604,7 @@ class GaussianMixture(BaseMixture):
+     def _check_parameters(self, X):
+         """Check the Gaussian mixture parameters are well defined."""
+         _, n_features = X.shape
+-        if self.covariance_type not in ['spherical', 'tied', 'diag', 'full']:
+-            raise ValueError("Invalid value for 'covariance_type': %s "
+-                             "'covariance_type' should be in "
+-                             "['spherical', 'tied', 'diag', 'full']"
+-                             % self.covariance_type)
++        
+ 
+         if self.weights_init is not None:
+             self.weights_init = _check_weights(self.weights_init,

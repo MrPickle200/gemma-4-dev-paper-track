@@ -1,0 +1,16 @@
+diff --git a/src/_pytest/python.py b/src/_pytest/python.py
+index 4b716c616..a24598ec8 100644
+--- a/src/_pytest/python.py
++++ b/src/_pytest/python.py
+@@ -356,10 +356,7 @@ class PyCollector(PyobjMixin, nodes.Collector):
+         """ Look for the __test__ attribute, which is applied by the
+         @nose.tools.istest decorator
+         """
+-        # We explicitly check for "is True" here to not mistakenly treat
+-        # classes with a custom __getattr__ returning something truthy (like a
+-        # function) as test classes.
+-        return safe_getattr(obj, "__test__", False) is True
++
+ 
+     def classnamefilter(self, name):
+         return self._matches_prefix_or_glob_option("python_classes", name)

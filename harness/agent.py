@@ -123,7 +123,7 @@ def _parse_args(raw: str) -> tuple[dict | None, str | None]:
         return {}, None
     try:
         val = json.loads(raw)
-    except json.JSONDecodeError as e:
+    except (json.JSONDecodeError, RecursionError) as e:
         return None, f"arguments were not valid JSON: {e}"
     except ValueError as e:
         # Python 3.11 caps int<->str at 4300 digits; a model that emits a 15,000-digit number in

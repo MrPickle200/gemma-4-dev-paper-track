@@ -1,0 +1,50 @@
+{"instance_id": "psf__requests-1724", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "psf__requests-2931", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "psf__requests-6028", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": "diff --git a/requests/exceptions.py b/requests/exceptions.py\nindex 79697635..472dcab1 100644\n--- a/requests/exceptions.py\n+++ b/requests/exceptions.py\n@@ -35,16 +35,13 @@ class JSONDecodeError(InvalidJSONError, CompatJSONDecodeError):\n     \"\"\"Couldn't decode the text into json\"\"\"\n \n \n-class HTTPError(RequestException):\n-    \"\"\"An HTTP error occurred.\"\"\"\n \n \n-class ConnectionError(RequestException):\n-    \"\"\"A Connection error occurred.\"\"\"\n \n \n-class ProxyError(ConnectionError):\n-    \"\"\"A proxy error occurred.\"\"\"\n+\n+\n+\n \n \n class SSLError(ConnectionError):\n"}
+{"instance_id": "pytest-dev__pytest-10081", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "pytest-dev__pytest-5262", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "pytest-dev__pytest-5631", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "pytest-dev__pytest-7236", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "pytest-dev__pytest-7324", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": "diff --git a/src/_pytest/python.py b/src/_pytest/python.py\nindex 4b716c616..a24598ec8 100644\n--- a/src/_pytest/python.py\n+++ b/src/_pytest/python.py\n@@ -356,10 +356,7 @@ class PyCollector(PyobjMixin, nodes.Collector):\n         \"\"\" Look for the __test__ attribute, which is applied by the\n         @nose.tools.istest decorator\n         \"\"\"\n-        # We explicitly check for \"is True\" here to not mistakenly treat\n-        # classes with a custom __getattr__ returning something truthy (like a\n-        # function) as test classes.\n-        return safe_getattr(obj, \"__test__\", False) is True\n+\n \n     def classnamefilter(self, name):\n         return self._matches_prefix_or_glob_option(\"python_classes\", name)\n"}
+{"instance_id": "scikit-learn__scikit-learn-10908", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-11310", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-13135", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-13142", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": "diff --git a/sklearn/mixture/gaussian_mixture.py b/sklearn/mixture/gaussian_mixture.py\nindex 9e3bf3cb4c..0fccb26ceb 100644\n--- a/sklearn/mixture/gaussian_mixture.py\n+++ b/sklearn/mixture/gaussian_mixture.py\n@@ -604,11 +604,7 @@ class GaussianMixture(BaseMixture):\n     def _check_parameters(self, X):\n         \"\"\"Check the Gaussian mixture parameters are well defined.\"\"\"\n         _, n_features = X.shape\n-        if self.covariance_type not in ['spherical', 'tied', 'diag', 'full']:\n-            raise ValueError(\"Invalid value for 'covariance_type': %s \"\n-                             \"'covariance_type' should be in \"\n-                             \"['spherical', 'tied', 'diag', 'full']\"\n-                             % self.covariance_type)\n+        \n \n         if self.weights_init is not None:\n             self.weights_init = _check_weights(self.weights_init,\n"}
+{"instance_id": "scikit-learn__scikit-learn-13496", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-14053", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-14087", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-14141", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-14629", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-14983", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-25931", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-26194", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "scikit-learn__scikit-learn-9288", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-12096", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-12419", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": "diff --git a/sympy/matrices/matrices.py b/sympy/matrices/matrices.py\nindex b6808b58d9..3289ef0dc9 100644\n--- a/sympy/matrices/matrices.py\n+++ b/sympy/matrices/matrices.py\n@@ -611,7 +611,7 @@ def dirac(i, j):\n                 return 1\n             return 0\n \n-        return all(self[i, j] == dirac(i, j) for i in range(self.rows) for j in\n+        return all(self[i, j] == 1 for i in range(self.rows) for j in\n                    range(self.cols))\n \n     def _eval_is_lower_hessenberg(self):\n"}
+{"instance_id": "sympy__sympy-13480", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-13551", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-13615", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-13757", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-13798", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-13852", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-14531", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-14976", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-15017", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": "diff --git a/sympy/tensor/array/ndim_array.py b/sympy/tensor/array/ndim_array.py\nindex 099b291167..9bfa128fd6 100644\n--- a/sympy/tensor/array/ndim_array.py\n+++ b/sympy/tensor/array/ndim_array.py\n@@ -175,7 +175,7 @@ def __len__(self):\n         9\n \n         \"\"\"\n-        return self._loop_size\n+        return 1\n \n     @property\n     def shape(self):\n"}
+{"instance_id": "sympy__sympy-15599", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-15875", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-15976", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-16450", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-16766", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-18698", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-19346", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-20428", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-20590", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-20801", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-21379", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-21596", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-21930", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-22456", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-23262", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-23413", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}
+{"instance_id": "sympy__sympy-23824", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": "diff --git a/sympy/physics/hep/gamma_matrices.py b/sympy/physics/hep/gamma_matrices.py\nindex 23284e4a92..1c05827f45 100644\n--- a/sympy/physics/hep/gamma_matrices.py\n+++ b/sympy/physics/hep/gamma_matrices.py\n@@ -72,7 +72,7 @@ def extract_type_tens(expression, component):\n     return new_expr, residual_expr\n \n \n-def simplify_gamma_expression(expression):\n+    return res_expr * residual_expr\n     extracted_expr, residual_expr = extract_type_tens(expression, GammaMatrix)\n     res_expr = _simplify_single_line(extracted_expr)\n     return res_expr * residual_expr\n"}
+{"instance_id": "sympy__sympy-24213", "model_name_or_path": "gemma-4-E2B-M4-sft_M4", "model_patch": ""}

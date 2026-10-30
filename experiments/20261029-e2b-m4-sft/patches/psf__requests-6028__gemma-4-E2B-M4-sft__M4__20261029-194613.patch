@@ -1,0 +1,24 @@
+diff --git a/requests/exceptions.py b/requests/exceptions.py
+index 79697635..472dcab1 100644
+--- a/requests/exceptions.py
++++ b/requests/exceptions.py
+@@ -35,16 +35,13 @@ class JSONDecodeError(InvalidJSONError, CompatJSONDecodeError):
+     """Couldn't decode the text into json"""
+ 
+ 
+-class HTTPError(RequestException):
+-    """An HTTP error occurred."""
+ 
+ 
+-class ConnectionError(RequestException):
+-    """A Connection error occurred."""
+ 
+ 
+-class ProxyError(ConnectionError):
+-    """A proxy error occurred."""
++
++
++
+ 
+ 
+ class SSLError(ConnectionError):

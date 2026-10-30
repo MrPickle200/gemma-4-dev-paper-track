@@ -1,0 +1,13 @@
+diff --git a/sympy/matrices/matrices.py b/sympy/matrices/matrices.py
+index b6808b58d9..3289ef0dc9 100644
+--- a/sympy/matrices/matrices.py
++++ b/sympy/matrices/matrices.py
+@@ -611,7 +611,7 @@ def dirac(i, j):
+                 return 1
+             return 0
+ 
+-        return all(self[i, j] == dirac(i, j) for i in range(self.rows) for j in
++        return all(self[i, j] == 1 for i in range(self.rows) for j in
+                    range(self.cols))
+ 
+     def _eval_is_lower_hessenberg(self):
